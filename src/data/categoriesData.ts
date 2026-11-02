@@ -99,3 +99,4 @@ export const CATEGORIES_DATA: CategoryData[] = [
     images: [],
   },
 ];
+

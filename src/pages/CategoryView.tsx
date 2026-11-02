@@ -75,7 +75,10 @@ export default function CategoryView() {
             <div className="max-w-3xl">
               <Subtitle>{category.tagline}</Subtitle>
               <div className="title-wrapper mt-3">
-                <h1 className="heading-style-h2 text-4xl sm:text-6xl font-extrabold tracking-tight text-white uppercase">
+                <h1
+                  className="font-extrabold tracking-tight text-white uppercase"
+                  style={{ fontSize: 'clamp(2.4rem, 5vw, 4rem)', lineHeight: '1.1' }}
+                >
                   {category.name}
                 </h1>
               </div>
@@ -267,3 +270,4 @@ export default function CategoryView() {
     </>
   );
 }
+
