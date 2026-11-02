@@ -11,6 +11,7 @@ const About = lazy(() => import('./pages/About'));
 const Services = lazy(() => import('./pages/Services'));
 const CaseStudies = lazy(() => import('./pages/CaseStudies'));
 const Categories = lazy(() => import('./pages/Categories'));
+const CategoryView = lazy(() => import('./pages/CategoryView'));
 const Project = lazy(() => import('./pages/Project'));
 const Pricing = lazy(() => import('./pages/Pricing'));
 const Contact = lazy(() => import('./pages/Contact'));
@@ -44,6 +45,8 @@ export default function App() {
               <Route path="/services" element={<Services />} />
               <Route path="/case-studies" element={<CaseStudies />} />
               <Route path="/categories" element={<Categories />} />
+              <Route path="/category/:slug" element={<CategoryView />} />
+              <Route path="/categories/:slug" element={<CategoryView />} />
               <Route path="/project/:slug" element={<Project />} />
               <Route path="/pricing" element={<Pricing />} />
               <Route path="/contact" element={<Contact />} />
