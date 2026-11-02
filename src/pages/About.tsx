@@ -1,6 +1,7 @@
 import CtaButton from '../components/CtaButton';
 import CtaWrapper from '../components/CtaWrapper';
 import MainButton from '../components/MainButton';
+import { WHATSAPP_GET_IN_TOUCH_URL } from '../lib/whatsapp';
 import RollNumber from '../components/RollNumber';
 import SocialLinks from '../components/SocialLinks';
 import Subtitle from '../components/Subtitle';
@@ -128,7 +129,7 @@ export default function About() {
                       </div>
                     </div>
                     <SocialLinks />
-                    <MainButton to="/contact">Get in touch</MainButton>
+                    <MainButton to={WHATSAPP_GET_IN_TOUCH_URL}>Get in touch</MainButton>
                   </div>
                 </div>
               </div>
@@ -222,7 +223,7 @@ export default function About() {
                 </div>
               </div>
               <div id="w-node-_6fd90214-ea0d-47da-db8d-d776e9ac74d9-805165a6" className="content-item">
-                <MainButton to="/contact">Get in touch</MainButton>
+                <MainButton to={WHATSAPP_GET_IN_TOUCH_URL}>Get in touch</MainButton>
               </div>
             </div>
             <div className="spacer-xlarge"></div>

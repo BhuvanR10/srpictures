@@ -2,6 +2,7 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react
 import { Link, useLocation } from 'react-router-dom';
 import { EASE, gsap } from '../lib/gsap';
 import MainButton from './MainButton';
+import { WHATSAPP_GET_IN_TOUCH_URL } from '../lib/whatsapp';
 
 function NavLinkItem({ to, label, dropdown }: { to: string; label: string; dropdown?: boolean }) {
   const { pathname } = useLocation();
@@ -195,7 +196,7 @@ export default function Navbar() {
               </nav>
               <div id="w-node-_4c12a36c-20bd-7490-ee52-70b57bcb2c4a-7bcb2bfe" className="nav-button-wrapper">
                 <div className="nav-button-block">
-                  <MainButton to="/contact">Get in touch</MainButton>
+                  <MainButton to={WHATSAPP_GET_IN_TOUCH_URL}>Get in touch</MainButton>
                 </div>
               </div>
             </div>

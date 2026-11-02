@@ -5,12 +5,29 @@ interface MainButtonProps {
   to: string;
   children: ReactNode;
   className?: string;
+  external?: boolean;
+  target?: string;
+  rel?: string;
 }
 
-/** Glowing pill button used across every page. */
-export default function MainButton({ to, children, className = '' }: MainButtonProps) {
-  return (
-    <Link to={to} className={`main-button w-inline-block ${className}`.trim()}>
+/** Glowing pill button used across every page, supporting both internal routes and external links (e.g. WhatsApp). */
+export default function MainButton({
+  to,
+  children,
+  className = '',
+  external,
+  target,
+  rel,
+}: MainButtonProps) {
+  const isExternal =
+    external ||
+    to.startsWith('http://') ||
+    to.startsWith('https://') ||
+    to.startsWith('tel:') ||
+    to.startsWith('mailto:');
+
+  const content = (
+    <>
       <div className="button-border"></div>
       <div className="border-wrap">
         <div className="glow-border"></div>
@@ -23,6 +40,25 @@ export default function MainButton({ to, children, className = '' }: MainButtonP
           {children}
         </p>
       </div>
+    </>
+  );
+
+  if (isExternal) {
+    return (
+      <a
+        href={to}
+        target={target ?? '_blank'}
+        rel={rel ?? 'noopener noreferrer'}
+        className={`main-button w-inline-block ${className}`.trim()}
+      >
+        {content}
+      </a>
+    );
+  }
+
+  return (
+    <Link to={to} className={`main-button w-inline-block ${className}`.trim()}>
+      {content}
     </Link>
   );
 }
