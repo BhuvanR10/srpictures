@@ -19,7 +19,6 @@ export const ALL_DRIVE_VIDEOS: GridCardData[] = [
     category: 'Baby & Family Cine',
     specs: 'Original Drive Master • 4K DCI • 24 FPS',
     driveId: '1u30IT6awaBcX92_R22TTQaZukAEINWah',
-    badge: { type: 'work' },
   },
   {
     id: 'drv-02',
@@ -29,7 +28,6 @@ export const ALL_DRIVE_VIDEOS: GridCardData[] = [
     category: 'Fashion & Nightlife',
     specs: 'Original Drive Master • 85mm f/1.4',
     driveId: '1ZfvEACBN_b_3hthKincATCb3vMtStYlB',
-    badge: { type: 'paul' },
   },
   {
     id: 'drv-03',
@@ -57,7 +55,6 @@ export const ALL_DRIVE_VIDEOS: GridCardData[] = [
     category: 'Celebration Films',
     specs: 'Original Drive Master • 35mm T1.5',
     driveId: '1htIPKT12WW52hWEij5l04evgbLKx838U',
-    badge: { type: 'hype' },
   },
   {
     id: 'drv-06',
@@ -85,10 +82,6 @@ export const ALL_DRIVE_VIDEOS: GridCardData[] = [
     category: 'Street Cine',
     specs: 'Original Drive Master • 4K Ultra HD',
     driveId: '1P4d_hL7syXBx4x7QRM-qKwOEieICFRHm',
-    badge: {
-      type: 'tooltip',
-      text: 'Shadows of the City — Street Visuals',
-    },
   },
   {
     id: 'drv-09',
@@ -134,7 +127,6 @@ export const ALL_DRIVE_VIDEOS: GridCardData[] = [
     category: 'Live Stage',
     specs: 'Original Drive Master • S-Log3 Cine',
     driveId: '1aVHFjRAjRamRF8XMT_phYaAP0Iuf3d9u',
-    badge: { type: 'smoke-logo' },
   },
   {
     id: 'drv-14',
@@ -171,7 +163,6 @@ export const ALL_DRIVE_VIDEOS: GridCardData[] = [
     category: 'Nightlife Visuals',
     specs: 'Original Drive Master • 35mm T1.5',
     driveId: '1htIPKT12WW52hWEij5l04evgbLKx838U',
-    badge: { type: 'hype' },
   },
   {
     id: 'drv-18',

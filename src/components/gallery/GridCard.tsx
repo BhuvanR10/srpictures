@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { Play } from 'lucide-react';
 
 export interface GridCardData {
@@ -10,10 +11,6 @@ export interface GridCardData {
   category?: string;
   specs?: string;
   driveId?: string;
-  badge?: {
-    type: 'work' | 'paul' | 'hype' | 'smoke-logo' | 'tooltip' | 'none';
-    text?: string;
-  };
 }
 
 interface GridCardProps {
@@ -27,7 +24,7 @@ export default function GridCard({ data, onOpenLightbox, onClick }: GridCardProp
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  // Performance: Viewport-aware playback (play when near viewport, pause when offscreen)
+  // Viewport-aware playback: auto-play when visible, pause when off-screen
   useEffect(() => {
     if (data.type !== 'video' || !containerRef.current) return;
 
@@ -43,7 +40,7 @@ export default function GridCard({ data, onOpenLightbox, onClick }: GridCardProp
           }
         });
       },
-      { rootMargin: '200px 0px', threshold: 0.05 }
+      { rootMargin: '150px 0px', threshold: 0.05 }
     );
 
     observer.observe(el);
@@ -62,17 +59,20 @@ export default function GridCard({ data, onOpenLightbox, onClick }: GridCardProp
   };
 
   return (
-    <div
+    <motion.div
       ref={containerRef}
+      whileHover={{ scale: 1.035, y: -5 }}
+      whileTap={{ scale: 0.98 }}
+      transition={{ type: 'spring', stiffness: 350, damping: 25 }}
       onClick={(e) => {
         if (onClick) onClick(e);
         onOpenLightbox(data);
       }}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className="relative w-full aspect-[9/14] rounded-2xl md:rounded-[1.75rem] overflow-hidden bg-neutral-950 border border-white/10 hover:border-white/30 transition-all duration-500 cursor-pointer shadow-[0_10px_35px_rgba(0,0,0,0.85)] group select-none"
+      className="relative w-full aspect-[9/15] rounded-2xl md:rounded-[1.75rem] overflow-hidden bg-neutral-950 border border-white/10 hover:border-amber-400/50 transition-colors duration-300 cursor-pointer shadow-[0_12px_36px_rgba(0,0,0,0.85)] group select-none"
     >
-      {/* 1. Underlying Media */}
+      {/* 1. Underlying Video / Media */}
       <div className="absolute inset-0 w-full h-full overflow-hidden bg-black">
         {data.type === 'video' ? (
           <video
@@ -83,7 +83,7 @@ export default function GridCard({ data, onOpenLightbox, onClick }: GridCardProp
             muted
             playsInline
             preload="metadata"
-            className="w-full h-full object-cover scale-100 group-hover:scale-105 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"
+            className="w-full h-full object-cover scale-100 group-hover:scale-105 transition-transform duration-700 ease-out"
           />
         ) : (
           <img
@@ -91,74 +91,35 @@ export default function GridCard({ data, onOpenLightbox, onClick }: GridCardProp
             alt={data.title}
             loading="lazy"
             decoding="async"
-            className="w-full h-full object-cover scale-100 group-hover:scale-105 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"
+            className="w-full h-full object-cover scale-100 group-hover:scale-105 transition-transform duration-700 ease-out"
           />
         )}
       </div>
 
-      {/* 2. FISH-EYE / APERTURE LENS VIGNETTE OVERLAY */}
-      <div
-        className="absolute inset-0 pointer-events-none transition-all duration-700 ease-out"
-        style={{
-          background: isHovered
-            ? 'radial-gradient(circle at 50% 50%, rgba(0,0,0,0) 65%, rgba(0,0,0,0.2) 85%, rgba(0,0,0,0.65) 100%)'
-            : 'radial-gradient(circle at 50% 50%, rgba(0,0,0,0) 35%, rgba(0,0,0,0.45) 75%, rgba(0,0,0,0.88) 100%)',
-        }}
-      />
+      {/* 2. Sleek Dark Gradient Overlay on Hover */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
 
-      {/* Subtle Inner Bezel Shadow */}
-      <div className="absolute inset-0 rounded-2xl md:rounded-[1.75rem] pointer-events-none shadow-[inset_0_0_35px_rgba(0,0,0,0.85)] border border-white/5 group-hover:border-white/20 transition-all duration-500" />
-
-      {/* 3. Reticle Viewfinder Corner Brackets */}
-      <div className="absolute top-3 left-3 w-2.5 h-2.5 border-t border-l border-white/40 group-hover:border-white pointer-events-none transition-colors" />
-      <div className="absolute top-3 right-3 w-2.5 h-2.5 border-t border-r border-white/40 group-hover:border-white pointer-events-none transition-colors" />
-      <div className="absolute bottom-3 left-3 w-2.5 h-2.5 border-b border-l border-white/40 group-hover:border-white pointer-events-none transition-colors" />
-      <div className="absolute bottom-3 right-3 w-2.5 h-2.5 border-b border-r border-white/40 group-hover:border-white pointer-events-none transition-colors" />
-
-      {/* 4. Overlay Graphic Badges Matching VYBN Reference Screenshot */}
-      {data.badge?.type === 'work' && (
-        <div className="absolute top-4 left-4 z-20 flex items-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-r from-orange-500 to-amber-500 text-black font-black text-[11px] shadow-[0_0_20px_rgba(249,115,22,0.6)] select-none">
-          <span className="w-2 h-2 rounded-full bg-black animate-pulse" />
-          <span>Work</span>
+      {/* 3. Minimalist Glass Play Button (Appears smoothly on Hover) */}
+      <motion.div
+        initial={false}
+        animate={{ opacity: isHovered ? 1 : 0, scale: isHovered ? 1 : 0.75 }}
+        transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+        className="absolute inset-0 flex items-center justify-center pointer-events-none z-10"
+      >
+        <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white flex items-center justify-center shadow-2xl">
+          <Play size={18} className="ml-0.5 fill-white" />
         </div>
-      )}
+      </motion.div>
 
-      {data.badge?.type === 'paul' && (
-        <div className="absolute bottom-6 left-4 z-20">
-          <span className="text-2xl md:text-3xl font-black italic tracking-tighter text-amber-400 drop-shadow-[0_4px_12px_rgba(0,0,0,0.9)] select-none">
-            PAUL
-          </span>
-        </div>
-      )}
-
-      {data.badge?.type === 'hype' && (
-        <div className="absolute bottom-10 inset-x-0 flex justify-center z-20">
-          <span className="px-3 py-1 bg-black/90 border border-yellow-400 text-yellow-300 font-black text-[10px] tracking-wider rounded rotate-[-4deg] shadow-[0_4px_20px_rgba(0,0,0,0.9)] uppercase select-none">
-            HYPE 100% REAL
-          </span>
-        </div>
-      )}
-
-      {data.badge?.type === 'smoke-logo' && (
-        <div className="absolute bottom-4 inset-x-0 text-center z-20">
-          <span className="text-3xl font-black tracking-widest text-white/90 drop-shadow-[0_0_20px_rgba(255,255,255,0.6)] uppercase">
-            VYBN
-          </span>
-        </div>
-      )}
-
-      {data.badge?.type === 'tooltip' && (
-        <div className="absolute bottom-4 right-4 z-20 w-8 h-8 rounded-full bg-black/60 backdrop-blur-md border border-white/20 text-white shadow-2xl flex items-center justify-center">
-          <Play size={12} className="ml-0.5 fill-white" />
-        </div>
-      )}
-
-      {/* Top Media Indicator (REC 4K) */}
-      <div className="absolute top-3 right-3 z-10 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-        <span className="px-2 py-0.5 rounded-full bg-black/80 border border-white/20 text-[9px] font-mono text-neutral-300">
-          ● REC 4K
+      {/* 4. Elegant Bottom Info Pill on Hover */}
+      <div className="absolute bottom-3 inset-x-3 flex items-center justify-between pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+        <span className="text-[11px] font-mono text-neutral-200 bg-black/60 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/15 truncate max-w-[75%]">
+          {data.category || 'Drive Reel'}
+        </span>
+        <span className="text-[10px] font-mono text-amber-400 bg-black/60 backdrop-blur-md px-2 py-1 rounded-full border border-white/15">
+          4K
         </span>
       </div>
-    </div>
+    </motion.div>
   );
 }
