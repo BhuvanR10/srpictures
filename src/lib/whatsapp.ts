@@ -12,3 +12,4 @@ export const WHATSAPP_GET_IN_TOUCH_MESSAGE = [
 export const WHATSAPP_GET_IN_TOUCH_URL = `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(
   WHATSAPP_GET_IN_TOUCH_MESSAGE
 )}`;
+

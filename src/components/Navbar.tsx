@@ -181,7 +181,7 @@ export default function Navbar() {
                         </div>
                         <nav ref={list} aria-label="More Pages" className="dropdown-list w-dropdown-list" style={{ display: 'none' }}>
                           <div className="dropdown-content">
-                            {[['/blog', 'Blog'], ['/contact', 'Contact']].map(([to, label]) => (
+                            {[['/categories', 'Categories'], ['/blog', 'Blog'], ['/contact', 'Contact']].map(([to, label]) => (
                               <div className="dropdown-link-wrap" key={to}>
                                 <NavLinkItem to={to} label={label} dropdown />
                               </div>

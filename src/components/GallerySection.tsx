@@ -13,7 +13,10 @@ export default function GallerySection() {
           Capturing lifetime memories with natural aesthetics and cinematic craft.
         </p>
         <div className="spacer-small"></div>
-        <MainButton to="/contact">Book Your Date</MainButton>
+        <div className="flex flex-wrap items-center justify-center gap-4">
+          <MainButton to="/categories">View All Categories</MainButton>
+          <MainButton to="/contact">Book Your Date</MainButton>
+        </div>
       </div>
     </div>
   );

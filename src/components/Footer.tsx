@@ -4,7 +4,7 @@ import LinkButton from './LinkButton';
 import SocialLinks from './SocialLinks';
 import MainButton from './MainButton';
 
-const pages: Array<[string, string]> = [['/', 'Home'], ['/about', 'About'], ['/services', 'Services'], ['/case-studies', 'Case Studies'], ['/pricing', 'Pricing'], ['/contact', 'Contact'], ['/blog', 'Blog']];
+const pages: Array<[string, string]> = [['/', 'Home'], ['/about', 'About'], ['/services', 'Services'], ['/case-studies', 'Case Studies'], ['/categories', 'Categories'], ['/pricing', 'Pricing'], ['/contact', 'Contact'], ['/blog', 'Blog']];
 
 export default function Footer() {
   return (
