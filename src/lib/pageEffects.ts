@@ -91,8 +91,8 @@ export function setupPage(): () => void {
           }
         };
 
-        const hasSeenIntro = sessionStorage.getItem('sr_cinema_intro_seen');
-        if (hasSeenIntro) {
+        const introRunning = (window as any).__sr_intro_running;
+        if (!introRunning) {
           triggerHero();
         } else {
           window.addEventListener('sr-intro-complete', triggerHero, { once: true });
@@ -179,13 +179,14 @@ export function setupPage(): () => void {
     qa('.roll-number-wrapper').forEach((wrapper) => {
       const block = wrapper.closest('.number-block');
       const second = block?.classList.contains('_02');
-      const targets = second ? [-900, -800] : [-100, -500];
+      // _01 is single digit '+8' -> roll to 8 (-800%), _02 is '98%' -> roll to 9, 8 (-900%, -800%)
+      const targets = second ? [-900, -800] : [-800];
       const cols = qa('.roll-number', wrapper);
       gsap.set(cols, { yPercent: 0 });
       const run = () =>
-        cols.forEach((col, i) => gsap.to(col, { yPercent: targets[i], duration: 2, ease: EASE.outQuint }));
+        cols.forEach((col, i) => gsap.to(col, { yPercent: targets[i] ?? -800, duration: 2, ease: EASE.outQuint }));
       if (reduce) {
-        cols.forEach((col, i) => gsap.set(col, { yPercent: targets[i] }));
+        cols.forEach((col, i) => gsap.set(col, { yPercent: targets[i] ?? -800 }));
         return;
       }
       ScrollTrigger.create({ trigger: wrapper, start: 'top 90%', once: true, onEnter: run });

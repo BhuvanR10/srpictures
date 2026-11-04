@@ -5,7 +5,7 @@ import VybnParallaxGrid from './gallery/VybnParallaxGrid';
 export default function GallerySection() {
   return (
     <div className="gallery-section-wrapper">
-      {/* 6-Column Parallax Video Grid with Fluid Framer Motion Physics */}
+      {/* 4x3 Parallax Video Grid with Fluid Framer Motion Physics */}
       <VybnParallaxGrid />
 
       {/* Gallery Actions */}

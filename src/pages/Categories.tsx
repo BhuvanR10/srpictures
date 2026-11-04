@@ -1,7 +1,6 @@
 import { motion, type Variants } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import Subtitle from '../components/Subtitle';
-import MainButton from '../components/MainButton';
+import { ArrowUpRight } from 'lucide-react';
 import { usePageSeo } from '../lib/usePageSeo';
 import { CATEGORIES_DATA } from '../data/categoriesData';
 
@@ -10,170 +9,130 @@ const containerVariants: Variants = {
   show: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.06,
+      staggerChildren: 0.04,
     },
   },
 };
 
 const cardVariants: Variants = {
-  hidden: { opacity: 0, y: 20 },
+  hidden: { opacity: 0, y: 14 },
   show: {
     opacity: 1,
     y: 0,
     transition: {
       type: 'spring',
-      stiffness: 320,
-      damping: 24,
+      stiffness: 380,
+      damping: 28,
     },
   },
 };
 
 export default function Categories() {
   usePageSeo({
-    title: 'Archive Categories | The SR Pictures',
-    description:
-      'Explore The SR Pictures categorized archives: Car Delivery, Commercials, Pre - Wedding, Resort, Wedding, Family, Maternity, and Model- Influencer.',
+    title: 'Categories | The SR Pictures',
+    description: 'Browse curated photography and cinematography categories by The SR Pictures.',
   });
 
   return (
     <>
       <div id="top" className="top"></div>
 
-      {/* Header with Generous Top Clearance for Fixed Navbar */}
-      <header className="pt-36 sm:pt-44 pb-10 sm:pb-14 relative overflow-hidden">
-        <div className="padding-global relative z-10">
+      {/* Tightened Luxury Editorial Header */}
+      <header className="pt-24 sm:pt-28 pb-4 sm:pb-6">
+        <div className="padding-global">
           <div className="container-large">
-            <div className="heading-wrap is-center text-center">
-              <Subtitle>Curated Collections</Subtitle>
-              <div className="title-wrapper mt-3">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-4 border-b border-white/[0.08]">
+              <div>
+                <div className="text-[11px] font-mono uppercase tracking-[0.22em] text-neutral-400 mb-1">
+                  Archive Collections
+                </div>
                 <h1
-                  className="font-extrabold uppercase tracking-tight text-white"
-                  style={{ fontSize: 'clamp(2.2rem, 5vw, 3.8rem)', lineHeight: '1.1' }}
+                  className="font-extrabold uppercase tracking-tight text-white m-0"
+                  style={{ fontSize: 'clamp(1.75rem, 3.2vw, 2.5rem)', lineHeight: '1.1' }}
                 >
-                  Visual Categories
+                  Categories
                 </h1>
               </div>
-            </div>
 
-            <div className="spacer-small"></div>
-
-            <div className="max-w-xl mx-auto text-center">
-              <p className="text-size-medium text-color-secondary">
-                Select a collection to explore dedicated galleries, behind-the-scenes cinema, and
-                portfolio stills.
-              </p>
-            </div>
-
-            <div className="mt-6 flex items-center justify-center gap-3">
+              {/* Inline Back to Gallery Button Aligned with Header Baseline */}
               <Link
                 to="/#gallery"
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.05] hover:bg-white/[0.1] border border-white/10 text-xs font-mono text-neutral-300 transition-all"
+                className="inline-flex items-center gap-2 self-start sm:self-end sm:mb-1 px-4 py-2 rounded-full bg-white/[0.05] hover:bg-white/[0.1] border border-white/10 hover:border-white/25 text-xs font-mono text-neutral-300 hover:text-white transition-all duration-200"
               >
-                <span>← Back to Video Gallery</span>
+                <span>← Back to Gallery</span>
               </Link>
             </div>
           </div>
         </div>
       </header>
 
-      {/* Categories Grid */}
-      <section className="pb-28 sm:pb-36">
+      {/* Categories Grid - High-Impact Full-Bleed Photography Cards */}
+      <section className="pb-12 sm:pb-16">
         <div className="padding-global">
           <div className="container-large">
-            <div className="dividing-line mb-10"></div>
-
-            {/* Bespoke Framer Motion Cards */}
             <motion.div
               variants={containerVariants}
               initial="hidden"
               animate="show"
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6"
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5"
             >
               {CATEGORIES_DATA.map((cat) => (
                 <motion.div
                   key={cat.id}
                   variants={cardVariants}
-                  whileHover={{ y: -8, scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  transition={{ type: 'spring', stiffness: 350, damping: 24 }}
-                  className="h-full flex"
+                  whileHover={{ y: -6 }}
+                  whileTap={{ scale: 0.985 }}
+                  transition={{ type: 'spring', stiffness: 350, damping: 26 }}
+                  className="h-full"
                 >
                   <Link
                     to={`/category/${cat.slug}`}
-                    className="relative w-full rounded-3xl bg-neutral-900/70 hover:bg-neutral-900/95 border border-white/10 hover:border-amber-400/50 p-6 sm:p-7 flex flex-col justify-between transition-all duration-300 shadow-[0_10px_30px_rgba(0,0,0,0.6)] group overflow-hidden select-none min-h-[300px]"
-                    aria-label={`Open ${cat.name} category gallery`}
+                    className="group relative flex flex-col justify-between p-5 sm:p-6 rounded-2xl bg-neutral-900 border border-white/10 hover:border-white/40 transition-all duration-500 shadow-xl hover:shadow-[0_20px_50px_rgba(0,0,0,0.85)] overflow-hidden min-h-[260px] sm:min-h-[290px] select-none"
+                    aria-label={`Open ${cat.name} category`}
                   >
-                    {/* Background Index Watermark Number */}
-                    <div
-                      className="absolute right-4 bottom-3 font-mono font-black text-white/[0.03] group-hover:text-amber-400/[0.1] transition-colors pointer-events-none select-none tracking-tighter"
-                      style={{ fontSize: '4.5rem', lineHeight: '1' }}
-                    >
-                      {cat.code}
+                    {/* Subtle Top-Edge Highlight Line */}
+                    <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent opacity-50 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-10" />
+
+                    {/* Eye-Catching Full-Bleed Photography Thumbnail */}
+                    {cat.thumbnail && (
+                      <div className="absolute inset-0 pointer-events-none overflow-hidden bg-neutral-950">
+                        <img
+                          src={cat.thumbnail}
+                          alt=""
+                          aria-hidden="true"
+                          className="w-full h-full object-cover opacity-90 group-hover:opacity-100 scale-100 group-hover:scale-108 transition-all duration-700 ease-out"
+                        />
+                        {/* Bottom-focused scrim: Top 60% is 100% clear & bright, base has gradient for text contrast */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 via-45% to-transparent pointer-events-none" />
+                      </div>
+                    )}
+
+                    {/* Top Row: Clean Glassmorphic Action Indicator (No distracting logos) */}
+                    <div className="relative z-10 flex items-center justify-end">
+                      <div className="w-8 h-8 rounded-full bg-black/50 backdrop-blur-md border border-white/20 group-hover:bg-white group-hover:text-black text-white flex items-center justify-center transition-all duration-300 shadow-lg">
+                        <ArrowUpRight
+                          size={15}
+                          className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                        />
+                      </div>
                     </div>
 
-                    {/* Top Content */}
+                    {/* Bottom: Crisp Label + Bold Category Title */}
                     <div className="relative z-10">
-                      {/* Code Tag & Status Dot */}
-                      <div className="flex items-center justify-between mb-5">
-                        <span className="font-mono text-xs uppercase tracking-widest text-neutral-500 group-hover:text-amber-400 transition-colors">
-                          // {cat.code}
-                        </span>
-
-                        <span className="w-2.5 h-2.5 rounded-full bg-white/20 group-hover:bg-amber-400 group-hover:shadow-[0_0_10px_rgba(245,158,11,0.9)] transition-all" />
-                      </div>
-
-                      {/* Explicitly Styled Category Title (Prevents Webflow 120px H2 Cascade) */}
+                      <span className="inline-block font-mono text-[10px] tracking-[0.2em] text-white/80 uppercase mb-2 px-2.5 py-0.5 rounded-full bg-black/50 backdrop-blur-md border border-white/15 drop-shadow">
+                        {cat.code} — EXPLORE
+                      </span>
                       <div
-                        className="font-extrabold text-white tracking-tight group-hover:text-amber-300 transition-colors font-sans mb-2"
-                        style={{
-                          fontSize: '1.45rem',
-                          lineHeight: '1.25',
-                          wordBreak: 'normal',
-                          overflowWrap: 'break-word',
-                        }}
+                        className="font-extrabold text-white group-hover:text-amber-200 transition-colors duration-300 tracking-tight drop-shadow-[0_2px_8px_rgba(0,0,0,0.85)]"
+                        style={{ fontSize: '1.35rem', lineHeight: '1.2' }}
                       >
                         {cat.name}
-                      </div>
-
-                      {/* Tagline */}
-                      <p
-                        className="text-neutral-400 font-medium tracking-wide mb-3 line-clamp-1"
-                        style={{ fontSize: '0.85rem', lineHeight: '1.35' }}
-                      >
-                        {cat.tagline}
-                      </p>
-
-                      {/* Description */}
-                      <p
-                        className="text-neutral-500 leading-relaxed line-clamp-2"
-                        style={{ fontSize: '0.8rem', lineHeight: '1.45' }}
-                      >
-                        {cat.description}
-                      </p>
-                    </div>
-
-                    {/* Bottom Action Footer */}
-                    <div className="relative z-10 pt-5 mt-6 border-t border-white/[0.08] flex items-center justify-between">
-                      <span className="font-mono text-xs text-neutral-400 group-hover:text-white transition-colors">
-                        View Collection
-                      </span>
-
-                      <div className="w-8 h-8 rounded-full bg-white/[0.06] group-hover:bg-amber-400 text-neutral-300 group-hover:text-black flex items-center justify-center transition-all group-hover:translate-x-1 shadow-md">
-                        <span className="text-sm font-bold">→</span>
                       </div>
                     </div>
                   </Link>
                 </motion.div>
               ))}
             </motion.div>
-
-            {/* Bottom Inquiries CTA */}
-            <div className="mt-16 text-center">
-              <div className="flex flex-wrap items-center justify-center gap-4">
-                <MainButton to="/contact">Book Consultation</MainButton>
-                <MainButton to="/pricing">Pricing Packages</MainButton>
-              </div>
-            </div>
           </div>
         </div>
       </section>

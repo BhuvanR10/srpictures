@@ -10,7 +10,19 @@ const V_HALDI = '/assets/drive_videos/Haldi_151327.mp4';
 const V_REEL_3 = '/assets/drive_videos/Reel_3.mp4';
 const V_REEL_4 = '/assets/drive_videos/Reel_4.mp4';
 
-export const ALL_DRIVE_VIDEOS: GridCardData[] = [
+// Lightweight WebP Posters for instant zero-lag loading
+const VIDEO_POSTER_MAP: Record<string, string> = {
+  [V_BABY_LOUKYA]: '/assets/drive_videos/posters/Baby_Loukya_Reel.webp',
+  [V_NB_REEL]: '/assets/drive_videos/posters/NB_Reel.webp',
+  [V_SWW]: '/assets/drive_videos/posters/SWW.webp',
+  [V_REEL_1]: '/assets/drive_videos/posters/Reel_1.webp',
+  [V_BARAAT]: '/assets/drive_videos/posters/Baraat_151155.webp',
+  [V_HALDI]: '/assets/drive_videos/posters/Haldi_151327.webp',
+  [V_REEL_3]: '/assets/drive_videos/posters/Reel_3.webp',
+  [V_REEL_4]: '/assets/drive_videos/posters/Reel_4.webp',
+};
+
+const RAW_DRIVE_VIDEOS: Omit<GridCardData, 'poster'>[] = [
   {
     id: 'drv-01',
     type: 'video',
@@ -228,3 +240,8 @@ export const ALL_DRIVE_VIDEOS: GridCardData[] = [
     driveId: '1ZfvEACBN_b_3hthKincATCb3vMtStYlB',
   },
 ];
+
+export const ALL_DRIVE_VIDEOS: GridCardData[] = RAW_DRIVE_VIDEOS.map((item) => ({
+  ...item,
+  poster: VIDEO_POSTER_MAP[item.src],
+}));

@@ -6,10 +6,22 @@ import { WHATSAPP_GET_IN_TOUCH_URL } from '../lib/whatsapp';
 
 function NavLinkItem({ to, label, dropdown }: { to: string; label: string; dropdown?: boolean }) {
   const { pathname } = useLocation();
-  const current = to === pathname;
+  const isGalleryActive =
+    to === '/categories' &&
+    (pathname === '/case-studies' ||
+      pathname.startsWith('/categories') ||
+      pathname.startsWith('/category'));
+  const current = to === pathname || isGalleryActive;
+
   return (
     <div className="nav-overflow">
-      <Link to={to} className={`nav-link w-inline-block${current ? ' w--current' : ''}`} aria-current={current ? 'page' : undefined}>
+      <Link
+        to={to}
+        className={`nav-link w-inline-block transition-all duration-200 ${
+          current ? 'w--current bg-white/10 text-white rounded-full px-3 py-1 shadow-inner' : ''
+        }`}
+        aria-current={current ? 'page' : undefined}
+      >
         <div className={`nav-wrap${dropdown ? ' dropdown-wrap' : ''}`}>
           <div className={`nav-text${dropdown ? ' dropdown-text' : ''}`}>{label}</div>
           <div className="nav-text hover" aria-hidden="true">{label}</div>
@@ -134,13 +146,20 @@ export default function Navbar() {
       <div className="padding-global">
         <div className="container-large">
           <div className="w-layout-grid nav-grid">
-            <Link to="/" id="w-node-_4c12a36c-20bd-7490-ee52-70b57bcb2c02-7bcb2bfe" className="brand-link w-inline-block" aria-label="The SR Pictures home">
-              <div className="brand-wrap">
-                <div className="logo-wrap">
-                  <img src="/assets/srpictures-logo-clean.png" alt="The SR Pictures" className="logo" />
-                  <img src="/assets/srpictures-logo-clean.png" alt="" aria-hidden="true" className="logo" />
+            <Link to="/" id="w-node-_4c12a36c-20bd-7490-ee52-70b57bcb2c02-7bcb2bfe" className="brand-link w-inline-block group" aria-label="The SR Pictures home">
+              <div className="brand-wrap items-center flex gap-3">
+                <div className="logo-wrap h-10 w-10 flex-shrink-0 relative overflow-hidden rounded-full border border-white/20 shadow-md">
+                  <img src="/assets/sr-pictures-emblem.png" alt="The SR Pictures" className="logo h-10 w-10 object-contain rounded-full transition-transform duration-300 group-hover:scale-105" />
+                  <img src="/assets/sr-pictures-emblem.png" alt="" aria-hidden="true" className="logo h-10 w-10 object-contain rounded-full transition-transform duration-300 group-hover:scale-105" />
                 </div>
-                <div className="dot"></div>
+                <div className="flex flex-col justify-center">
+                  <span className="font-cinema-logo font-medium text-[13px] sm:text-[15px] tracking-[0.2em] leading-none text-white uppercase">
+                    SR PICTURES
+                  </span>
+                  <span className="text-[9px] font-mono tracking-[0.28em] text-neutral-400 uppercase mt-1">
+                    STUDIO
+                  </span>
+                </div>
               </div>
             </Link>
             <div id="w-node-_4c12a36c-20bd-7490-ee52-70b57bcb2c0b-7bcb2bfe" className="nav-component-wrapper">
@@ -149,7 +168,7 @@ export default function Navbar() {
                   <NavLinkItem to="/" label="Home" />
                   <NavLinkItem to="/about" label="About" />
                   <NavLinkItem to="/services" label="Services" />
-                  <NavLinkItem to="/case-studies" label="Gallery" />
+                  <NavLinkItem to="/categories" label="Gallery" />
                   <NavLinkItem to="/pricing" label="Pricing" />
                   <div className="nav-dropdown-wrap">
                     <div className="dropdown-wrapper">

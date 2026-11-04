@@ -15,10 +15,21 @@ export default function Footer() {
           <div className="footer-padding">
             <div className="w-layout-grid footer-component-grid">
               <div id="w-node-_4ea88ba4-5dbd-e916-1d69-e37341450b6f-41450b6a" className="footer-content">
-                <Link to="/" className="brand-link w-inline-block" aria-label="The SR Pictures home">
-                  <div className="brand-wrap">
-                    <img src="/assets/srpictures-logo-clean.png" alt="The SR Pictures" className="footer-logo" />
-                    <div className="dot is-footer"></div>
+                <Link to="/" className="brand-link w-inline-block group" aria-label="The SR Pictures home">
+                  <div className="brand-wrap items-center flex gap-3">
+                    <img
+                      src="/assets/sr-pictures-emblem.png"
+                      alt="The SR Pictures"
+                      className="footer-logo h-12 w-12 object-contain rounded-full border border-white/20 shadow-lg transition-transform duration-300 group-hover:scale-105"
+                    />
+                    <div className="flex flex-col justify-center">
+                      <span className="font-sans font-extrabold text-[18px] sm:text-[20px] tracking-tight leading-none text-white uppercase">
+                        The SR Pictures
+                      </span>
+                      <span className="text-[11px] font-mono tracking-widest text-neutral-400 uppercase mt-1">
+                        Photography & Cinema
+                      </span>
+                    </div>
                   </div>
                 </Link>
                 <div className="max-width-small">

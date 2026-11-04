@@ -4,6 +4,7 @@ import SiteLayout from './components/SiteLayout';
 import ScrollToTop from './components/ScrollToTop';
 import ErrorBoundary from './components/ErrorBoundary';
 import PageLoader from './components/PageLoader';
+import CinematicIntro from './components/CinematicIntro';
 
 // Route-based code splitting for production grade performance
 const Home = lazy(() => import('./pages/Home'));
@@ -27,6 +28,7 @@ export default function App() {
   return (
     <ErrorBoundary>
       <BrowserRouter>
+        <CinematicIntro />
         <ScrollToTop />
         <Suspense fallback={<PageLoader />}>
           <Routes>

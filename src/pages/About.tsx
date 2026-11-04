@@ -31,41 +31,7 @@ export default function About() {
             <h2 className="heading-style-h2">{"SR Pictures®"}</h2>
           </div>
         </div>
-        <div id="w-node-_275a040b-1c9a-52d8-3771-12d2d51d5209-805165a6" className="w-layout-grid _3d-video-grid">
-          <div id="w-node-_275a040b-1c9a-52d8-3771-12d2d51d520a-805165a6" className="_3d-video-wrapper">
-            <div className="_3d-video-container">
-              <div className="_3d-video-block">
-                <div className="_3d-video-wrap _9">
-                  <img src="/assets/1Y9A5246.jpg" alt="The SR Pictures Wedding" loading="eager" decoding="async" className="video is-about" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '2rem' }} />
-                </div>
-                <div className="_3d-video-wrap _8">
-                  <img src="/assets/RSD_8118.jpg" alt="The SR Pictures Cinema" loading="eager" decoding="async" className="video is-about" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '2rem' }} />
-                </div>
-                <div className="_3d-video-wrap _7">
-                  <img src="/assets/SRP_7885.jpg" alt="The SR Pictures Portraits" loading="eager" decoding="async" className="video is-about" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '2rem' }} />
-                </div>
-                <div className="_3d-video-wrap _6">
-                  <img src="/assets/RSD_8625.jpg" alt="The SR Pictures Aerial Drone" loading="eager" decoding="async" className="video is-about" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '2rem' }} />
-                </div>
-                <div className="_3d-video-wrap _5">
-                  <img src="/assets/RSD_2730.jpg" alt="The SR Pictures Ceremonies" loading="eager" decoding="async" className="video is-about" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '2rem' }} />
-                </div>
-                <div className="_3d-video-wrap _4">
-                  <img src="/assets/RSD_2215.jpg" alt="The SR Pictures Pre-Wedding" loading="eager" decoding="async" className="video is-about" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '2rem' }} />
-                </div>
-                <div className="_3d-video-wrap _3">
-                  <img src="/assets/IMG_1102.jpg" alt="The SR Pictures Celebrations" loading="eager" decoding="async" className="video is-about" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '2rem' }} />
-                </div>
-                <div className="_3d-video-wrap _2">
-                  <img src="/assets/RSD_1969.jpg" alt="The SR Pictures Haldi" loading="eager" decoding="async" className="video is-about" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '2rem' }} />
-                </div>
-                <div className="_3d-video-wrap _1">
-                  <img src="/assets/SRP_0350.jpg" alt="The SR Pictures Reception" loading="eager" decoding="async" className="video is-about" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '2rem' }} />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+
         <div id="w-node-bfdf0234-6824-ff40-5de2-30f215e92921-805165a6" className="padding-global">
           <div className="container-large">
             <div className="w-layout-grid header-content-grid">
@@ -120,11 +86,11 @@ export default function About() {
                     </div>
                     <div className="w-layout-grid number-grid">
                       <div id="w-node-_48358447-0a1d-98cc-8d59-5e29e61537ac-805165a6" className="number-block _01">
-                        <RollNumber prefix="+" />
+                        <RollNumber prefix="+" singleDigit={true} value="+8" />
                         <div className="text-size-regular">Years of Experience</div>
                       </div>
                       <div id="w-node-_48358447-0a1d-98cc-8d59-5e29e61537dc-805165a6" className="number-block _02">
-                        <RollNumber suffix="%" />
+                        <RollNumber suffix="%" value="98%" />
                         <div className="text-size-regular">Client Satisfaction</div>
                       </div>
                     </div>
@@ -195,90 +161,6 @@ export default function About() {
                     </div>
                     <div className="spacer-medium"></div>
                     <p className="text-size-medium text-color-secondary">We refine the footage through advanced editing, color grading, and sound design. The final video is delivered in optimized formats, ready to perform across digital platforms.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="dividing-line"></div>
-        </div>
-      </div>
-    </section>
-    <section className="section-about-team">
-      <div className="padding-global">
-        <div className="container-large">
-          <div className="padding-section-large">
-            <div className="w-layout-grid top-content-grid">
-              <div id="w-node-_6fd90214-ea0d-47da-db8d-d776e9ac74cc-805165a6" className="heading-wrap">
-                <Subtitle>Studio Team</Subtitle>
-                <div className="title-wrapper">
-                  <div className="top-title">
-                    <h2 className="heading-style-h2">Visual</h2>
-                  </div>
-                </div>
-                <div className="title-wrapper">
-                  <div className="bottom-title">
-                    <h2 className="heading-style-h2">Experts</h2>
-                  </div>
-                </div>
-              </div>
-              <div id="w-node-_6fd90214-ea0d-47da-db8d-d776e9ac74d9-805165a6" className="content-item">
-                <MainButton to={WHATSAPP_GET_IN_TOUCH_URL}>Get in touch</MainButton>
-              </div>
-            </div>
-            <div className="spacer-xlarge"></div>
-            <div className="w-layout-grid team-component-grid">
-              <div className="member-content-wrapper">
-                <div className="member-content">
-                  <img src="/assets/RSD_5879.jpg" alt="The SR Pictures Team" className="member-picture" style={{ objectFit: 'cover' }} />
-                  <div className="member-content-wrap">
-                    <div className="text-size-large">Olivia Parker</div>
-                    <div className="text-size-regular text-color-secondary">Creative Director</div>
-                  </div>
-                </div>
-              </div>
-              <div className="member-content-wrapper">
-                <div className="member-content">
-                  <img src="/assets/RSD_6016.jpg" alt="The SR Pictures Team" className="member-picture" style={{ objectFit: 'cover' }} />
-                  <div className="member-content-wrap">
-                    <div className="text-size-large">Daniel Miller</div>
-                    <div className="text-size-regular text-color-secondary">Lead Cinematographer</div>
-                  </div>
-                </div>
-              </div>
-              <div className="member-content-wrapper">
-                <div className="member-content">
-                  <img src="/assets/SRP_1277.jpg" alt="The SR Pictures Team" className="member-picture" style={{ objectFit: 'cover' }} />
-                  <div className="member-content-wrap">
-                    <div className="text-size-large">Amelia Hughes</div>
-                    <div className="text-size-regular text-color-secondary">Chief Colorist &amp; Editor</div>
-                  </div>
-                </div>
-              </div>
-              <div className="member-content-wrapper">
-                <div className="member-content">
-                  <img src="/assets/SRP_1520.jpg" alt="The SR Pictures Team" className="member-picture" style={{ objectFit: 'cover' }} />
-                  <div className="member-content-wrap">
-                    <div className="text-size-large">Ethan Moore</div>
-                    <div className="text-size-regular text-color-secondary">Lead Photographer</div>
-                  </div>
-                </div>
-              </div>
-              <div className="member-content-wrapper">
-                <div className="member-content">
-                  <img src="/assets/SRP_1582.jpg" alt="The SR Pictures Team" className="member-picture" style={{ objectFit: 'cover' }} />
-                  <div className="member-content-wrap">
-                    <div className="text-size-large">Sophia Reynolds</div>
-                    <div className="text-size-regular text-color-secondary">Drone &amp; Aerial Specialist</div>
-                  </div>
-                </div>
-              </div>
-              <div className="member-content-wrapper">
-                <div className="member-content">
-                  <img src="/assets/SRP_1769.jpg" alt="The SR Pictures Team" className="member-picture" style={{ objectFit: 'cover' }} />
-                  <div className="member-content-wrap">
-                    <div className="text-size-large">Lucas Bennett</div>
-                    <div className="text-size-regular text-color-secondary">Production Manager</div>
                   </div>
                 </div>
               </div>

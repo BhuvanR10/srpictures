@@ -9,6 +9,23 @@
 html { scroll-behavior: auto; background: #000; }
 body { background: #000; }
 
+.font-cinema-logo,
+.font-cinema-title {
+  font-family: 'Overused Grotesk', 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+}
+
+.text-silver-monogram {
+  background: linear-gradient(180deg, #ffffff 0%, #e2e8f0 40%, #94a3b8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-titanium-logo {
+  background: linear-gradient(180deg, #f8fafc 0%, #d0cec8 50%, #94a3b8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 .skip-link {
   position: fixed; left: 1rem; top: -4rem; z-index: 1000;
   background: #fff; color: #222; padding: .75rem 1rem; border-radius: 14px;
@@ -226,6 +243,12 @@ textarea:focus-visible, select:focus-visible, summary:focus-visible {
 
 .nav-link:hover .nav-text {
   color: #ffffff !important;
+}
+
+.nav-link.w--current {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border-radius: 9999px !important;
+  padding: 0.35rem 0.85rem !important;
 }
 
 .nav-link.w--current .nav-text {

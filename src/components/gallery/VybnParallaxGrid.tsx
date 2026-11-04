@@ -18,32 +18,37 @@ export default function VybnParallaxGrid() {
   });
 
   const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 90,
-    damping: 28,
-    restDelta: 0.001,
+    stiffness: 120, // Snappier response reduces animation calculation time
+    damping: 32,
+    restDelta: 0.005, // Wider rest threshold stops micro-jitter updates at scroll end
   });
 
-  // Alternating Column Parallax Transforms
-  const yCol0 = useTransform(smoothProgress, [0, 1], [-45, 45]);
-  const yCol1 = useTransform(smoothProgress, [0, 1], [65, -65]);
-  const yCol2 = useTransform(smoothProgress, [0, 1], [-75, 75]);
-  const yCol3 = useTransform(smoothProgress, [0, 1], [85, -85]);
-  const yCol4 = useTransform(smoothProgress, [0, 1], [-55, 55]);
-  const yCol5 = useTransform(smoothProgress, [0, 1], [70, -70]);
+  // Alternating Column Parallax Transforms (4 Columns)
+  const yCol0 = useTransform(smoothProgress, [0, 1], [-50, 50]);
+  const yCol1 = useTransform(smoothProgress, [0, 1], [60, -60]);
+  const yCol2 = useTransform(smoothProgress, [0, 1], [-65, 65]);
+  const yCol3 = useTransform(smoothProgress, [0, 1], [55, -55]);
+
+  // Distribute 12 real Google Drive master videos across 4 columns x 3 rows to reduce GPU/decoding load
+  const displayVideos = ALL_DRIVE_VIDEOS.slice(0, 12);
+  const col0 = displayVideos.slice(0, 3);
+  const col1 = displayVideos.slice(3, 6);
+  const col2 = displayVideos.slice(6, 9);
+  const col3 = displayVideos.slice(9, 12);
 
   // Lightbox Navigation Functions
   const handleNextVideo = () => {
     if (!lightboxData) return;
-    const curIdx = ALL_DRIVE_VIDEOS.findIndex((v) => v.id === lightboxData.id);
-    const nextIdx = (curIdx + 1) % ALL_DRIVE_VIDEOS.length;
-    setLightboxData(ALL_DRIVE_VIDEOS[nextIdx]);
+    const curIdx = displayVideos.findIndex((v) => v.id === lightboxData.id);
+    const nextIdx = (curIdx + 1) % displayVideos.length;
+    setLightboxData(displayVideos[nextIdx]);
   };
 
   const handlePrevVideo = () => {
     if (!lightboxData) return;
-    const curIdx = ALL_DRIVE_VIDEOS.findIndex((v) => v.id === lightboxData.id);
-    const prevIdx = (curIdx - 1 + ALL_DRIVE_VIDEOS.length) % ALL_DRIVE_VIDEOS.length;
-    setLightboxData(ALL_DRIVE_VIDEOS[prevIdx]);
+    const curIdx = displayVideos.findIndex((v) => v.id === lightboxData.id);
+    const prevIdx = (curIdx - 1 + displayVideos.length) % displayVideos.length;
+    setLightboxData(displayVideos[prevIdx]);
   };
 
   // Keyboard navigation for Lightbox
@@ -58,59 +63,37 @@ export default function VybnParallaxGrid() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [lightboxData]);
 
-  // Distribute all 24 real Google Drive videos cleanly across 6 columns
-  const col0 = ALL_DRIVE_VIDEOS.slice(0, 4);
-  const col1 = ALL_DRIVE_VIDEOS.slice(4, 8);
-  const col2 = ALL_DRIVE_VIDEOS.slice(8, 12);
-  const col3 = ALL_DRIVE_VIDEOS.slice(12, 16);
-  const col4 = ALL_DRIVE_VIDEOS.slice(16, 20);
-  const col5 = ALL_DRIVE_VIDEOS.slice(20, 24);
-
   return (
     <div className="w-full relative select-none py-2 overflow-hidden">
-      {/* ── 6-COLUMN FLUID FRAMER MOTION PARALLAX GRID ── */}
+      {/* ── 4-COLUMN x 3-ROW FLUID FRAMER MOTION PARALLAX GRID (REDUCED LOAD) ── */}
       <div
         ref={containerRef}
-        className="relative grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-4 p-2 md:p-3 bg-black rounded-3xl overflow-hidden min-h-[820px]"
+        className="relative grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-5 p-2 md:p-4 bg-black rounded-3xl overflow-hidden min-h-[640px]"
       >
         {/* Column 0 */}
-        <motion.div style={{ y: yCol0 }} className="flex flex-col gap-3 md:gap-4">
+        <motion.div style={{ y: yCol0 }} className="flex flex-col gap-3 md:gap-5 will-change-transform">
           {col0.map((item) => (
             <GridCard key={item.id} data={item} onOpenLightbox={setLightboxData} />
           ))}
         </motion.div>
 
         {/* Column 1 */}
-        <motion.div style={{ y: yCol1 }} className="flex flex-col gap-3 md:gap-4">
+        <motion.div style={{ y: yCol1 }} className="flex flex-col gap-3 md:gap-5 will-change-transform">
           {col1.map((item) => (
             <GridCard key={item.id} data={item} onOpenLightbox={setLightboxData} />
           ))}
         </motion.div>
 
         {/* Column 2 */}
-        <motion.div style={{ y: yCol2 }} className="flex flex-col gap-3 md:gap-4">
+        <motion.div style={{ y: yCol2 }} className="flex flex-col gap-3 md:gap-5 will-change-transform">
           {col2.map((item) => (
             <GridCard key={item.id} data={item} onOpenLightbox={setLightboxData} />
           ))}
         </motion.div>
 
         {/* Column 3 */}
-        <motion.div style={{ y: yCol3 }} className="flex flex-col gap-3 md:gap-4">
+        <motion.div style={{ y: yCol3 }} className="flex flex-col gap-3 md:gap-5 will-change-transform">
           {col3.map((item) => (
-            <GridCard key={item.id} data={item} onOpenLightbox={setLightboxData} />
-          ))}
-        </motion.div>
-
-        {/* Column 4 */}
-        <motion.div style={{ y: yCol4 }} className="flex flex-col gap-3 md:gap-4">
-          {col4.map((item) => (
-            <GridCard key={item.id} data={item} onOpenLightbox={setLightboxData} />
-          ))}
-        </motion.div>
-
-        {/* Column 5 */}
-        <motion.div style={{ y: yCol5 }} className="flex flex-col gap-3 md:gap-4">
-          {col5.map((item) => (
             <GridCard key={item.id} data={item} onOpenLightbox={setLightboxData} />
           ))}
         </motion.div>
@@ -171,6 +154,7 @@ export default function VybnParallaxGrid() {
               <motion.video
                 key={lightboxData.id}
                 src={lightboxData.src}
+                poster={lightboxData.poster}
                 autoPlay
                 controls
                 loop

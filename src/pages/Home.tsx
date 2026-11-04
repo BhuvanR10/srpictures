@@ -21,75 +21,10 @@ export default function Home() {
     <header className="section-home-header">
       <div className="w-layout-grid header-component-grid">
         <div id="w-node-cd060b03-ce5d-09c9-ac8d-89dcbc0c13eb-805165a1" className="background-video-wrapper">
-          <Video className="background-video" poster="/assets/692764d4fd31a6bc0c913752_12566516_3840_2160_30fps_poster.0000000.jpg" src="/assets/692764d4fd31a6bc0c913752_12566516_3840_2160_30fps_mp4.mp4" />
+          <Video className="background-video" poster="/assets/692764d4fd31a6bc0c913752_12566516_3840_2160_30fps_poster.0000000.jpg" src="/assets/hero-bg-1080p.mp4" />
           <div className="video-opacity"></div>
         </div>
-        <div id="w-node-_6b2e6d2c-c1f7-7cdc-d3b5-95a983e74de7-805165a1" className="_3d-wrapper">
-          <div className="_3d-container" style={{ transformStyle: 'preserve-3d' }}>
-            <div className="_3d-block" style={{ transformStyle: 'preserve-3d' }}>
-              <div className="_3d-image-item _9">
-                <div className="frame-item">
-                  <img src="/assets/1Y9A5246.jpg" alt="The SR Pictures Wedding" loading="eager" decoding="async" className="video" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '2rem' }} />
-                  <div className="cube-text">Weddings</div>
-                </div>
-              </div>
-              <div className="_3d-image-item _8">
-                <div className="frame-item">
-                  <img src="/assets/RSD_8118.jpg" alt="The SR Pictures Pre-Wedding" loading="eager" decoding="async" className="video" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '2rem' }} />
-                  <div className="cube-text">Pre-Wedding</div>
-                </div>
-              </div>
-              <div className="_3d-image-item _7">
-                <div className="frame-item">
-                  <img src="/assets/SRP_7885.jpg" alt="The SR Pictures Portraits" loading="eager" decoding="async" className="video" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '2rem' }} />
-                  <div className="cube-text">Portraits</div>
-                </div>
-              </div>
-              <div className="_3d-image-item _6">
-                <div className="frame-item">
-                  <img src="/assets/RSD_8625.jpg" alt="The SR Pictures Maternity" loading="eager" decoding="async" className="video" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '2rem' }} />
-                  <div className="cube-text">Maternity</div>
-                </div>
-              </div>
-              <div className="_3d-image-item _5">
-                <div className="frame-item">
-                  <img src="/assets/RSD_2730.jpg" alt="The SR Pictures Candid Moments" loading="eager" decoding="async" className="video" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '2rem' }} />
-                  <div className="cube-text">Candid Moments</div>
-                </div>
-              </div>
-              <div className="_3d-image-item _4">
-                <div className="frame-item">
-                  <img src="/assets/RSD_2215.jpg" alt="The SR Pictures Haldi and Rituals" loading="eager" decoding="async" className="video" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '2rem' }} />
-                  <div className="cube-text">Rituals & Haldi</div>
-                </div>
-              </div>
-              <div className="_3d-image-item _3">
-                <div className="frame-item">
-                  <img src="/assets/RSD_1969.jpg" alt="The SR Pictures Birthday and Events" loading="eager" decoding="async" className="video" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '2rem' }} />
-                  <div className="cube-text">Birthday & Events</div>
-                </div>
-              </div>
-              <div className="_3d-image-item _2">
-                <div className="frame-item">
-                  <img src="/assets/IMG_1102.jpg" alt="The SR Pictures Emotional Moments" loading="eager" decoding="async" className="video" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '2rem' }} />
-                  <div className="cube-text">Emotional Moments</div>
-                </div>
-              </div>
-              <div className="_3d-image-item _1">
-                <div className="frame-item">
-                  <img src="/assets/SRP_0350.jpg" alt="The SR Pictures Wedding Cinema" loading="eager" decoding="async" className="video" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '2rem' }} />
-                  <div className="cube-text">Wedding Cinema</div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="cube-title-wrapper">
-            <div className="cube-title-block">
-              <h1 className="cube-title">SR Pictures</h1>
-              <div className="copyright">{"®"}</div>
-            </div>
-          </div>
-        </div>
+
         <div id="w-node-a6327672-a489-8e8e-89e9-2601a1ceeff9-805165a1" className="padding-global">
           <div className="container-large">
             <div className="w-layout-grid header-content-grid">

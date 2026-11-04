@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Play } from 'lucide-react';
 
@@ -21,47 +21,28 @@ interface GridCardProps {
 
 export default function GridCard({ data, onOpenLightbox, onClick }: GridCardProps) {
   const [isHovered, setIsHovered] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  // Viewport-aware playback: auto-play when visible, pause when off-screen
-  useEffect(() => {
-    if (data.type !== 'video' || !containerRef.current) return;
-
-    const el = containerRef.current;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (!videoRef.current) return;
-          if (entry.isIntersecting) {
-            videoRef.current.play().catch(() => {});
-          } else {
-            videoRef.current.pause();
-          }
-        });
-      },
-      { rootMargin: '150px 0px', threshold: 0.05 }
-    );
-
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [data.type]);
-
+  // Hover-only playback: eliminates 8+ concurrent decoder pipelines.
+  // Videos stay paused at poster frame until the user mouses over.
   const handleMouseEnter = () => {
     setIsHovered(true);
     if (videoRef.current) {
+      videoRef.current.currentTime = 0;
       videoRef.current.play().catch(() => {});
     }
   };
 
   const handleMouseLeave = () => {
     setIsHovered(false);
+    if (videoRef.current) {
+      videoRef.current.pause();
+    }
   };
 
   return (
     <motion.div
-      ref={containerRef}
-      whileHover={{ scale: 1.035, y: -5 }}
+      whileHover={{ scale: 1.03, y: -4 }}
       whileTap={{ scale: 0.98 }}
       transition={{ type: 'spring', stiffness: 350, damping: 25 }}
       onClick={(e) => {
@@ -70,7 +51,9 @@ export default function GridCard({ data, onOpenLightbox, onClick }: GridCardProp
       }}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className="relative w-full aspect-[9/15] rounded-2xl md:rounded-[1.75rem] overflow-hidden bg-neutral-950 border border-white/10 hover:border-amber-400/50 transition-colors duration-300 cursor-pointer shadow-[0_12px_36px_rgba(0,0,0,0.85)] group select-none"
+      // will-change-transform promotes this element to its own GPU compositing layer,
+      // preventing video decoding from causing layout jank in adjacent elements.
+      className="relative w-full aspect-[9/15] rounded-2xl md:rounded-[1.75rem] overflow-hidden bg-neutral-950 border border-white/10 hover:border-amber-400/50 transition-colors duration-300 cursor-pointer shadow-lg group select-none will-change-transform"
     >
       {/* 1. Underlying Video / Media */}
       <div className="absolute inset-0 w-full h-full overflow-hidden bg-black">
@@ -82,8 +65,10 @@ export default function GridCard({ data, onOpenLightbox, onClick }: GridCardProp
             loop
             muted
             playsInline
-            preload="metadata"
-            className="w-full h-full object-cover scale-100 group-hover:scale-105 transition-transform duration-700 ease-out"
+            // preload="none" prevents the browser from pre-fetching 12 video streams
+            // into memory simultaneously. The poster WebP displays instantly instead.
+            preload="none"
+            className="w-full h-full object-cover"
           />
         ) : (
           <img
@@ -91,32 +76,32 @@ export default function GridCard({ data, onOpenLightbox, onClick }: GridCardProp
             alt={data.title}
             loading="lazy"
             decoding="async"
-            className="w-full h-full object-cover scale-100 group-hover:scale-105 transition-transform duration-700 ease-out"
+            className="w-full h-full object-cover"
           />
         )}
       </div>
 
-      {/* 2. Sleek Dark Gradient Overlay on Hover */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+      {/* 2. Dark Gradient Overlay — fades in on hover */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none" />
 
-      {/* 3. Minimalist Glass Play Button (Appears smoothly on Hover) */}
+      {/* 3. Play Button — visible at rest, hides on hover when video is playing */}
       <motion.div
         initial={false}
-        animate={{ opacity: isHovered ? 1 : 0, scale: isHovered ? 1 : 0.75 }}
+        animate={{ opacity: isHovered ? 0 : 1, scale: isHovered ? 0.8 : 1 }}
         transition={{ type: 'spring', stiffness: 400, damping: 25 }}
         className="absolute inset-0 flex items-center justify-center pointer-events-none z-10"
       >
-        <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white flex items-center justify-center shadow-2xl">
+        <div className="w-12 h-12 rounded-full bg-black/60 border border-white/20 text-white flex items-center justify-center shadow-xl">
           <Play size={18} className="ml-0.5 fill-white" />
         </div>
       </motion.div>
 
-      {/* 4. Elegant Bottom Info Pill on Hover */}
-      <div className="absolute bottom-3 inset-x-3 flex items-center justify-between pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
-        <span className="text-[11px] font-mono text-neutral-200 bg-black/60 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/15 truncate max-w-[75%]">
-          {data.category || 'Drive Reel'}
+      {/* 4. Bottom Info Pill — appears on hover */}
+      <div className="absolute bottom-3 inset-x-3 flex items-center justify-between pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
+        <span className="text-[11px] font-mono text-neutral-200 bg-neutral-900/90 px-2.5 py-1 rounded-full border border-white/15 truncate max-w-[75%]">
+          {data.category || 'Reel'}
         </span>
-        <span className="text-[10px] font-mono text-amber-400 bg-black/60 backdrop-blur-md px-2 py-1 rounded-full border border-white/15">
+        <span className="text-[10px] font-mono text-amber-400 bg-neutral-900/90 px-2 py-1 rounded-full border border-white/15">
           4K
         </span>
       </div>

@@ -44,15 +44,29 @@ export default class ErrorBoundary extends Component<Props, State> {
             <h1 className="text-2xl font-bold tracking-tight mb-2">
               Something went wrong
             </h1>
-            <p className="text-sm text-neutral-400 mb-6 leading-relaxed">
-              An unexpected error occurred while rendering this page. Our team has been notified.
+            <p className="text-sm text-neutral-400 mb-4 leading-relaxed">
+              An unexpected error occurred while rendering this page.
             </p>
+
+            {this.state.error && (
+              <div className="mb-6 p-4 rounded-2xl bg-black/60 border border-red-500/20 text-left overflow-auto max-h-44 text-xs font-mono">
+                <div className="text-red-400 font-bold mb-1">
+                  {this.state.error.name}: {this.state.error.message}
+                </div>
+                {this.state.error.stack && (
+                  <pre className="text-[11px] text-neutral-500 whitespace-pre-wrap leading-tight">
+                    {this.state.error.stack.split('\n').slice(0, 5).join('\n')}
+                  </pre>
+                )}
+              </div>
+            )}
 
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <button
                 type="button"
                 onClick={this.handleReload}
-                className="px-5 py-3 rounded-full bg-white text-black font-semibold text-xs tracking-wider uppercase hover:bg-neutral-200 transition-all flex items-center justify-center gap-2"
+                style={{ color: '#000000' }}
+                className="px-5 py-3 rounded-full bg-white font-bold text-xs tracking-wider uppercase hover:bg-neutral-200 transition-all flex items-center justify-center gap-2 shadow-lg"
               >
                 <RotateCcw size={14} />
                 <span>Reload Page</span>

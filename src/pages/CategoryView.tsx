@@ -1,24 +1,61 @@
-import { useState } from 'react';
+import { useState, useMemo, Component, type ReactNode } from 'react';
 import { useParams, Link, Navigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ChevronLeft, ChevronRight, Camera } from 'lucide-react';
+import {
+  X,
+  ChevronLeft,
+  ChevronRight,
+  Image as ImageIcon,
+} from 'lucide-react';
 import Subtitle from '../components/Subtitle';
-import MainButton from '../components/MainButton';
+import InvertedDome from '../components/InvertedDome';
 import { usePageSeo } from '../lib/usePageSeo';
 import { CATEGORIES_DATA, type CategoryImage } from '../data/categoriesData';
 import { WHATSAPP_PHONE } from '../lib/whatsapp';
+
+class DomeErrorBoundary extends Component<
+  { fallback?: ReactNode; children: ReactNode },
+  { hasError: boolean; error?: Error }
+> {
+  state: { hasError: boolean; error?: Error } = { hasError: false };
+  static getDerivedStateFromError(error: Error) {
+    return { hasError: true, error };
+  }
+  componentDidCatch(err: unknown) {
+    console.error('InvertedDome encountered an issue:', err);
+  }
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="flex flex-col items-center justify-center h-full p-8 text-center bg-black text-white">
+          <p className="text-sm font-medium text-neutral-400 mb-4">
+            Unable to initialize interactive gallery view.
+          </p>
+          <button
+            type="button"
+            onClick={() => this.setState({ hasError: false, error: undefined })}
+            style={{ color: '#000000' }}
+            className="px-5 py-2.5 rounded-full bg-white font-semibold text-xs tracking-wider uppercase shadow-lg hover:bg-neutral-200 transition-all cursor-pointer"
+          >
+            Reload Gallery
+          </button>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
 
 export default function CategoryView() {
   const { slug } = useParams<{ slug: string }>();
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   const category = CATEGORIES_DATA.find((c) => c.slug === slug || c.id === slug);
+  const imageSources = useMemo(() => category?.images.map((img) => img.src) || [], [category?.images]);
 
   usePageSeo({
-    title: category ? `${category.name} | Archive` : 'Category',
-    description: category
-      ? `${category.name} photography and cinematography portfolio by The SR Pictures. ${category.description}`
-      : 'Visual category gallery by The SR Pictures.',
+    title: category ? `${category.name} | The SR Pictures` : 'Category',
+    description: category ? `${category.name} portfolio by The SR Pictures.` : 'Visual gallery.',
   });
 
   if (!category) {
@@ -26,7 +63,7 @@ export default function CategoryView() {
   }
 
   const waUrl = `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(
-    `Hello The SR Pictures! 📸 I am viewing your "${category.name}" portfolio collection and would like to inquire about package details and availability.`
+    `Hello The SR Pictures, I would like to inquire about booking your ${category.name} photography.`
   )}`;
 
   const currentImage: CategoryImage | undefined =
@@ -46,151 +83,102 @@ export default function CategoryView() {
     <>
       <div id="top" className="top"></div>
 
-      {/* Category Hero Header */}
-      <header className="pt-28 pb-12 sm:pt-36 sm:pb-16 relative overflow-hidden">
-        {/* Subtle Ambient Backlight Glow */}
-        <div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[300px] rounded-full blur-[140px] opacity-15 pointer-events-none"
-          style={{ backgroundColor: category.accentColor }}
-        />
-
-        <div className="padding-global relative z-10">
+      {/* Header */}
+      <header className="pt-26 sm:pt-32 pb-6 sm:pb-8">
+        <div className="padding-global">
           <div className="container-large">
-            {/* Top Navigation */}
-            <div className="flex items-center justify-between mb-8">
+            <div className="flex items-center justify-between mb-6">
               <Link
                 to="/categories"
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.05] hover:bg-white/[0.12] border border-white/10 text-xs font-mono text-neutral-300 hover:text-white transition-all group"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.05] hover:bg-white/[0.1] border border-white/10 text-xs font-mono text-neutral-300 transition-all"
               >
-                <span className="transform group-hover:-translate-x-1 transition-transform">←</span>
-                <span>All Categories</span>
+                <span>← All Categories</span>
               </Link>
 
               <span className="font-mono text-xs text-neutral-500 uppercase tracking-widest">
-                ARCHIVE // {category.code}
+                {category.code}
               </span>
             </div>
 
-            {/* Title & Tagline */}
-            <div className="max-w-3xl">
-              <Subtitle>{category.tagline}</Subtitle>
-              <div className="title-wrapper mt-3">
-                <h1
-                  className="font-extrabold tracking-tight text-white uppercase"
-                  style={{ fontSize: 'clamp(2.4rem, 5vw, 4rem)', lineHeight: '1.1' }}
-                >
-                  {category.name}
-                </h1>
-              </div>
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+              <div className="max-w-2xl">
+                <Subtitle>Visual Archive</Subtitle>
+                <div className="title-wrapper mt-2">
+                  <h1
+                    className="font-extrabold uppercase tracking-tight text-white"
+                    style={{ fontSize: 'clamp(2.2rem, 5vw, 3.6rem)', lineHeight: '1.1' }}
+                  >
+                    {category.name}
+                  </h1>
+                </div>
 
-              <p className="text-base sm:text-lg text-neutral-300 mt-4 leading-relaxed max-w-2xl">
-                {category.description}
-              </p>
+                <div className="mt-4 flex flex-wrap items-center gap-3">
+                  <a
+                    href={waUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white text-black hover:bg-neutral-200 font-semibold text-xs tracking-wide transition-all shadow-lg"
+                  >
+                    <span>Inquire on WhatsApp</span>
+                    <span>→</span>
+                  </a>
 
-              {/* Action Buttons */}
-              <div className="mt-8 flex flex-wrap items-center gap-4">
-                <a
-                  href={waUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs tracking-wide transition-all shadow-xl shadow-emerald-950/40"
-                >
-                  <span>Inquire for {category.name} via WhatsApp</span>
-                  <span>→</span>
-                </a>
-                <MainButton to="/contact">Book Consultation</MainButton>
+                  <span className="text-xs font-mono text-neutral-400 px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/10">
+                    {category.images.length} Photographs
+                  </span>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </header>
 
-      {/* Gallery Section */}
-      <section className="pb-28 sm:pb-36">
-        <div className="padding-global">
-          <div className="container-large">
-            <div className="dividing-line mb-12"></div>
+      {/* Gallery Content — Full-bleed inverted dome, no padding container */}
+      <section className="pb-0">
+        {category.images.length > 0 ? (
+          /* Full-viewport interactive dome — edge-to-edge */
+          <div className="relative w-full" style={{ height: 'calc(100vh - 220px)', minHeight: 560, maxHeight: 960 }}>
+            <DomeErrorBoundary>
+              <InvertedDome
+                images={imageSources}
+                tileWidth={260}
+                tileHeight={195}
+                gap={14}
+                borderRadius={18}
+                curve={0.38}
+                curveRadius={1.4}
+                zoom={0.09}
+                grayscale={0}
+                vignette={0.0}
+                autoScrollX={10}
+                backgroundColor="#000000"
+                enableDrag={true}
+                enableWheel={true}
+                openOnClick={false}
+                onTileClick={(idx) => setLightboxIndex(idx)}
+              />
+            </DomeErrorBoundary>
 
-            {/* When Images Are Available: Masonry Grid */}
-            {category.images.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {category.images.map((img, idx) => (
-                  <motion.div
-                    key={img.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: idx * 0.05 }}
-                    whileHover={{ scale: 1.025, y: -4 }}
-                    onClick={() => setLightboxIndex(idx)}
-                    className="relative rounded-2xl overflow-hidden bg-neutral-900 border border-white/10 hover:border-amber-400/40 cursor-pointer group shadow-xl aspect-[4/5]"
-                  >
-                    <img
-                      src={img.src}
-                      alt={img.alt || `${category.name} photograph`}
-                      loading="lazy"
-                      className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-5">
-                      <p className="text-sm font-medium text-white">{img.caption || img.alt}</p>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            ) : (
-              /* When Awaiting Images: Sleek Viewfinder Placeholder Grid */
-              <div className="flex flex-col items-center">
-                <div className="w-full text-center mb-10">
-                  <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-400/10 border border-amber-400/30 text-amber-300 text-xs font-mono uppercase tracking-wider">
-                    <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
-                    Collection Ready for Image Assets
-                  </span>
-                  <h3 className="text-xl sm:text-2xl font-bold text-white mt-4 font-sans">
-                    {category.name} Gallery Frame
-                  </h3>
-                  <p className="text-xs sm:text-sm text-neutral-400 max-w-lg mx-auto mt-2">
-                    Share your Google Drive or image links to populate this gallery with high-res
-                    master photographs and cinematic stills.
-                  </p>
-                </div>
-
-                {/* 6 Viewfinder Wireframe Slots ready for user images */}
-                <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {[...Array(6)].map((_, i) => (
-                    <div
-                      key={i}
-                      className="relative rounded-2xl aspect-[4/5] bg-neutral-900/40 border border-dashed border-white/15 flex flex-col items-center justify-center p-6 text-center select-none"
-                    >
-                      {/* Corner marks */}
-                      <span className="absolute top-3 left-3 font-mono text-[9px] text-neutral-600">
-                        ┌ 4K STILL
-                      </span>
-                      <span className="absolute top-3 right-3 font-mono text-[9px] text-neutral-600">
-                        SLOT {String(i + 1).padStart(2, '0')} ┐
-                      </span>
-                      <span className="absolute bottom-3 left-3 font-mono text-[9px] text-neutral-600">
-                        └ 3:2
-                      </span>
-                      <span className="absolute bottom-3 right-3 font-mono text-[9px] text-neutral-600">
-                        {category.name.toUpperCase()} ┘
-                      </span>
-
-                      <div className="w-12 h-12 rounded-full bg-white/[0.03] border border-white/10 flex items-center justify-center text-neutral-600 mb-3">
-                        <Camera size={20} />
-                      </div>
-                      <div className="text-xs font-mono text-neutral-400 uppercase tracking-wider">
-                        Image Slot {String(i + 1).padStart(2, '0')}
-                      </div>
-                      <div className="text-[10px] text-neutral-600 font-mono mt-1">
-                        Ready for asset drop
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
+            {/* Subtle editorial hint */}
+            <div className="absolute bottom-5 right-6 z-20 pointer-events-none text-[11px] font-mono tracking-widest uppercase text-white/35">
+              Drag to explore • Click to open
+            </div>
           </div>
-        </div>
+        ) : (
+          /* Minimal waiting state */
+          <div className="padding-global">
+            <div className="container-large">
+              <div className="py-20 text-center flex flex-col items-center justify-center rounded-2xl bg-neutral-900/40 border border-white/5">
+                <div className="w-12 h-12 rounded-full bg-white/[0.04] text-neutral-500 flex items-center justify-center mb-3">
+                  <ImageIcon size={22} />
+                </div>
+                <div className="text-sm font-semibold text-neutral-300">
+                  Ready for {category.name} photos
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </section>
 
       {/* Fullscreen Lightbox Modal */}
@@ -203,25 +191,23 @@ export default function CategoryView() {
             onClick={() => setLightboxIndex(null)}
             className="fixed inset-0 z-[9999] bg-black/95 backdrop-blur-2xl flex flex-col justify-between p-4 sm:p-8 select-none"
           >
-            {/* Header */}
             <div
               className="flex items-center justify-between z-10"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="text-white font-mono text-xs">
-                {category.name} // {(lightboxIndex ?? 0) + 1} of {category.images.length}
+              <div className="text-white font-mono text-xs tracking-wider uppercase">
+                {category.name} <span className="text-neutral-500 mx-2">—</span> Frame {(lightboxIndex ?? 0) + 1} / {category.images.length}
               </div>
               <button
                 type="button"
                 onClick={() => setLightboxIndex(null)}
-                className="w-10 h-10 rounded-full bg-white/10 hover:bg-white text-white hover:text-black flex items-center justify-center transition-all border border-white/20"
+                className="w-10 h-10 rounded-full bg-white/10 hover:bg-white text-white hover:text-black flex items-center justify-center transition-all border border-white/15 cursor-pointer"
                 aria-label="Close lightbox"
               >
                 <X size={18} />
               </button>
             </div>
 
-            {/* Image Preview */}
             <div
               className="relative flex-1 flex items-center justify-center my-auto w-full max-h-[80vh] px-4 sm:px-12"
               onClick={(e) => e.stopPropagation()}
@@ -230,7 +216,7 @@ export default function CategoryView() {
                 <button
                   type="button"
                   onClick={handlePrev}
-                  className="absolute left-2 sm:left-4 z-20 w-11 h-11 rounded-full bg-black/60 hover:bg-white text-white hover:text-black border border-white/20 flex items-center justify-center transition-all shadow-xl backdrop-blur-md"
+                  className="absolute left-2 sm:left-4 z-20 w-11 h-11 rounded-full bg-white/5 hover:bg-white text-white hover:text-black border border-white/15 flex items-center justify-center transition-all shadow-xl backdrop-blur-md cursor-pointer"
                   aria-label="Previous image"
                 >
                   <ChevronLeft size={22} />
@@ -239,15 +225,15 @@ export default function CategoryView() {
 
               <img
                 src={currentImage.src}
-                alt={currentImage.alt}
-                className="max-h-[75vh] max-w-[85vw] rounded-2xl border border-white/20 shadow-2xl object-contain"
+                alt={currentImage.alt || category.name}
+                className="max-h-[75vh] max-w-[85vw] rounded-2xl border border-white/15 shadow-2xl object-contain"
               />
 
               {category.images.length > 1 && (
                 <button
                   type="button"
                   onClick={handleNext}
-                  className="absolute right-2 sm:right-4 z-20 w-11 h-11 rounded-full bg-black/60 hover:bg-white text-white hover:text-black border border-white/20 flex items-center justify-center transition-all shadow-xl backdrop-blur-md"
+                  className="absolute right-2 sm:right-4 z-20 w-11 h-11 rounded-full bg-white/5 hover:bg-white text-white hover:text-black border border-white/15 flex items-center justify-center transition-all shadow-xl backdrop-blur-md cursor-pointer"
                   aria-label="Next image"
                 >
                   <ChevronRight size={22} />
@@ -255,19 +241,17 @@ export default function CategoryView() {
               )}
             </div>
 
-            {/* Bottom Caption */}
-            <div
-              className="border-t border-white/10 pt-4 text-center z-10"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <p className="text-sm text-neutral-300 font-medium">
-                {currentImage.caption || currentImage.alt}
-              </p>
-            </div>
+            {currentImage.caption && (
+              <div
+                className="border-t border-white/10 pt-4 text-center z-10"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <p className="text-sm text-neutral-300 font-medium">{currentImage.caption}</p>
+              </div>
+            )}
           </motion.div>
         )}
       </AnimatePresence>
     </>
   );
 }
-

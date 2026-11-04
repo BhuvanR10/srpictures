@@ -137,43 +137,51 @@ export const aboutCubeItems = [
 export const partners = [
   {
     "cls": "card-wrapper _01",
-    "front": "/assets/695d12dd0e6cdde3552256c6_logoipsum-352.svg",
-    "back": "/assets/695d12dcbbed07cb04aed305_logoipsum-229.svg"
+    "name": "Tata Motors",
+    "front": "/assets/partners/tata.png",
+    "back": "/assets/partners/mahindra.png"
   },
   {
     "cls": "card-wrapper _02",
-    "front": "/assets/695d13986097effdc123d738_logoipsum-289.svg",
-    "back": "/assets/695d147eccc0f009e7d51c2f_logoipsum-317.svg"
+    "name": "Hyundai",
+    "front": "/assets/partners/hyundai.png",
+    "back": "/assets/partners/toyota.png"
   },
   {
     "cls": "card-wrapper _03",
-    "front": "/assets/695d12dd3a61ebe5ca083288_logoipsum-233.svg",
-    "back": "/assets/695d12ddee12ec8821e60d3f_logoipsum-234.svg"
+    "name": "Volkswagen",
+    "front": "/assets/partners/volkswagen.png",
+    "back": "/assets/partners/mahindra_electric.png"
   },
   {
     "cls": "card-wrapper _04",
-    "front": "/assets/695d12ddc114212d92632b92_logoipsum-358.svg",
-    "back": "/assets/695d14341d56550e9ab76aca_logoipsum-338.svg"
+    "name": "Gold's Gym",
+    "front": "/assets/partners/golds_gym.png",
+    "back": "/assets/partners/revver.png"
   },
   {
     "cls": "card-wrapper _05",
-    "front": "/assets/695d12dd1cfee1ccf5f3f868_logoipsum-228.svg",
-    "back": "/assets/695d141bac7f3b06e7c095fe_logoipsum-280.svg"
+    "name": "Malnad Stays",
+    "front": "/assets/partners/malnad_stays.png",
+    "back": "/assets/partners/news7.png"
   },
   {
     "cls": "card-wrapper _06",
-    "front": "/assets/695d12dd59a5fe463137b156_logoipsum-378.svg",
-    "back": "/assets/695d13f384941d27769ad035_logoipsum-371.svg"
+    "name": "JICM",
+    "front": "/assets/partners/jicm.png",
+    "back": "/assets/partners/brand_partner_1.png"
   },
   {
     "cls": "card-wrapper _07",
-    "front": "/assets/695d12ddd91bf741e948161e_logoipsum-232.svg",
-    "back": "/assets/695d13d889cf40fc782130be_logoipsum-340.svg"
+    "name": "Brand Partner",
+    "front": "/assets/partners/brand_partner_2.png",
+    "back": "/assets/partners/brand_partner_3.png"
   },
   {
     "cls": "card-wrapper _08",
-    "front": "/assets/695d12ddda585e682dab6c24_logoipsum-323.svg",
-    "back": "/assets/695d12dd0e6cdde3552256c6_logoipsum-352.svg"
+    "name": "Brand Partner",
+    "front": "/assets/partners/brand_partner_4.png",
+    "back": "/assets/partners/brand_partner_5.png"
   }
 ];
 

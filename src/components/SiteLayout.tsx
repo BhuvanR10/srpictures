@@ -7,7 +7,6 @@ import { setupPage } from '../lib/pageEffects';
 import Footer from './Footer';
 import Navbar from './Navbar';
 import FloatingWhatsApp from './FloatingWhatsApp';
-import CinematicIntro from './CinematicIntro';
 
 export default function SiteLayout() {
   const { pathname } = useLocation();
@@ -28,7 +27,6 @@ export default function SiteLayout() {
 
   return (
     <div className="page-wrapper">
-      <CinematicIntro />
       <a href="#main" className="skip-link" onClick={(e) => { e.preventDefault(); document.getElementById('main')?.focus(); }}>Skip to content</a>
       <button type="button" className="skip-link motion-toggle" aria-pressed={paused} onClick={() => setMotionPaused(!isMotionPaused())}>
         {paused ? 'Play background motion' : 'Pause background motion'}
