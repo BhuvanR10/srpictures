@@ -2,25 +2,26 @@ import React, { useEffect, useRef, useState } from 'react';
 import { gsap } from '../lib/gsap';
 import { reducedMotion } from '../lib/motion';
 
-if (typeof window !== 'undefined' && !reducedMotion()) {
+const shouldPlayIntro = () => {
+  if (typeof window === 'undefined') return false;
+  if (reducedMotion()) return false;
+  return !sessionStorage.getItem('sr_cinema_intro_seen');
+};
+
+if (typeof window !== 'undefined' && shouldPlayIntro()) {
   (window as any).__sr_intro_running = true;
 }
 
 export default function CinematicIntro() {
-  const [active, setActive] = useState(() => typeof window !== 'undefined' && !reducedMotion());
+  const [active, setActive] = useState(shouldPlayIntro);
 
   const containerRef = useRef<HTMLDivElement>(null);
-  const curtainLeftRef = useRef<HTMLDivElement>(null);
-  const curtainRightRef = useRef<HTMLDivElement>(null);
-  const centerStageRef = useRef<HTMLDivElement>(null);
   const ambientGlowRef = useRef<HTMLDivElement>(null);
   const emblemRef = useRef<HTMLDivElement>(null);
-  const lensRingRef = useRef<HTMLDivElement>(null);
-  const iridescentGlassRef = useRef<HTMLDivElement>(null);
   const sheenRef = useRef<HTMLDivElement>(null);
-  const flareBeamRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
-  const subtitleRef = useRef<HTMLDivElement>(null);
+  const taglineRef = useRef<HTMLDivElement>(null);
+  const stageContentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (reducedMotion()) {
@@ -30,11 +31,18 @@ export default function CinematicIntro() {
       return;
     }
 
-    // Every reload triggers intro!
-    (window as any).__sr_intro_running = true;
-    setActive(true);
+    const hasSeen = sessionStorage.getItem('sr_cinema_intro_seen');
+    if (hasSeen) {
+      (window as any).__sr_intro_running = false;
+      window.dispatchEvent(new CustomEvent('sr-intro-complete'));
+      setActive(false);
+    } else {
+      (window as any).__sr_intro_running = true;
+      setActive(true);
+    }
 
     const handleReplay = () => {
+      sessionStorage.removeItem('sr_cinema_intro_seen');
       (window as any).__sr_intro_running = true;
       setActive(true);
     };
@@ -49,6 +57,7 @@ export default function CinematicIntro() {
     document.body.style.overflow = 'hidden';
 
     const finishIntro = () => {
+      sessionStorage.setItem('sr_cinema_intro_seen', 'true');
       (window as any).__sr_intro_running = false;
       document.body.style.overflow = '';
       window.dispatchEvent(new CustomEvent('sr-intro-complete'));
@@ -62,39 +71,25 @@ export default function CinematicIntro() {
         },
       });
 
-      // ----------------------------------------------------
-      // 1. Initial State (100% GPU Accelerated Properties)
-      // ----------------------------------------------------
-      gsap.set(centerStageRef.current, {
+      // ----------------------------------------------------------------------
+      // SCENE 01 — COMPLETE DARKNESS & INITIAL STATE (0.0s)
+      // ----------------------------------------------------------------------
+      gsap.set(containerRef.current, {
+        opacity: 1,
+      });
+      gsap.set(stageContentRef.current, {
         opacity: 1,
         scale: 1,
         force3D: true,
       });
-      gsap.set(emblemRef.current, {
-        opacity: 0,
-        scale: 0.92,
-        force3D: true,
-      });
-      gsap.set(lensRingRef.current, {
-        opacity: 0,
-        scale: 0.9,
-        rotation: -20,
-        force3D: true,
-      });
       gsap.set(ambientGlowRef.current, {
         opacity: 0,
-        scale: 0.7,
+        scale: 0.65,
         force3D: true,
       });
-      gsap.set(iridescentGlassRef.current, {
+      gsap.set(emblemRef.current, {
         opacity: 0,
-        rotation: -30,
-        force3D: true,
-      });
-      gsap.set(flareBeamRef.current, {
-        opacity: 0,
-        scaleX: 0.2,
-        scaleY: 0.5,
+        scale: 0.94,
         force3D: true,
       });
       gsap.set(sheenRef.current, {
@@ -103,172 +98,113 @@ export default function CinematicIntro() {
         force3D: true,
       });
       gsap.set(titleRef.current, {
-        y: 14,
         opacity: 0,
+        y: 10,
         force3D: true,
       });
-      gsap.set(subtitleRef.current, {
+      gsap.set(taglineRef.current, {
         opacity: 0,
-        y: 8,
-        force3D: true,
-      });
-      gsap.set([curtainLeftRef.current, curtainRightRef.current], {
-        xPercent: 0,
+        y: 6,
         force3D: true,
       });
 
-      // ----------------------------------------------------
-      // 2. Optical Gathering: Silky Smooth Rack Focus (GPU native)
-      // ----------------------------------------------------
-      // Soft ambient light expands behind the lens
+      // ----------------------------------------------------------------------
+      // SCENE 01 (cont.) — SUBTLE AMBIENT LIGHTING EMERGES (0.15s - 0.95s)
+      // Extremely soft light gradually emerges from the center, creating anticipation
+      // ----------------------------------------------------------------------
       tl.to(
         ambientGlowRef.current,
         {
-          opacity: 1,
-          scale: 1,
-          duration: 1.6,
-          ease: 'power2.out',
-        },
-        0.15
-      );
-
-      // Outer focus ring gently dials into alignment
-      tl.to(
-        lensRingRef.current,
-        {
           opacity: 0.85,
           scale: 1,
-          rotation: 0,
-          duration: 1.6,
+          duration: 1.1,
           ease: 'power2.out',
         },
         0.15
       );
 
-      // Master Lens Emblem smoothly emerges with optical clarity
+      // ----------------------------------------------------------------------
+      // SCENE 02 — LOGO REVEAL (0.45s - 1.55s)
+      // Reveal the original SR PICTURES logo slowly from darkness
+      // Refined opacity and gentle scale (0.94 -> 1.0)
+      // ----------------------------------------------------------------------
       tl.to(
         emblemRef.current,
         {
           opacity: 1,
           scale: 1,
-          duration: 1.5,
+          duration: 1.1,
           ease: 'power2.out',
         },
-        0.15
+        0.45
       );
 
-      // ----------------------------------------------------
-      // 3. Multi-Coated Glass Iridescent Sheen & Chrome Glint
-      // ----------------------------------------------------
+      // Subtle metallic silver specular sheen gliding across the logo (0.75s - 1.65s)
       tl.to(
-        iridescentGlassRef.current,
+        sheenRef.current,
         {
-          opacity: 0.4,
-          rotation: 20,
-          duration: 1.5,
+          opacity: 0.65,
+          xPercent: 140,
+          duration: 0.9,
+          ease: 'power2.inOut',
+        },
+        0.75
+      );
+
+      // ----------------------------------------------------------------------
+      // SCENE 03 — BRAND RECOGNITION (1.1s - 2.3s)
+      // Hold the revealed logo, introduce brand name with elegant letter spacing,
+      // and reveal tagline: EVERY FRAME TELLS A STORY.
+      // ----------------------------------------------------------------------
+      tl.to(
+        titleRef.current,
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.75,
           ease: 'power2.out',
-        },
-        0.35
-      );
-
-      // Soft horizontal flare glide
-      tl.to(
-        flareBeamRef.current,
-        {
-          opacity: 0.85,
-          scaleX: 1.4,
-          duration: 0.65,
-          ease: 'power2.inOut',
-        },
-        0.55
-      );
-      tl.to(
-        flareBeamRef.current,
-        {
-          opacity: 0,
-          scaleX: 0.8,
-          duration: 0.55,
-          ease: 'power2.inOut',
         },
         1.1
       );
 
-      // Specular light sheen glides across the chrome "SR" monogram
       tl.to(
-        sheenRef.current,
-        {
-          opacity: 0.7,
-          xPercent: 140,
-          duration: 1.0,
-          ease: 'power2.inOut',
-        },
-        0.65
-      );
-
-      // ----------------------------------------------------
-      // 4. Logo Studio Brand Typography Reveal
-      // ----------------------------------------------------
-      tl.to(
-        titleRef.current,
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.9,
-          ease: 'power2.out',
-        },
-        0.85
-      );
-
-      tl.to(
-        subtitleRef.current,
+        taglineRef.current,
         {
           opacity: 1,
           y: 0,
-          duration: 0.8,
+          duration: 0.7,
           ease: 'power2.out',
         },
-        1.05
+        1.3
       );
 
-      // ----------------------------------------------------
-      // 5. High-Prestige Hold: 2 FULL SECONDS
-      // ----------------------------------------------------
-      tl.to({}, { duration: 2.0 });
+      // Emotional resonance hold (admiring the refined composition)
+      tl.to({}, { duration: 0.8 });
 
-      // ----------------------------------------------------
-      // 6. Buttery Smooth Curtain Reveal (Silky fluid ease)
-      // ----------------------------------------------------
-      // Center stage gently softens and scales forward
+      // ----------------------------------------------------------------------
+      // SCENE 04 — TRANSITION INTO WEBSITE (2.3s - 3.1s)
+      // Gradually dissolve the intro into the actual homepage.
+      // Smooth dark cinematic mask transition; the homepage emerges naturally.
+      // ----------------------------------------------------------------------
       tl.to(
-        centerStageRef.current,
+        stageContentRef.current,
         {
-          scale: 1.04,
           opacity: 0,
-          duration: 0.8,
+          scale: 1.02,
+          duration: 0.75,
           ease: 'power2.inOut',
         },
         '+=0'
       );
 
-      // Dual mechanical cinema shutter curtains slide open with pure fluid grace
       tl.to(
-        curtainLeftRef.current,
+        containerRef.current,
         {
-          xPercent: -101,
-          duration: 1.2,
-          ease: 'power3.inOut',
+          opacity: 0,
+          duration: 0.7,
+          ease: 'power2.inOut',
         },
-        '-=0.7'
-      );
-
-      tl.to(
-        curtainRightRef.current,
-        {
-          xPercent: 101,
-          duration: 1.2,
-          ease: 'power3.inOut',
-        },
-        '<'
+        '-=0.55'
       );
     }, containerRef);
 
@@ -291,149 +227,96 @@ export default function CinematicIntro() {
   return (
     <div
       ref={containerRef}
-      className="fixed inset-0 z-[9999] pointer-events-auto select-none overflow-hidden max-w-full bg-[#040404]"
+      className="fixed inset-0 z-[9999] pointer-events-auto select-none overflow-hidden bg-black max-w-full will-change-[opacity]"
       aria-label="The SR Pictures Intro"
       role="dialog"
       aria-modal="true"
     >
-      {/* Left Cinema Shutter Curtain (Hardware Accelerated) */}
-      <div
-        ref={curtainLeftRef}
-        className="absolute inset-y-0 left-0 w-1/2 bg-[#050505] border-r border-white/10 shadow-[25px_0_50px_rgba(0,0,0,0.95)] z-20 will-change-transform"
-        style={{ transform: 'translateZ(0)' }}
-      />
-
-      {/* Right Cinema Shutter Curtain (Hardware Accelerated) */}
-      <div
-        ref={curtainRightRef}
-        className="absolute inset-y-0 right-0 w-1/2 bg-[#050505] border-l border-white/10 shadow-[-25px_0_50px_rgba(0,0,0,0.95)] z-20 will-change-transform"
-        style={{ transform: 'translateZ(0)' }}
-      />
-
-      {/* Minimalist Viewfinder Crop Brackets */}
-      <div className="absolute inset-4 sm:inset-10 pointer-events-none z-25">
-        <div className="absolute top-0 left-0 w-4 h-4 sm:w-5 sm:h-5 border-t border-l border-white/20" />
-        <div className="absolute top-0 right-0 w-4 h-4 sm:w-5 sm:h-5 border-t border-r border-white/20" />
-        <div className="absolute bottom-0 left-0 w-4 h-4 sm:w-5 sm:h-5 border-b border-l border-white/20" />
-        <div className="absolute bottom-0 right-0 w-4 h-4 sm:w-5 sm:h-5 border-b border-r border-white/20" />
-      </div>
-
-      {/* Skip button in top right corner */}
-      <div className="absolute top-5 right-5 sm:top-8 sm:right-8 z-50 pointer-events-auto">
+      {/* Skip option (Accessible, unobtrusive in top corner) */}
+      <div className="absolute top-5 right-5 sm:top-8 sm:right-8 z-30 pointer-events-auto">
         <button
           type="button"
           onClick={() => {
+            sessionStorage.setItem('sr_cinema_intro_seen', 'true');
             (window as any).__sr_intro_running = false;
             document.body.style.overflow = '';
             window.dispatchEvent(new CustomEvent('sr-intro-complete'));
             setActive(false);
           }}
-          className="px-3.5 py-1.5 rounded-full bg-white/[0.06] hover:bg-white/[0.14] border border-white/15 text-neutral-300 hover:text-white transition-all font-mono text-[10px] tracking-widest uppercase cursor-pointer backdrop-blur-md shadow-lg"
+          className="px-3.5 py-1.5 rounded-full bg-white/[0.04] hover:bg-white/[0.1] border border-white/10 text-neutral-400 hover:text-white transition-all font-mono text-[9px] sm:text-[10px] tracking-widest uppercase cursor-pointer backdrop-blur-sm"
         >
           SKIP [ESC]
         </button>
       </div>
 
-      {/* Center Cinematic Stage (GPU Accelerated) */}
+      {/* Center Cinematic Stage Container */}
       <div
-        ref={centerStageRef}
-        className="absolute inset-0 flex flex-col items-center justify-center z-25 pointer-events-none px-4 text-center select-none max-w-full will-change-[transform,opacity]"
+        ref={stageContentRef}
+        className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none px-4 text-center select-none max-w-full will-change-[transform,opacity]"
         style={{ transform: 'translateZ(0)' }}
       >
-        {/* Optical Camera Lens Container */}
+        {/* Optical Center & Logo Container */}
         <div className="relative flex items-center justify-center mb-6 sm:mb-8">
-          {/* Volumetric Optical Backlight Glow */}
+          {/* Subtle Ambient Lighting: Emerges softly from the centre */}
           <div
             ref={ambientGlowRef}
-            className="absolute w-64 h-64 sm:w-88 sm:h-88 md:w-[420px] md:h-[420px] rounded-full pointer-events-none will-change-[transform,opacity]"
+            className="absolute w-72 h-72 sm:w-96 sm:h-96 md:w-[440px] md:h-[440px] rounded-full pointer-events-none will-change-[transform,opacity]"
             style={{
               background:
-                'radial-gradient(circle, rgba(255, 255, 255, 0.12) 0%, rgba(208, 206, 200, 0.05) 40%, rgba(0, 0, 0, 0) 70%)',
+                'radial-gradient(circle, rgba(255, 255, 255, 0.09) 0%, rgba(200, 210, 225, 0.03) 40%, rgba(0, 0, 0, 0) 70%)',
               transform: 'translateZ(0)',
             }}
           />
 
-          {/* Anamorphic Optical Streak Flare */}
-          <div
-            ref={flareBeamRef}
-            className="absolute h-[2px] w-[280px] sm:w-[420px] md:w-[540px] max-w-[90vw] bg-gradient-to-r from-transparent via-[#e2e8f0] to-transparent pointer-events-none opacity-0 shadow-[0_0_20px_rgba(226,232,240,0.9)] will-change-[transform,opacity]"
-            style={{ transform: 'translateZ(0)' }}
-          />
-
-          {/* Outer Lens Barrel Calibration Ring */}
-          <div
-            ref={lensRingRef}
-            className="absolute w-44 h-44 sm:w-56 sm:h-56 md:w-64 md:h-64 rounded-full border border-white/20 pointer-events-none shadow-[0_0_30px_rgba(255,255,255,0.04)] will-change-[transform,opacity]"
-            style={{ transform: 'translateZ(0)' }}
-          >
-            <div className="absolute inset-1 rounded-full border border-dashed border-white/10" />
-          </div>
-
-          {/* The SR Pictures Master Camera Lens Emblem */}
+          {/* Original Master SR PICTURES Logo Asset */}
           <div
             ref={emblemRef}
-            className="relative w-40 h-40 sm:w-52 sm:h-52 md:w-60 md:h-60 rounded-full overflow-hidden shadow-[0_25px_60px_rgba(0,0,0,0.98),0_0_35px_rgba(255,255,255,0.12)] border border-[#d0cec8]/40 bg-black will-change-[transform,opacity]"
+            className="relative w-36 h-36 sm:w-48 sm:h-48 md:w-56 md:h-56 rounded-full overflow-hidden shadow-[0_25px_60px_rgba(0,0,0,0.95),0_0_35px_rgba(255,255,255,0.06)] border border-white/15 bg-black will-change-[transform,opacity]"
             style={{ transform: 'translateZ(0)' }}
           >
             <img
               src="/assets/sr-pictures-emblem.png"
-              alt="The SR Pictures Master Emblem"
+              alt="SR Pictures"
               className="w-full h-full object-contain select-none"
               draggable={false}
             />
 
-            {/* Multi-Coated Lens Glass Iridescent Reflection (Matches Logo Rainbow Sheen) */}
-            <div
-              ref={iridescentGlassRef}
-              className="absolute inset-2 rounded-full pointer-events-none opacity-0 mix-blend-screen will-change-[transform,opacity]"
-              style={{
-                background:
-                  'conic-gradient(from 180deg at 50% 50%, rgba(56,189,248,0.25) 0deg, rgba(168,85,247,0.18) 90deg, rgba(34,197,94,0.22) 180deg, rgba(251,191,36,0.18) 270deg, rgba(56,189,248,0.25) 360deg)',
-                transform: 'translateZ(0)',
-              }}
-            />
-
-            {/* Specular Light Sheen Overlay across Chrome Monogram */}
+            {/* Subtle Metallic Silver Specular Reflection */}
             <div
               ref={sheenRef}
-              className="absolute inset-y-0 w-28 bg-gradient-to-r from-transparent via-white/40 to-transparent -skew-x-25 pointer-events-none mix-blend-overlay will-change-transform"
+              className="absolute inset-y-0 w-24 bg-gradient-to-r from-transparent via-white/30 to-transparent -skew-x-25 pointer-events-none mix-blend-overlay will-change-transform"
               style={{ transform: 'translateZ(0)' }}
             />
           </div>
         </div>
 
-        {/* Studio Typography precisely matching the Master Emblem */}
+        {/* Brand Recognition Typography */}
         <div className="flex flex-col items-center justify-center max-w-full px-2 text-center">
-          <div className="overflow-visible py-1">
-            <h1
-              ref={titleRef}
-              className="flex items-center justify-center flex-wrap gap-2 sm:gap-3 text-lg sm:text-2xl md:text-3xl uppercase font-cinema-title font-medium will-change-[transform,opacity]"
-              style={{ transform: 'translateZ(0)' }}
-            >
-              <span className="text-[#a1a1aa] font-light tracking-[0.25em] text-[0.88em]">
-                THE
-              </span>
-              <span className="font-bold tracking-[0.18em] text-silver-monogram drop-shadow-[0_2px_12px_rgba(255,255,255,0.3)]">
-                SR
-              </span>
-              <span className="font-medium tracking-[0.22em] text-titanium-logo">
-                PICTURES
-              </span>
-            </h1>
-          </div>
+          {/* Brand Name */}
+          <h1
+            ref={titleRef}
+            className="flex items-center justify-center flex-wrap gap-2 sm:gap-2.5 text-lg sm:text-2xl md:text-3xl font-cinema-title font-medium uppercase will-change-[transform,opacity]"
+            style={{ transform: 'translateZ(0)' }}
+          >
+            <span className="text-[#a1a1aa] font-light tracking-[0.25em] text-[0.85em]">
+              THE
+            </span>
+            <span className="font-semibold tracking-[0.2em] text-silver-monogram drop-shadow-[0_2px_10px_rgba(255,255,255,0.2)]">
+              SR
+            </span>
+            <span className="font-medium tracking-[0.24em] text-titanium-logo">
+              PICTURES
+            </span>
+          </h1>
 
-          {/* Subtitle with guaranteed zero overflow on any screen */}
+          {/* Exact Brand Tagline */}
           <div
-            ref={subtitleRef}
-            className="mt-2.5 sm:mt-3 flex items-center justify-center flex-wrap gap-x-2 gap-y-1 text-[9px] sm:text-[11px] font-mono tracking-[0.16em] sm:tracking-[0.22em] uppercase text-[#a1a1aa] max-w-[92vw] text-center will-change-[transform,opacity]"
+            ref={taglineRef}
+            className="mt-2.5 sm:mt-3 flex items-center justify-center gap-2.5 sm:gap-3 text-[10px] sm:text-xs font-mono tracking-[0.26em] sm:tracking-[0.34em] uppercase text-[#a1a1aa] max-w-[92vw] text-center will-change-[transform,opacity]"
             style={{ transform: 'translateZ(0)' }}
           >
             <span className="w-1 h-1 rounded-full bg-[#d0cec8] inline-block shadow-[0_0_6px_rgba(208,206,200,0.6)]" />
-            <span className="whitespace-nowrap">CINEMATOGRAPHY</span>
-            <span className="text-white/30 hidden xs:inline">•</span>
-            <span className="whitespace-nowrap">PHOTOGRAPHY</span>
-            <span className="text-white/30 hidden xs:inline">•</span>
-            <span className="whitespace-nowrap">BENGALURU</span>
+            <span className="whitespace-nowrap">EVERY FRAME TELLS A STORY.</span>
             <span className="w-1 h-1 rounded-full bg-[#d0cec8] inline-block shadow-[0_0_6px_rgba(208,206,200,0.6)]" />
           </div>
         </div>
