@@ -14,6 +14,7 @@ export default function CinematicIntro() {
   const apertureRingRef = useRef<HTMLDivElement>(null);
   const logoWrapperRef = useRef<HTMLDivElement>(null);
   const emblemRef = useRef<HTMLDivElement>(null);
+  const brandTextRef = useRef<HTMLDivElement>(null);
   const sheenRef = useRef<HTMLDivElement>(null);
   const ambientGlowRef = useRef<HTMLDivElement>(null);
 
@@ -82,6 +83,11 @@ export default function CinematicIntro() {
         scale: 0.94,
         force3D: true,
       });
+      gsap.set(brandTextRef.current, {
+        opacity: 0,
+        y: 10,
+        force3D: true,
+      });
       gsap.set(emblemRef.current, {
         opacity: 1,
         scale: 1,
@@ -122,6 +128,17 @@ export default function CinematicIntro() {
           ease: 'power2.out',
         },
         0.15
+      );
+
+      tl.to(
+        brandTextRef.current,
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: 'power2.out',
+        },
+        0.35
       );
 
       // ----------------------------------------------------------------------
@@ -310,7 +327,7 @@ export default function CinematicIntro() {
           }}
         />
 
-        {/* Original SR Pictures Logo Emblem Wrapper */}
+        {/* Original SR Pictures Logo Emblem + Brand Typography Wrapper */}
         <div
           ref={logoWrapperRef}
           className="relative flex items-center justify-center will-change-[transform,opacity]"
@@ -319,7 +336,7 @@ export default function CinematicIntro() {
           {/* Circular Camera-Lens Logo Container */}
           <div
             ref={emblemRef}
-            className="relative w-40 h-40 sm:w-52 sm:h-52 md:w-60 md:h-60 rounded-full overflow-hidden shadow-[0_25px_60px_rgba(0,0,0,0.98),0_0_35px_rgba(216,216,213,0.08)] border will-change-[transform,opacity]"
+            className="relative w-36 h-36 sm:w-48 sm:h-48 md:w-56 md:h-56 rounded-full overflow-hidden shadow-[0_25px_60px_rgba(0,0,0,0.98),0_0_35px_rgba(216,216,213,0.08)] border will-change-[transform,opacity]"
             style={{
               borderColor: 'rgba(216, 216, 213, 0.35)',
               backgroundColor: '#050505',
@@ -339,6 +356,20 @@ export default function CinematicIntro() {
               className="absolute inset-y-0 w-28 bg-gradient-to-r from-transparent via-[#F2F1EB]/55 to-transparent -skew-x-25 pointer-events-none mix-blend-overlay will-change-transform"
               style={{ transform: 'translateZ(0)' }}
             />
+          </div>
+
+          {/* Refined Brand Typography: The SR Pictures */}
+          <div
+            ref={brandTextRef}
+            className="absolute top-[calc(100%+1.25rem)] sm:top-[calc(100%+1.75rem)] left-1/2 -translate-x-1/2 flex flex-col items-center justify-center font-logo-clean text-center whitespace-nowrap select-none will-change-[transform,opacity]"
+          >
+            <div className="flex items-center justify-center gap-2 sm:gap-2.5 text-sm sm:text-lg md:text-xl font-light tracking-[0.28em] sm:tracking-[0.34em] uppercase">
+              <span className="text-[#a1a1aa] font-extralight text-[0.88em]">THE</span>
+              <span className="text-silver-monogram font-medium tracking-[0.22em] drop-shadow-[0_2px_10px_rgba(242,241,235,0.25)]">
+                SR
+              </span>
+              <span className="text-[#D8D8D5] font-light tracking-[0.3em]">PICTURES</span>
+            </div>
           </div>
         </div>
       </div>

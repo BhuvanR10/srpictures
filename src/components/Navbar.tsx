@@ -153,11 +153,11 @@ export default function Navbar() {
                   <img src="/assets/sr-pictures-emblem.png" alt="" aria-hidden="true" className="logo h-10 w-10 object-contain rounded-full transition-transform duration-300 group-hover:scale-105" />
                 </div>
                 <div className="flex flex-col justify-center">
-                  <span className="font-cinema-logo font-medium text-[13px] sm:text-[15px] tracking-[0.2em] leading-none text-white uppercase">
-                    SR PICTURES
+                  <span className="font-cinema-logo font-medium text-[13px] sm:text-[15px] tracking-[0.18em] leading-none text-white uppercase">
+                    The SR Pictures
                   </span>
-                  <span className="text-[9px] font-mono tracking-[0.28em] text-neutral-400 uppercase mt-1">
-                    STUDIO
+                  <span className="text-[9px] font-mono tracking-[0.24em] text-neutral-400 uppercase mt-1">
+                    Studio
                   </span>
                 </div>
               </div>

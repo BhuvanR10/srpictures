@@ -28,7 +28,7 @@ export default function About() {
             <h2 className="heading-style-h2">We are</h2>
           </div>
           <div className="title-wrapper">
-            <h2 className="heading-style-h2">{"SR Pictures®"}</h2>
+            <h2 className="heading-style-h2">{"The SR Pictures®"}</h2>
           </div>
         </div>
 
