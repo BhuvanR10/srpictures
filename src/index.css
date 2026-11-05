@@ -10,18 +10,31 @@ html { scroll-behavior: auto; background: #000; }
 body { background: #000; }
 
 .font-cinema-logo,
-.font-cinema-title {
-  font-family: 'Overused Grotesk', 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+.font-cinema-title,
+.font-logo-clean {
+  font-family: 'Jost', 'Montserrat', 'Helvetica Neue', 'Avenir Next', -apple-system, sans-serif !important;
+}
+
+.text-platinum-silver {
+  color: #D8D8D5;
+}
+
+.text-cool-white {
+  color: #F2F1EB;
+}
+
+.text-graphite-silver {
+  color: #929493;
 }
 
 .text-silver-monogram {
-  background: linear-gradient(180deg, #ffffff 0%, #e2e8f0 40%, #94a3b8 100%);
+  background: linear-gradient(180deg, #F2F1EB 0%, #D8D8D5 50%, #929493 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .text-titanium-logo {
-  background: linear-gradient(180deg, #f8fafc 0%, #d0cec8 50%, #94a3b8 100%);
+  background: linear-gradient(180deg, #F2F1EB 0%, #D8D8D5 60%, #929493 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
