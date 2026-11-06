@@ -8,6 +8,7 @@ interface MainButtonProps {
   external?: boolean;
   target?: string;
   rel?: string;
+  onClick?: (e: React.MouseEvent) => void;
 }
 
 /** Glowing pill button used across every page, supporting both internal routes and external links (e.g. WhatsApp). */
@@ -18,6 +19,7 @@ export default function MainButton({
   external,
   target,
   rel,
+  onClick,
 }: MainButtonProps) {
   const isExternal =
     external ||
@@ -49,6 +51,7 @@ export default function MainButton({
         href={to}
         target={target ?? '_blank'}
         rel={rel ?? 'noopener noreferrer'}
+        onClick={onClick}
         className={`main-button w-inline-block ${className}`.trim()}
       >
         {content}
@@ -57,7 +60,7 @@ export default function MainButton({
   }
 
   return (
-    <Link to={to} className={`main-button w-inline-block ${className}`.trim()}>
+    <Link to={to} onClick={onClick} className={`main-button w-inline-block ${className}`.trim()}>
       {content}
     </Link>
   );

@@ -17,7 +17,16 @@ export default function GallerySection() {
         className="gallery-bottom-cta mt-12 text-center"
       >
         <div className="flex flex-wrap items-center justify-center gap-4">
-          <MainButton to="/categories">View All Categories →</MainButton>
+          <MainButton
+            to="/categories"
+            onClick={() => {
+              window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+              document.documentElement.scrollTop = 0;
+              document.body.scrollTop = 0;
+            }}
+          >
+            View All Categories →
+          </MainButton>
           <MainButton to="/contact">Book Your Date</MainButton>
         </div>
       </motion.div>

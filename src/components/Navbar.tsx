@@ -156,9 +156,6 @@ export default function Navbar() {
                   <span className="font-cinema-logo font-medium text-[13px] sm:text-[15px] tracking-[0.18em] leading-none text-white uppercase">
                     The SR Pictures
                   </span>
-                  <span className="text-[9px] font-mono tracking-[0.24em] text-neutral-400 uppercase mt-1">
-                    Studio
-                  </span>
                 </div>
               </div>
             </Link>

@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { motion, type Variants } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowUpRight } from 'lucide-react';
@@ -32,6 +33,12 @@ export default function Categories() {
     title: 'Categories | The SR Pictures',
     description: 'Browse curated photography and cinematography categories by The SR Pictures.',
   });
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }, []);
 
   return (
     <>
