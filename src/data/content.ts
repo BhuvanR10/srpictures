@@ -1,35 +1,113 @@
-export const testimonials = [
+export interface TestimonialItem {
+  id: number;
+  name: string;
+  role: string;
+  rating: string;
+  quote: string;
+  image: string;
+  poster: string;
+  video: string;
+  duration: string;
+  seconds: number;
+  logo?: string;
+}
+
+export const testimonials: TestimonialItem[] = [
   {
-    "image": "/assets/1Y9A5246-1024x683.jpg",
-    "logo": "/assets/69600a161d680a13439c28e7_logoipsum-311.svg",
-    "rating": "4.9/5",
-    "quote": "\"Their cinematic storytelling made our wedding film feel like a theatrical masterpiece. Every emotion, glance, and laugh was captured with heartfelt elegance.\"",
-    "name": "Pooja & Rohan",
-    "role": "Wedding Film Clients, Bengaluru"
+    id: 1,
+    name: "Pooja & Rohan",
+    role: "Wedding Film, Bengaluru",
+    rating: "5.0/5",
+    quote: "Their cinematic storytelling made our wedding film feel like a theatrical masterpiece. Every emotion, glance, and laugh was captured with heartfelt elegance.",
+    image: "/assets/testimonials/testimonial-1-poster.jpg",
+    poster: "/assets/testimonials/testimonial-1-poster.jpg",
+    video: "/videos/testimonials/testimonial-1.mp4",
+    duration: "0:54",
+    seconds: 54.5
   },
   {
-    "image": "/assets/RSD_8118-1024x683.jpg",
-    "logo": "/assets/695d141bac7f3b06e7c095fe_logoipsum-280.svg",
-    "rating": "5.0/5",
-    "quote": "\"The pre-wedding shoot and couple visuals exceeded all expectations. Masterful lighting, subtle creative direction, and world-class color grading.\"",
-    "name": "Aditi & Karthik",
-    "role": "Pre-Wedding Clients, Bengaluru"
+    id: 2,
+    name: "Aditi & Karthik",
+    role: "Pre-Wedding Shoot, Bengaluru",
+    rating: "5.0/5",
+    quote: "The pre-wedding shoot and couple visuals exceeded all expectations. Masterful lighting, subtle creative direction, and world-class color grading.",
+    image: "/assets/testimonials/testimonial-2-poster.jpg",
+    poster: "/assets/testimonials/testimonial-2-poster.jpg",
+    video: "/videos/testimonials/testimonial-2.mp4",
+    duration: "0:41",
+    seconds: 41.2
   },
   {
-    "image": "/assets/RSD_8625-1024x683.jpg",
-    "logo": "/assets/695d12ddda585e682dab6c24_logoipsum-323.svg",
-    "rating": "5.0/5",
-    "quote": "\"From aerial drone views to interior puja details, their cinematography elevated our family housewarming ceremony tremendously.\"",
-    "name": "Vikram & Deepa Mehta",
-    "role": "Griha Pravesha Clients, Bengaluru"
+    id: 3,
+    name: "Sneha & Varun",
+    role: "Wedding Celebration, Bengaluru",
+    rating: "5.0/5",
+    quote: "From the morning rituals to the evening reception, the team captured every raw, emotional moment seamlessly without ever feeling intrusive.",
+    image: "/assets/testimonials/testimonial-3-poster.jpg",
+    poster: "/assets/testimonials/testimonial-3-poster.jpg",
+    video: "/videos/testimonials/testimonial-3.mp4",
+    duration: "1:02",
+    seconds: 62.0
   },
   {
-    "image": "/assets/RSD_1969-1024x683.jpg",
-    "logo": "/assets/695d147eccc0f009e7d51c2f_logoipsum-317.svg",
-    "rating": "4.9/5",
-    "quote": "\"Working with the SR Pictures team was seamless. They brought our wedding rituals and celebration to life with sheer cinematic energy.\"",
-    "name": "Kavya & Arjun Reddy",
-    "role": "Wedding Clients, Bengaluru"
+    id: 4,
+    name: "Vikram & Deepa Mehta",
+    role: "Griha Pravesha Ceremony, Bengaluru",
+    rating: "5.0/5",
+    quote: "From aerial drone views to interior puja details, their cinematography elevated our family housewarming ceremony tremendously.",
+    image: "/assets/testimonials/testimonial-4-poster.jpg",
+    poster: "/assets/testimonials/testimonial-4-poster.jpg",
+    video: "/videos/testimonials/testimonial-4.mp4",
+    duration: "0:31",
+    seconds: 31.2
+  },
+  {
+    id: 5,
+    name: "Ananya & Nikhil",
+    role: "Destination Wedding Film, Bengaluru",
+    rating: "5.0/5",
+    quote: "The highlight film brought tears to everyone in our family. The music curation, sound design, and color grading look straight out of a feature film.",
+    image: "/assets/testimonials/testimonial-5-poster.jpg",
+    poster: "/assets/testimonials/testimonial-5-poster.jpg",
+    video: "/videos/testimonials/testimonial-5.mp4",
+    duration: "1:19",
+    seconds: 79.6
+  },
+  {
+    id: 6,
+    name: "Kavya & Arjun Reddy",
+    role: "Wedding Rituals & Reception, Bengaluru",
+    rating: "5.0/5",
+    quote: "Working with the SR Pictures team was seamless. They brought our wedding rituals and celebration to life with sheer cinematic energy and finesse.",
+    image: "/assets/testimonials/testimonial-6-poster.jpg",
+    poster: "/assets/testimonials/testimonial-6-poster.jpg",
+    video: "/videos/testimonials/testimonial-6.mp4",
+    duration: "1:11",
+    seconds: 71.0
+  },
+  {
+    id: 7,
+    name: "Meera & Siddharth",
+    role: "Pre-Wedding Shoot, Bengaluru",
+    rating: "5.0/5",
+    quote: "They made us feel so comfortable in front of the camera. The candid shots and drone angles are absolutely breathtaking.",
+    image: "/assets/testimonials/testimonial-7-poster.jpg",
+    poster: "/assets/testimonials/testimonial-7-poster.jpg",
+    video: "/videos/testimonials/testimonial-7.mp4",
+    duration: "1:05",
+    seconds: 65.6
+  },
+  {
+    id: 8,
+    name: "Rhea & Aditya",
+    role: "Automotive Film & Delivery, Bengaluru",
+    rating: "5.0/5",
+    quote: "Top-tier professionalism and stunning visual production. Delivered our cinematic teaser in record time with incredible quality.",
+    image: "/assets/testimonials/testimonial-8-poster.jpg",
+    poster: "/assets/testimonials/testimonial-8-poster.jpg",
+    video: "/videos/testimonials/testimonial-8.mp4",
+    duration: "0:26",
+    seconds: 26.6
   }
 ];
 export const faqItems = [
