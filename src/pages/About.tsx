@@ -20,7 +20,7 @@ export default function About() {
     <header className="section-about-header relative overflow-hidden min-h-[90vh] flex flex-col justify-between">
       {/* Background Video */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-        <Video className="background-video" poster="/assets/692764d4fd31a6bc0c913752_12566516_3840_2160_30fps_poster.0000000.jpg" src="/assets/692764d4fd31a6bc0c913752_12566516_3840_2160_30fps_mp4.mp4" />
+        <Video className="background-video" poster="/assets/692764d4fd31a6bc0c913752_12566516_3840_2160_30fps_poster.0000000.jpg" src="/assets/692764d4fd31a6bc0c913752_12566516_3840_2160_30fps_mp4.mp4" priority />
         <div className="video-opacity"></div>
       </div>
 

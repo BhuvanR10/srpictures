@@ -6,30 +6,55 @@ interface VideoProps {
   poster: string;
   src: string;
   label?: string;
+  priority?: boolean;
 }
 
 /**
  * Background video (Webflow "w-background-video" equivalent).
- * - Lazy: src is only assigned when near/in the viewport.
+ * - Priority: For hero banners, loads immediately and ensures bulletproof autoplay on live HTTPS domains.
+ * - Lazy: Other videos only load src when near/in the viewport.
  * - Plays only while visible; pauses when scrolled off-screen to preserve CPU/GPU.
  * - Decorative: hidden from assistive tech, poster stays visible when paused.
  */
-export default function Video({ className = '', poster, src, label }: VideoProps) {
+export default function Video({ className = '', poster, src, label, priority = false }: VideoProps) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [near, setNear] = useState(false);
-  const visibleRef = useRef(false);
+  const [near, setNear] = useState(priority);
+  const visibleRef = useRef(priority);
 
   useEffect(() => {
+    const v = videoRef.current;
+    if (v) {
+      v.muted = true;
+      v.defaultMuted = true;
+      if (priority && !isMotionPaused()) {
+        const p = v.play();
+        if (p !== undefined) {
+          p.catch(() => {
+            // If browser blocked unprompted autoplay (e.g. low power mode), play on first touch/scroll
+            const unlock = () => {
+              v.play().catch(() => {});
+              window.removeEventListener('touchstart', unlock);
+              window.removeEventListener('click', unlock);
+              window.removeEventListener('scroll', unlock);
+            };
+            window.addEventListener('touchstart', unlock, { once: true, passive: true });
+            window.addEventListener('click', unlock, { once: true });
+            window.addEventListener('scroll', unlock, { once: true, passive: true });
+          });
+        }
+      }
+    }
+
     const wrap = wrapRef.current;
     if (!wrap) return;
     const sync = () => {
-      const v = videoRef.current;
-      if (!v) return;
+      const vid = videoRef.current;
+      if (!vid) return;
       if (visibleRef.current && !isMotionPaused()) {
-        v.play().catch(() => undefined);
+        vid.play().catch(() => undefined);
       } else {
-        v.pause();
+        vid.pause();
       }
     };
     const io = new IntersectionObserver(
@@ -48,7 +73,7 @@ export default function Video({ className = '', poster, src, label }: VideoProps
       io.disconnect();
       off();
     };
-  }, []);
+  }, [priority]);
 
   useEffect(() => {
     if (near && videoRef.current && visibleRef.current && !isMotionPaused()) {
@@ -66,13 +91,14 @@ export default function Video({ className = '', poster, src, label }: VideoProps
     >
       <video
         ref={videoRef}
+        autoPlay
         loop
         muted
         playsInline
-        preload="metadata"
+        preload={priority ? 'auto' : 'metadata'}
         poster={poster}
         style={{ backgroundImage: `url("${poster}")` }}
-        src={near ? src : undefined}
+        src={priority || near ? src : undefined}
         tabIndex={-1}
       />
     </div>
