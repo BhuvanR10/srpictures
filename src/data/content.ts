@@ -15,15 +15,15 @@ export interface TestimonialItem {
 export const testimonials: TestimonialItem[] = [
   {
     id: 1,
-    name: "Aishwarya & Karthik",
-    role: "PRE-WEDDING & COUPLE SHOOT, BENGALURU",
+    name: "Manjunath Gowda",
+    role: "DRONE & EVENT CINEMATOGRAPHY, BENGALURU",
     rating: "5.0/5",
-    quote: "Looking back at the footage takes us right back to those beautiful moments. With minimal takes, the team captured genuine raw emotions and effortless candid chemistry.",
-    image: "/assets/testimonials/testimonial-1-poster.jpg",
-    poster: "/assets/testimonials/testimonial-1-poster.jpg",
-    video: "/videos/testimonials/testimonial-1.mp4",
-    duration: "0:54",
-    seconds: 54.5
+    quote: "Very good professional photography and drone team! The aerial drone shots and overall event cinematography came out extraordinarily well. Best of luck to the entire SR Pictures crew!",
+    image: "/assets/testimonials/testimonial-8-poster.jpg",
+    poster: "/assets/testimonials/testimonial-8-poster.jpg",
+    video: "/videos/testimonials/testimonial-8.mp4",
+    duration: "0:26",
+    seconds: 26.6
   },
   {
     id: 2,
@@ -99,15 +99,15 @@ export const testimonials: TestimonialItem[] = [
   },
   {
     id: 8,
-    name: "Manjunath Gowda",
-    role: "DRONE & EVENT CINEMATOGRAPHY, BENGALURU",
+    name: "Aishwarya & Karthik",
+    role: "PRE-WEDDING & COUPLE SHOOT, BENGALURU",
     rating: "5.0/5",
-    quote: "Very good professional photography and drone team! The aerial drone shots and overall event cinematography came out extraordinarily well. Best of luck to the entire SR Pictures crew!",
-    image: "/assets/testimonials/testimonial-8-poster.jpg",
-    poster: "/assets/testimonials/testimonial-8-poster.jpg",
-    video: "/videos/testimonials/testimonial-8.mp4",
-    duration: "0:26",
-    seconds: 26.6
+    quote: "Looking back at the footage takes us right back to those beautiful moments. With minimal takes, the team captured genuine raw emotions and effortless candid chemistry.",
+    image: "/assets/testimonials/testimonial-1-poster.jpg",
+    poster: "/assets/testimonials/testimonial-1-poster.jpg",
+    video: "/videos/testimonials/testimonial-1.mp4",
+    duration: "0:54",
+    seconds: 54.5
   }
 ];
 export const faqItems = [
