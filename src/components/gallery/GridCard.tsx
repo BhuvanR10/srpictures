@@ -65,9 +65,7 @@ export default function GridCard({ data, onOpenLightbox, onClick }: GridCardProp
             loop
             muted
             playsInline
-            // preload="none" prevents the browser from pre-fetching 12 video streams
-            // into memory simultaneously. The poster WebP displays instantly instead.
-            preload="none"
+            preload="metadata"
             className="w-full h-full object-cover"
           />
         ) : (

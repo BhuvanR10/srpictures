@@ -15,22 +15,62 @@ export default function Home() {
     title: 'Cinematic Wedding & Commercial Studio',
     description: 'Premier photography and cinematography studio based in Bengaluru. Crafting authentic, cinematic stories with natural light and high-end cine optics.',
   });
+
+  const handleScrollToGallery = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const gallery = document.getElementById('gallery');
+    if (gallery) {
+      gallery.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
   return (
     <>
     <div id="top" className="top"></div>
     <header className="section-home-header">
       <div className="w-layout-grid header-component-grid">
         <div id="w-node-cd060b03-ce5d-09c9-ac8d-89dcbc0c13eb-805165a1" className="background-video-wrapper">
-          <Video className="background-video" poster="/assets/692764d4fd31a6bc0c913752_12566516_3840_2160_30fps_poster.0000000.jpg" src="/assets/hero-bg-1080p.mp4" />
+          <Video className="background-video !opacity-75" poster="/assets/hero-cinematic-poster.jpg" src="/assets/hero-bg-1080p.mp4" />
           <div className="video-opacity"></div>
+        </div>
+
+        {/* Compact, Refined Brand Title & Tagline (Non-obstructive) */}
+        <div
+          id="w-node-_6b2e6d2c-c1f7-7cdc-d3b5-95a983e74de7-805165a1"
+          className="z-10 flex flex-col items-center justify-center text-center px-4 select-none pointer-events-none"
+        >
+          <div className="flex flex-col items-center justify-center max-w-xl">
+            {/* Brand Title */}
+            <h1 className="font-logo-clean text-xl sm:text-3xl md:text-4xl font-light tracking-[0.24em] sm:tracking-[0.3em] text-white uppercase drop-shadow-[0_2px_18px_rgba(0,0,0,0.95)]">
+              The SR Pictures
+            </h1>
+
+            {/* Subtle Metallic Lens Accent Line */}
+            <div className="flex items-center gap-2.5 sm:gap-3 my-2 sm:my-2.5 opacity-70">
+              <div className="w-6 sm:w-10 h-[1px] bg-gradient-to-r from-transparent to-[#D8D8D5]" />
+              <span className="w-1.5 h-1.5 rounded-full bg-[#D8D8D5] shadow-[0_0_8px_rgba(242,241,235,0.7)]" />
+              <div className="w-6 sm:w-10 h-[1px] bg-gradient-to-l from-transparent to-[#D8D8D5]" />
+            </div>
+
+            {/* Official Studio Tagline */}
+            <p className="font-mono text-[10px] sm:text-[11px] md:text-xs tracking-[0.24em] sm:tracking-[0.3em] text-[#D8D8D5] uppercase drop-shadow-[0_2px_10px_rgba(0,0,0,0.95)]">
+              Every Frame Tells A Story
+            </p>
+          </div>
         </div>
 
         <div id="w-node-a6327672-a489-8e8e-89e9-2601a1ceeff9-805165a1" className="padding-global">
           <div className="container-large">
             <div className="w-layout-grid header-content-grid">
-              <div id="w-node-a6327672-a489-8e8e-89e9-2601a1cef006-805165a1" className="scroll-down-wrap">
-                <div className="scroll-down-block">
-                  <div className="arrow-down w-embed">
+              <a
+                href="#gallery"
+                onClick={handleScrollToGallery}
+                id="w-node-a6327672-a489-8e8e-89e9-2601a1cef006-805165a1"
+                className="scroll-down-wrap group cursor-pointer select-none text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 rounded-2xl p-1 -m-1 transition-all"
+                aria-label="View portfolio - scroll down to gallery"
+              >
+                <div className="scroll-down-block transition-all duration-300 group-hover:scale-105 group-hover:shadow-[0_0_30px_rgba(255,255,255,0.18)] group-active:scale-95">
+                  <div className="arrow-down w-embed transition-transform duration-300 group-hover:translate-y-1">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                       <path d="M13.0001 16.1716L18.3641 10.8076L19.7783 12.2218L12.0001 20L4.22192 12.2218L5.63614 10.8076L11.0001 16.1716V4H13.0001V16.1716Z"></path>
                     </svg>
@@ -42,8 +82,10 @@ export default function Home() {
                   <div className="scroll-down-background"></div>
                   <div className="scroll-down-background _02"></div>
                 </div>
-                <div className="header-text">SCROLL DOWN</div>
-              </div>
+                <div className="header-text font-mono text-[11px] tracking-[0.24em] uppercase text-neutral-400 group-hover:text-white transition-colors duration-200">
+                  VIEW PORTFOLIO
+                </div>
+              </a>
               <div id="w-node-a6327672-a489-8e8e-89e9-2601a1ceeffc-805165a1" className="location-wrap">
                 <div className="header-text">BASED IN BENGALURU, INDIA</div>
                 <div className="location-icon w-embed">

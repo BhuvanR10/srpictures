@@ -69,7 +69,7 @@ export default function Video({ className = '', poster, src, label }: VideoProps
         loop
         muted
         playsInline
-        preload="none"
+        preload="metadata"
         poster={poster}
         style={{ backgroundImage: `url("${poster}")` }}
         src={near ? src : undefined}

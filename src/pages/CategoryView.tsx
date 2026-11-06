@@ -49,6 +49,7 @@ class DomeErrorBoundary extends Component<
 export default function CategoryView() {
   const { slug } = useParams<{ slug: string }>();
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [domeLoaded, setDomeLoaded] = useState(false);
 
   const category = CATEGORIES_DATA.find((c) => c.slug === slug || c.id === slug);
   const imageSources = useMemo(() => category?.images.map((img) => img.src) || [], [category?.images]);
@@ -155,14 +156,22 @@ export default function CategoryView() {
                 enableDrag={true}
                 enableWheel={true}
                 openOnClick={false}
+                onLoad={() => setDomeLoaded(true)}
                 onTileClick={(idx) => setLightboxIndex(idx)}
               />
             </DomeErrorBoundary>
 
-            {/* Subtle editorial hint */}
-            <div className="absolute bottom-5 right-6 z-20 pointer-events-none text-[11px] font-mono tracking-widest uppercase text-white/35">
-              Drag to explore • Click to open
-            </div>
+            {/* Subtle editorial hint — fades in only after dome is loaded */}
+            {domeLoaded && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.6 }}
+                className="absolute bottom-5 right-6 z-20 pointer-events-none text-[11px] font-mono tracking-widest uppercase text-white/35"
+              >
+                Drag to explore • Click to open
+              </motion.div>
+            )}
           </div>
         ) : (
           /* Minimal waiting state */

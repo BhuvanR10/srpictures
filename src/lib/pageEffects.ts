@@ -179,8 +179,8 @@ export function setupPage(): () => void {
     qa('.roll-number-wrapper').forEach((wrapper) => {
       const block = wrapper.closest('.number-block');
       const second = block?.classList.contains('_02');
-      // _01 is single digit '+8' -> roll to 8 (-800%), _02 is '98%' -> roll to 9, 8 (-900%, -800%)
-      const targets = second ? [-900, -800] : [-800];
+      // _01 is single digit '+8' -> roll to 8 (-800%), _02 is '99%' -> roll to 9, 9 (-900%, -900%)
+      const targets = second ? [-900, -900] : [-800];
       const cols = qa('.roll-number', wrapper);
       gsap.set(cols, { yPercent: 0 });
       const run = () =>

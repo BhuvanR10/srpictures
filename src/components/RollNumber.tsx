@@ -20,7 +20,7 @@ export default function RollNumber({
       ))}
     </div>
   );
-  const displayVal = explicitValue ?? `${prefix ?? ''}${prefix ? '8' : '98'}${suffix ?? ''}`;
+  const displayVal = explicitValue ?? `${prefix ?? ''}${prefix ? '8' : '99'}${suffix ?? ''}`;
   return (
     <div className="roll-number-wrapper" role="img" aria-label={displayVal}>
       {prefix && <div className="section-number alternate" aria-hidden="true">{prefix}</div>}

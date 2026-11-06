@@ -13,6 +13,7 @@ import React, {
 import * as THREE from "three";
 import { Canvas, useFrame, useThree, extend } from "@react-three/fiber";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import ApertureLoader from "./ApertureLoader";
 
 // Register Three.js JSX elements for R3F catalogue
 extend({ Mesh: THREE.Mesh, ShaderMaterial: THREE.ShaderMaterial });
@@ -1403,6 +1404,21 @@ export const InvertedDome: React.FC<InvertedDomeProps> = ({
           />
         )}
       </div>
+
+      {/* Theme-Matched Aperture Loading State */}
+      <AnimatePresence>
+        {!ready && (
+          <motion.div
+            key="dome-loading-overlay"
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+            className="absolute inset-0 z-30 flex flex-col items-center justify-center bg-black/95 backdrop-blur-sm pointer-events-none"
+          >
+            <ApertureLoader label="Loading Inverted Dome Gallery..." size="lg" />
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {children && (
         <div className="pointer-events-none relative z-10 h-full w-full">

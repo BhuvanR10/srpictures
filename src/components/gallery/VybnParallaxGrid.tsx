@@ -3,6 +3,7 @@ import { motion, useScroll, useTransform, useSpring, AnimatePresence } from 'fra
 import { ExternalLink, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import GridCard, { type GridCardData } from './GridCard';
 import { ALL_DRIVE_VIDEOS } from './driveVideos';
+import ApertureLoader from '../ApertureLoader';
 
 const DRIVE_FOLDER_URL =
   'https://drive.google.com/drive/folders/1hYNyWCCkXjLcJmaMT8-mHCOU9c68-jaI';
@@ -150,6 +151,11 @@ export default function VybnParallaxGrid() {
                 <ChevronLeft size={22} />
               </button>
 
+              {/* Video Buffering Placeholder Loader */}
+              <div className="absolute inset-0 flex items-center justify-center -z-10 pointer-events-none">
+                <ApertureLoader label="Buffering 4K Master..." size="md" />
+              </div>
+
               {/* Instant Native HD Video Player */}
               <motion.video
                 key={lightboxData.id}
@@ -159,6 +165,7 @@ export default function VybnParallaxGrid() {
                 controls
                 loop
                 playsInline
+                preload="metadata"
                 initial={{ scale: 0.94, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ type: 'spring', stiffness: 350, damping: 28 }}
