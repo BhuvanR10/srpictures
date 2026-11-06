@@ -4,7 +4,7 @@ import { slideLeft01, slideLeft02, slideRight01, slideRight02, starPath } from '
 import { testimonialIds, testimonials, type TestimonialItem } from '../data/content';
 import { isMotionPaused, subscribeMotion } from '../lib/motion';
 
-const DELAY = 5000; // autoplay delay
+const DELAY = 6000; // autoplay delay
 const DURATION = 500; // slide transition
 
 function Arrow({ d, cls }: { d: string; cls: string }) {
@@ -19,12 +19,12 @@ function Arrow({ d, cls }: { d: string; cls: string }) {
 
 /**
  * Editorial Video Testimonial Carousel
- * Seamlessly integrates authentic portrait client video reviews into the studio's
- * minimalist, luxury Webflow design system with custom playback and audio controls.
+ * Mobile layout matching the phone interface design with crisp 4:3 / portrait preview,
+ * authentic rating, clean bold typography, and desktop split-card experience.
  */
 export default function TestimonialSlider({
   page = 'home',
-  withDivider = true,
+  withDivider = false,
 }: {
   page?: 'home' | 'pricing';
   withDivider?: boolean;
@@ -139,7 +139,7 @@ export default function TestimonialSlider({
         }}
       >
         <div
-          className="mask w-slider-mask"
+          className="mask w-slider-mask relative min-h-[620px] sm:min-h-[580px] lg:min-h-[540px]"
           style={{ touchAction: 'pan-y' }}
           onPointerDown={(e) => {
             if (e.pointerType === 'mouse') return;
@@ -162,8 +162,8 @@ export default function TestimonialSlider({
 
             return (
               <div
-                key={t.name}
-                className="testimonial-slide w-slide"
+                key={t.id || t.name}
+                className="testimonial-slide w-slide absolute inset-0 w-full h-full"
                 role="group"
                 aria-roledescription="slide"
                 aria-label={`${i + 1} of ${n}`}
@@ -175,136 +175,154 @@ export default function TestimonialSlider({
                   pointerEvents: isCurrent ? 'auto' : 'none',
                 }}
               >
-                <div className="testimonial-content-wrap">
-                  <div className="w-layout-grid testimonial-grid">
+                {/* CARD CONTAINER: Dark background with luxury top/left highlight */}
+                <div className="testimonial-content-wrap bg-[#141416] border border-white/10 rounded-[28px] p-5 sm:p-7 lg:p-9 shadow-2xl relative overflow-hidden">
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-center">
                     
-                    {/* LEFT COLUMN: Cinematic Video Frame */}
-                    <div id={imgId} className="testimonial-image-wrap group select-none relative bg-neutral-950">
-                      <video
-                        ref={(el) => {
-                          videoRefs.current[i] = el;
-                        }}
-                        src={t.video}
-                        poster={t.poster}
-                        preload="metadata"
-                        playsInline
-                        className="cover-image cursor-pointer w-full h-full object-cover"
-                        onClick={() => togglePlay()}
-                        onTimeUpdate={(e) => {
-                          if (isCurrent) {
-                            const target = e.target as HTMLVideoElement;
-                            if (target.duration) {
-                              setProgress((target.currentTime / target.duration) * 100);
+                    {/* VIDEO CONTAINER: 4:3 / phone crop on mobile, 9:16 portrait on desktop */}
+                    <div className="lg:col-span-5 flex justify-center w-full">
+                      <div
+                        id={imgId}
+                        className="relative w-full aspect-[4/3] sm:aspect-[16/10] lg:aspect-[9/16] lg:max-w-[320px] rounded-2xl overflow-hidden select-none bg-neutral-950 border border-white/10 shadow-lg group"
+                      >
+                        <video
+                          ref={(el) => {
+                            videoRefs.current[i] = el;
+                          }}
+                          src={t.video}
+                          poster={t.poster}
+                          preload="metadata"
+                          playsInline
+                          className="w-full h-full object-cover cursor-pointer"
+                          onClick={() => togglePlay()}
+                          onTimeUpdate={(e) => {
+                            if (isCurrent) {
+                              const target = e.target as HTMLVideoElement;
+                              if (target.duration) {
+                                setProgress((target.currentTime / target.duration) * 100);
+                              }
                             }
-                          }
-                        }}
-                        onEnded={() => {
-                          setIsPlaying(false);
-                          setProgress(0);
-                        }}
-                      />
+                          }}
+                          onEnded={() => {
+                            setIsPlaying(false);
+                            setProgress(0);
+                          }}
+                        />
 
-                      {/* Minimalist Top Corner Badge */}
-                      <div className="absolute top-4 left-4 right-4 flex items-center justify-between pointer-events-none z-10">
-                        <span className="text-[10px] font-mono tracking-[0.2em] uppercase text-neutral-300 bg-black/50 px-2.5 py-1 rounded backdrop-blur-md border border-white/10">
-                          {isCurrent && isPlaying ? 'Playing' : 'Client Film'}
-                        </span>
-                        <span className="text-[10px] font-mono tracking-[0.16em] text-neutral-400 bg-black/50 px-2 py-0.5 rounded backdrop-blur-md border border-white/10">
-                          {t.duration}
-                        </span>
-                      </div>
-
-                      {/* Central Cinematic Play Button */}
-                      <div
-                        className={`absolute inset-0 flex items-center justify-center transition-all duration-300 pointer-events-none z-10 ${
-                          isCurrent && isPlaying ? 'opacity-0 group-hover:opacity-100' : 'opacity-100'
-                        }`}
-                      >
-                        <button
-                          type="button"
-                          onClick={(e) => togglePlay(e)}
-                          className="pointer-events-auto w-14 h-14 rounded-full bg-black/50 hover:bg-white text-white hover:text-black flex items-center justify-center backdrop-blur-md transition-all duration-300 hover:scale-105 border border-white/20 shadow-xl"
-                          aria-label={isCurrent && isPlaying ? 'Pause video' : 'Play video'}
-                        >
-                          {isCurrent && isPlaying ? (
-                            <Pause className="w-5 h-5 fill-current" />
-                          ) : (
-                            <Play className="w-5 h-5 fill-current ml-0.5" />
-                          )}
-                        </button>
-                      </div>
-
-                      {/* Floating Audio Controls & Progress Line */}
-                      <div
-                        className={`absolute bottom-0 inset-x-0 p-3 bg-gradient-to-t from-black/80 via-black/40 to-transparent transition-opacity duration-300 z-10 flex flex-col gap-2 ${
-                          isCurrent && isPlaying ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
-                        }`}
-                      >
-                        <div className="flex items-center justify-between px-1">
-                          <button
-                            type="button"
-                            onClick={toggleMute}
-                            className="p-1.5 rounded-full bg-black/50 hover:bg-black/80 text-white/80 hover:text-white border border-white/15 backdrop-blur-md transition-colors"
-                            aria-label={isMuted ? 'Unmute' : 'Mute'}
-                          >
-                            {isMuted ? (
-                              <VolumeX className="w-3.5 h-3.5 text-neutral-400" />
-                            ) : (
-                              <Volume2 className="w-3.5 h-3.5" />
-                            )}
-                          </button>
-                          <span className="text-[10px] font-mono tracking-widest text-neutral-400">
-                            {String(i + 1).padStart(2, '0')} / {String(n).padStart(2, '0')}
+                        {/* Top-Left: CLIENT FILM */}
+                        <div className="absolute top-3.5 left-3.5 pointer-events-none z-10">
+                          <span className="text-[10px] sm:text-[11px] font-mono tracking-[0.2em] uppercase text-neutral-200 bg-black/60 px-3 py-1.5 rounded-md backdrop-blur-md border border-white/10">
+                            {isCurrent && isPlaying ? 'PLAYING' : 'CLIENT FILM'}
                           </span>
                         </div>
 
-                        {/* Minimalist Progress Line */}
-                        <div className="w-full h-[2px] bg-white/20 rounded-full overflow-hidden">
-                          <div
-                            className="h-full bg-white transition-all duration-150"
-                            style={{ width: `${progress}%` }}
-                          />
+                        {/* Top-Right: DURATION */}
+                        <div className="absolute top-3.5 right-3.5 pointer-events-none z-10">
+                          <span className="text-[10px] sm:text-[11px] font-mono tracking-widest text-neutral-300 bg-black/60 px-2.5 py-1.5 rounded-md backdrop-blur-md border border-white/10">
+                            {t.duration}
+                          </span>
+                        </div>
+
+                        {/* Center: Circular Glass Play Button */}
+                        <div
+                          className={`absolute inset-0 flex items-center justify-center transition-all duration-300 pointer-events-none z-10 ${
+                            isCurrent && isPlaying ? 'opacity-0 group-hover:opacity-100' : 'opacity-100'
+                          }`}
+                        >
+                          <button
+                            type="button"
+                            onClick={(e) => togglePlay(e)}
+                            className="pointer-events-auto w-14 h-14 rounded-full bg-black/60 hover:bg-white text-white hover:text-black flex items-center justify-center backdrop-blur-md transition-all duration-300 hover:scale-105 border border-white/20 shadow-xl"
+                            aria-label={isCurrent && isPlaying ? 'Pause video' : 'Play video'}
+                          >
+                            {isCurrent && isPlaying ? (
+                              <Pause className="w-5 h-5 fill-current" />
+                            ) : (
+                              <Play className="w-5 h-5 fill-current ml-0.5" />
+                            )}
+                          </button>
+                        </div>
+
+                        {/* Bottom: Progress line & Mute toggle */}
+                        <div
+                          className={`absolute bottom-0 inset-x-0 p-3 bg-gradient-to-t from-black/85 via-black/40 to-transparent transition-opacity duration-300 z-10 flex flex-col gap-2 ${
+                            isCurrent && isPlaying ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+                          }`}
+                        >
+                          <div className="flex items-center justify-between px-1">
+                            <button
+                              type="button"
+                              onClick={toggleMute}
+                              className="p-1.5 rounded-full bg-black/60 hover:bg-black/90 text-white/90 hover:text-white border border-white/15 backdrop-blur-md transition-colors"
+                              aria-label={isMuted ? 'Unmute' : 'Mute'}
+                            >
+                              {isMuted ? (
+                                <VolumeX className="w-3.5 h-3.5 text-neutral-400" />
+                              ) : (
+                                <Volume2 className="w-3.5 h-3.5" />
+                              )}
+                            </button>
+                            <span className="text-[10px] font-mono tracking-widest text-neutral-400">
+                              {String(i + 1).padStart(2, '0')} / {String(n).padStart(2, '0')}
+                            </span>
+                          </div>
+
+                          <div className="w-full h-[2px] bg-white/20 rounded-full overflow-hidden">
+                            <div
+                              className="h-full bg-white transition-all duration-150"
+                              style={{ width: `${progress}%` }}
+                            />
+                          </div>
                         </div>
                       </div>
                     </div>
 
-                    {/* RIGHT COLUMN: Editorial Review Content */}
-                    <div id={blockId} className="testimonial-content-block">
-                      <div className="w-layout-grid testimonial-content-grid">
-                        <div className="testimonial-content">
-                          <div className="rating-wrap">
-                            <div className="text-size-regular text-color-secondary">{t.rating}</div>
-                            <div className="text-size-regular text-color-secondary" aria-hidden="true">
-                              -
-                            </div>
-                            <div className="star-rating-block" role="img" aria-label={`Rated ${t.rating}`}>
-                              {[0, 1, 2, 3, 4].map((s) => (
-                                <div className="review-star w-embed" key={s} aria-hidden="true">
-                                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d={starPath}></path>
-                                  </svg>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                          {withDivider && <div className="dividing-line"></div>}
-                          <p className="text-size-large">{`"${t.quote}"`}</p>
-                        </div>
-                        <div id={contentId} className="testimonial-content">
-                          <div className="testimonial-info">
-                            <div className="text-size-medium font-cinema-sub tracking-wide">{t.name}</div>
-                            <div className="text-size-regular text-color-secondary font-mono text-xs uppercase tracking-wider mt-0.5">
-                              {t.role}
-                            </div>
+                    {/* REVIEW DETAILS & TEXT CONTENT */}
+                    <div id={blockId} className="lg:col-span-7 flex flex-col justify-between h-full relative">
+                      <div>
+                        {/* Rating row: 5.0/5  -  ★★★★★ */}
+                        <div className="flex items-center gap-2.5 text-sm sm:text-base mb-4 sm:mb-5">
+                          <span className="font-mono text-white font-medium">{t.rating}</span>
+                          <span className="text-neutral-500 font-mono text-sm" aria-hidden="true">-</span>
+                          <div className="flex items-center gap-1" role="img" aria-label={`Rated ${t.rating}`}>
+                            {[0, 1, 2, 3, 4].map((s) => (
+                              <div className="w-embed text-white" key={s} aria-hidden="true">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 fill-white">
+                                  <path d={starPath}></path>
+                                </svg>
+                              </div>
+                            ))}
                           </div>
                         </div>
+
+                        {withDivider && <div className="dividing-line mb-5"></div>}
+
+                        {/* Bold quote matching phone interface */}
+                        <p className="text-white text-base sm:text-lg md:text-xl font-semibold leading-relaxed tracking-normal">
+                          &ldquo;{t.quote}&rdquo;
+                        </p>
                       </div>
-                      <img
-                        className="quote-icon"
-                        src="/assets/695ffd835d32c9c7b020916d_quote-right-icon-1.svg"
-                        alt=""
-                        loading="lazy"
-                      />
+
+                      {/* Author & Event info with background watermark quote icon */}
+                      <div id={contentId} className="mt-6 sm:mt-8 pt-4 border-t border-white/5 relative flex items-end justify-between">
+                        <div>
+                          <div className="text-white font-medium sm:font-semibold text-base sm:text-lg tracking-wide">
+                            {t.name}
+                          </div>
+                          <div className="text-neutral-400 font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.18em] mt-1">
+                            {t.role}
+                          </div>
+                        </div>
+
+                        {/* Subtle watermark quote icon in bottom-right matching screenshot */}
+                        <img
+                          className="w-14 h-14 sm:w-18 sm:h-18 opacity-[0.08] pointer-events-none select-none"
+                          src="/assets/695ffd835d32c9c7b020916d_quote-right-icon-1.svg"
+                          alt=""
+                          loading="lazy"
+                        />
+                      </div>
+
                     </div>
                   </div>
                 </div>
@@ -313,7 +331,7 @@ export default function TestimonialSlider({
           })}
         </div>
 
-        {/* AUTHENTIC WEBFLOW PREVIOUS ARROW BUTTON */}
+        {/* AUTHENTIC PREVIOUS ARROW BUTTON */}
         <div
           className="left-arrow w-slider-arrow-left"
           role="button"
@@ -334,7 +352,7 @@ export default function TestimonialSlider({
           </div>
         </div>
 
-        {/* AUTHENTIC WEBFLOW NEXT ARROW BUTTON */}
+        {/* AUTHENTIC NEXT ARROW BUTTON */}
         <div
           className="right-arrow w-slider-arrow-right"
           role="button"
