@@ -51,14 +51,19 @@ export default function Video({ className = '', poster, src, label, priority = f
     };
 
     if (priority) {
-      // Trigger immediate playback attempt
+      // Force immediate source load & play
+      try {
+        v.load();
+      } catch {
+        // ignore load errors if already loading
+      }
       playVideo();
 
-      // Ensure playback resumes once enough data is buffered
+      // Ensure playback triggers as soon as frames are ready
       v.addEventListener('canplay', playVideo, { once: true });
       v.addEventListener('loadeddata', playVideo, { once: true });
 
-      // If cinematic intro was playing, trigger playback as soon as intro reveals the screen
+      // If cinematic intro was playing, re-trigger playback on intro handoff
       const handleIntroComplete = () => {
         playVideo();
       };
@@ -70,7 +75,7 @@ export default function Video({ className = '', poster, src, label, priority = f
         window.removeEventListener('sr-intro-complete', handleIntroComplete);
       };
     }
-  }, [priority]);
+  }, [priority, src]);
 
   useEffect(() => {
     const wrap = wrapRef.current;
@@ -121,6 +126,7 @@ export default function Video({ className = '', poster, src, label, priority = f
     >
       <video
         ref={videoRef}
+        src={priority || near ? src : undefined}
         autoPlay
         loop
         muted
