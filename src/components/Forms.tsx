@@ -234,7 +234,15 @@ export function ContactForm() {
             {...p('Message')}
           />
         </Field>
-        <div className="spacer-large"></div>
+        <div className="spacer-small"></div>
+
+        <div className="text-[11px] text-neutral-400 leading-relaxed mb-4">
+          By submitting this form, you consent to The SR Pictures processing your contact information strictly to respond to your inquiry in accordance with our{' '}
+          <a href="/privacy-policy" className="text-amber-400 underline hover:text-amber-300">
+            Privacy Policy
+          </a>{' '}
+          pursuant to the Digital Personal Data Protection Act, 2023 (DPDP Act, India).
+        </div>
 
         <button
           type="submit"
@@ -347,6 +355,10 @@ export function NewsletterForm({ id }: { id?: string }) {
               {error}
             </div>
           )}
+        </div>
+        <div className="text-[10px] text-neutral-400 mb-2">
+          By subscribing, you consent to receiving updates in accordance with our{' '}
+          <a href="/privacy-policy" className="text-amber-400 underline">Privacy Policy</a> (DPDP Act, 2023).
         </div>
         <button
           type="submit"

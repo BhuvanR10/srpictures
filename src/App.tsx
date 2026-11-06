@@ -24,6 +24,12 @@ const StyleGuide = lazy(() => import('./pages/StyleGuide'));
 const Protected = lazy(() => import('./pages/Protected'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
+// Indian Digital Law Compliance Pages (DPDP Act 2023, IT Rules, Consumer Protection)
+const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'));
+const TermsOfService = lazy(() => import('./pages/TermsOfService'));
+const CancellationRefund = lazy(() => import('./pages/CancellationRefund'));
+const GrievanceRedressal = lazy(() => import('./pages/GrievanceRedressal'));
+
 export default function App() {
   return (
     <ErrorBoundary>
@@ -56,6 +62,10 @@ export default function App() {
               <Route path="/blog-post/:slug" element={<BlogPost />} />
               <Route path="/template-info/licenses" element={<Licenses />} />
               <Route path="/template-info/changelog" element={<Changelog />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/terms-of-service" element={<TermsOfService />} />
+              <Route path="/cancellation-refund" element={<CancellationRefund />} />
+              <Route path="/grievance-redressal" element={<GrievanceRedressal />} />
               <Route path="*" element={<NotFound />} />
             </Route>
           </Routes>

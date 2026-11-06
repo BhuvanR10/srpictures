@@ -7,6 +7,7 @@ import { setupPage } from '../lib/pageEffects';
 import Footer from './Footer';
 import Navbar from './Navbar';
 import FloatingWhatsApp from './FloatingWhatsApp';
+import CookieConsentBanner from './CookieConsentBanner';
 
 export default function SiteLayout() {
   const { pathname } = useLocation();
@@ -37,6 +38,7 @@ export default function SiteLayout() {
       </main>
       <Footer />
       <FloatingWhatsApp />
+      <CookieConsentBanner />
     </div>
   );
 }

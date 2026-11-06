@@ -1,0 +1,74 @@
+[
+  {
+    "id": 1,
+    "src_file": "Copy of REVIEW 7.mp4",
+    "video": "/videos/testimonials/testimonial-1.mp4",
+    "poster": "/assets/testimonials/testimonial-1-poster.jpg",
+    "duration": "0:54",
+    "seconds": 54.5,
+    "sizeMb": 7.63
+  },
+  {
+    "id": 2,
+    "src_file": "Copy of REVIEW 8.mp4",
+    "video": "/videos/testimonials/testimonial-2.mp4",
+    "poster": "/assets/testimonials/testimonial-2-poster.jpg",
+    "duration": "0:41",
+    "seconds": 41.2,
+    "sizeMb": 8.36
+  },
+  {
+    "id": 3,
+    "src_file": "Copy of REVIEW 9.mp4",
+    "video": "/videos/testimonials/testimonial-3.mp4",
+    "poster": "/assets/testimonials/testimonial-3-poster.jpg",
+    "duration": "1:02",
+    "seconds": 62.0,
+    "sizeMb": 11.39
+  },
+  {
+    "id": 4,
+    "src_file": "lv_0_20260218184902.mp4",
+    "video": "/videos/testimonials/testimonial-4.mp4",
+    "poster": "/assets/testimonials/testimonial-4-poster.jpg",
+    "duration": "0:31",
+    "seconds": 31.2,
+    "sizeMb": 2.85
+  },
+  {
+    "id": 5,
+    "src_file": "lv_0_20260303195549.mp4",
+    "video": "/videos/testimonials/testimonial-5.mp4",
+    "poster": "/assets/testimonials/testimonial-5-poster.jpg",
+    "duration": "1:19",
+    "seconds": 79.6,
+    "sizeMb": 12.31
+  },
+  {
+    "id": 6,
+    "src_file": "lv_0_20260303200848.mp4",
+    "video": "/videos/testimonials/testimonial-6.mp4",
+    "poster": "/assets/testimonials/testimonial-6-poster.jpg",
+    "duration": "1:11",
+    "seconds": 71.0,
+    "sizeMb": 11.88
+  },
+  {
+    "id": 7,
+    "src_file": "lv_0_20260303203539.mp4",
+    "video": "/videos/testimonials/testimonial-7.mp4",
+    "poster": "/assets/testimonials/testimonial-7-poster.jpg",
+    "duration": "1:05",
+    "seconds": 65.6,
+    "sizeMb": 9.47
+  },
+  {
+    "id": 8,
+    "src_file": "lv_0_20260717183159.mp4",
+    "video": "/videos/testimonials/testimonial-8.mp4",
+    "poster": "/assets/testimonials/testimonial-8-poster.jpg",
+    "duration": "0:26",
+    "seconds": 26.6,
+    "sizeMb": 6.86
+  }
+]

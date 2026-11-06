@@ -6,6 +6,13 @@ import MainButton from './MainButton';
 
 const pages: Array<[string, string]> = [['/', 'Home'], ['/about', 'About'], ['/services', 'Services'], ['/case-studies', 'Case Studies'], ['/categories', 'Categories'], ['/pricing', 'Pricing'], ['/contact', 'Contact'], ['/blog', 'Blog']];
 
+const legalPages: Array<[string, string]> = [
+  ['/privacy-policy', 'Privacy Policy (DPDP)'],
+  ['/terms-of-service', 'Terms of Service'],
+  ['/cancellation-refund', 'Cancellation & Refund'],
+  ['/grievance-redressal', 'Grievance Redressal'],
+];
+
 export default function Footer() {
   return (
     <footer>
@@ -42,11 +49,20 @@ export default function Footer() {
                 <SocialLinks />
               </div>
               <div id="w-node-_4ea88ba4-5dbd-e916-1d69-e37341450b86-41450b6a" className="footer-content menu">
-                <div className="text-size-regular text-color-secondary">PAGES:</div>
-                <div className="spacer-tiny"></div>
-                {pages.map(([to, l]) => (
-                  <div className="link-wrapper" key={to}><LinkButton to={to}>{l}</LinkButton></div>
-                ))}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full">
+                  <div>
+                    <div className="text-size-regular text-color-secondary font-mono text-xs uppercase tracking-wider mb-2">Pages:</div>
+                    {pages.map(([to, l]) => (
+                      <div className="link-wrapper" key={to}><LinkButton to={to}>{l}</LinkButton></div>
+                    ))}
+                  </div>
+                  <div>
+                    <div className="text-size-regular text-color-secondary font-mono text-xs uppercase tracking-wider mb-2">Legal (India):</div>
+                    {legalPages.map(([to, l]) => (
+                      <div className="link-wrapper" key={to}><LinkButton to={to}>{l}</LinkButton></div>
+                    ))}
+                  </div>
+                </div>
               </div>
               <div id="w-node-_4ea88ba4-5dbd-e916-1d69-e37341450b9c-41450b6a" className="footer-content">
                 <div className="footer-inner-grid">
@@ -76,7 +92,7 @@ export default function Footer() {
             </div>
           </div>
           <div className="dividing-line"></div>
-          <div className="w-layout-grid footer-grid">
+          <div className="w-layout-grid footer-grid items-center">
             <div className="footer-content-block">
               <div className="footer-block">
                 <div className="footer-text">© The SR Pictures</div>
@@ -84,6 +100,10 @@ export default function Footer() {
               </div>
               <div className="footer-block">
                 <div className="footer-text">Bengaluru, India</div>
+                <div className="footer-text hide-mobile" aria-hidden="true">│</div>
+              </div>
+              <div className="footer-block">
+                <div className="footer-text text-neutral-400 font-mono text-[11px]">DPDP Act, 2023 Compliant</div>
               </div>
             </div>
             <div className="footer-content-block large-gap">
@@ -101,7 +121,7 @@ export default function Footer() {
                   Replay Intro ↺
                 </button>
               </div>
-              {[['/template-info/style-guide', 'Style Guide'], ['/template-info/licenses', 'Licenses'], ['/template-info/changelog', 'Changelog']].map(([to, l]) => (
+              {[['/privacy-policy', 'Privacy'], ['/terms-of-service', 'Terms'], ['/cancellation-refund', 'Refunds'], ['/grievance-redressal', 'Grievance']].map(([to, l]) => (
                 <div className="footer-link-wrap" key={to}><LinkButton to={to}>{l}</LinkButton></div>
               ))}
             </div>
