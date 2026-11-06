@@ -24,39 +24,68 @@ export default function Video({ className = '', poster, src, label, priority = f
 
   useEffect(() => {
     const v = videoRef.current;
-    if (v) {
-      v.muted = true;
-      v.defaultMuted = true;
-      if (priority && !isMotionPaused()) {
-        const p = v.play();
-        if (p !== undefined) {
-          p.catch(() => {
-            // If browser blocked unprompted autoplay (e.g. low power mode), play on first touch/scroll
-            const unlock = () => {
-              v.play().catch(() => {});
-              window.removeEventListener('touchstart', unlock);
-              window.removeEventListener('click', unlock);
-              window.removeEventListener('scroll', unlock);
-            };
-            window.addEventListener('touchstart', unlock, { once: true, passive: true });
-            window.addEventListener('click', unlock, { once: true });
-            window.addEventListener('scroll', unlock, { once: true, passive: true });
-          });
-        }
-      }
-    }
+    if (!v) return;
 
+    v.muted = true;
+    v.defaultMuted = true;
+
+    const playVideo = () => {
+      if (isMotionPaused()) return;
+      const playPromise = v.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          // Fallback unlock listener on first user interaction
+          const unlock = () => {
+            v.play().catch(() => {});
+            window.removeEventListener('pointerdown', unlock);
+            window.removeEventListener('touchstart', unlock);
+            window.removeEventListener('click', unlock);
+            window.removeEventListener('scroll', unlock);
+          };
+          window.addEventListener('pointerdown', unlock, { once: true, passive: true });
+          window.addEventListener('touchstart', unlock, { once: true, passive: true });
+          window.addEventListener('click', unlock, { once: true });
+          window.addEventListener('scroll', unlock, { once: true, passive: true });
+        });
+      }
+    };
+
+    if (priority) {
+      // Trigger immediate playback attempt
+      playVideo();
+
+      // Ensure playback resumes once enough data is buffered
+      v.addEventListener('canplay', playVideo, { once: true });
+      v.addEventListener('loadeddata', playVideo, { once: true });
+
+      // If cinematic intro was playing, trigger playback as soon as intro reveals the screen
+      const handleIntroComplete = () => {
+        playVideo();
+      };
+      window.addEventListener('sr-intro-complete', handleIntroComplete, { once: true });
+
+      return () => {
+        v.removeEventListener('canplay', playVideo);
+        v.removeEventListener('loadeddata', playVideo);
+        window.removeEventListener('sr-intro-complete', handleIntroComplete);
+      };
+    }
+  }, [priority]);
+
+  useEffect(() => {
     const wrap = wrapRef.current;
     if (!wrap) return;
+
     const sync = () => {
       const vid = videoRef.current;
       if (!vid) return;
       if (visibleRef.current && !isMotionPaused()) {
         vid.play().catch(() => undefined);
-      } else {
+      } else if (!priority) {
         vid.pause();
       }
     };
+
     const io = new IntersectionObserver(
       ([entry]) => {
         visibleRef.current = entry.isIntersecting;
@@ -65,9 +94,10 @@ export default function Video({ className = '', poster, src, label, priority = f
         }
         sync();
       },
-      { rootMargin: '150px 0px' },
+      { rootMargin: '200px 0px' },
     );
     io.observe(wrap);
+
     const off = subscribeMotion(sync);
     return () => {
       io.disconnect();
@@ -84,7 +114,7 @@ export default function Video({ className = '', poster, src, label, priority = f
   return (
     <div
       ref={wrapRef}
-      className={`${className} w-background-video w-background-video-atom`}
+      className={`${className} w-background-video w-background-video-atom relative overflow-hidden`}
       aria-hidden={label ? undefined : true}
       role={label ? 'img' : undefined}
       aria-label={label}
@@ -97,10 +127,20 @@ export default function Video({ className = '', poster, src, label, priority = f
         playsInline
         preload={priority ? 'auto' : 'metadata'}
         poster={poster}
-        style={{ backgroundImage: `url("${poster}")` }}
-        src={priority || near ? src : undefined}
+        className="w-full h-full object-cover !z-0 absolute inset-0"
+        style={{
+          objectFit: 'cover',
+          width: '100%',
+          height: '100%',
+          position: 'absolute',
+          inset: 0,
+          zIndex: 0,
+          backgroundImage: `url("${poster}")`,
+        }}
         tabIndex={-1}
-      />
+      >
+        {(priority || near) && <source src={src} type="video/mp4" />}
+      </video>
     </div>
   );
 }

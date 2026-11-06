@@ -32,13 +32,23 @@ export default function About() {
             {/* Left Column: Heading */}
             <div className="lg:col-span-5 flex flex-col items-start text-left">
               <Subtitle>About Us</Subtitle>
-              <div className="title-wrapper mt-3">
-                <h2 className="heading-style-h2">We are</h2>
+              <div className="mt-3">
+                <h1
+                  className="font-logo-clean font-light uppercase tracking-tight text-white leading-tight"
+                  style={{
+                    fontSize: 'clamp(2rem, 4.2vw, 3.8rem)',
+                    lineHeight: 1.15,
+                    backgroundImage: 'linear-gradient(180deg, #FFFFFF 40%, #A0A0A0 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                  }}
+                >
+                  We are
+                  <br />
+                  The SR Pictures®
+                </h1>
               </div>
-              <div className="title-wrapper">
-                <h2 className="heading-style-h2">{"The SR Pictures®"}</h2>
-              </div>
-              <p className="text-size-regular text-color-secondary mt-5 max-w-sm font-light leading-relaxed">
+              <p className="text-size-regular text-neutral-300 mt-5 max-w-sm font-light leading-relaxed">
                 Capturing raw emotion, milestone celebrations, and bespoke visual narratives with timeless cinematic craft.
               </p>
             </div>

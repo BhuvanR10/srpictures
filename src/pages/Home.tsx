@@ -29,9 +29,9 @@ export default function Home() {
     <div id="top" className="top"></div>
     <header className="section-home-header">
       <div className="w-layout-grid header-component-grid">
-        <div id="w-node-cd060b03-ce5d-09c9-ac8d-89dcbc0c13eb-805165a1" className="background-video-wrapper">
-          <Video className="background-video !opacity-75" poster="/assets/hero-cinematic-poster.jpg" src="/assets/hero-bg-1080p.mp4" priority />
-          <div className="video-opacity"></div>
+        <div id="w-node-cd060b03-ce5d-09c9-ac8d-89dcbc0c13eb-805165a1" className="background-video-wrapper relative w-full h-full overflow-hidden">
+          <Video className="background-video !opacity-85" poster="/assets/hero-cinematic-poster.jpg" src="/assets/hero-bg-1080p.mp4" priority />
+          <div className="video-opacity pointer-events-none"></div>
         </div>
 
         {/* Compact, Refined Brand Title & Tagline (Non-obstructive) */}
@@ -40,10 +40,19 @@ export default function Home() {
           className="z-10 flex flex-col items-center justify-center text-center px-4 select-none pointer-events-none"
         >
           <div className="flex flex-col items-center justify-center max-w-xl">
-            {/* Brand Title */}
-            <h1 className="font-logo-clean text-xl sm:text-3xl md:text-4xl font-light tracking-[0.24em] sm:tracking-[0.3em] text-white uppercase drop-shadow-[0_2px_18px_rgba(0,0,0,0.95)]">
+            {/* Brand Title (Inline styles guarantee no Webflow 12rem h1 override) */}
+            <div
+              role="heading"
+              aria-level={1}
+              className="font-logo-clean font-light tracking-[0.22em] sm:tracking-[0.28em] text-white uppercase drop-shadow-[0_2px_18px_rgba(0,0,0,0.95)] whitespace-nowrap"
+              style={{
+                fontSize: 'clamp(1.2rem, 3.2vw, 2.3rem)',
+                lineHeight: 1.2,
+                fontWeight: 300,
+              }}
+            >
               The SR Pictures
-            </h1>
+            </div>
 
             {/* Subtle Metallic Lens Accent Line */}
             <div className="flex items-center gap-2.5 sm:gap-3 my-2 sm:my-2.5 opacity-70">
@@ -53,7 +62,12 @@ export default function Home() {
             </div>
 
             {/* Official Studio Tagline */}
-            <p className="font-mono text-[10px] sm:text-[11px] md:text-xs tracking-[0.24em] sm:tracking-[0.3em] text-[#D8D8D5] uppercase drop-shadow-[0_2px_10px_rgba(0,0,0,0.95)]">
+            <p
+              className="font-mono tracking-[0.22em] sm:tracking-[0.28em] text-[#D8D8D5] uppercase drop-shadow-[0_2px_10px_rgba(0,0,0,0.95)]"
+              style={{
+                fontSize: 'clamp(0.65rem, 1.2vw, 0.8rem)',
+              }}
+            >
               Every Frame Tells A Story
             </p>
           </div>
