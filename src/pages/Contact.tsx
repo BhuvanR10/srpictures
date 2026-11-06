@@ -35,15 +35,15 @@ export default function Contact() {
             <div className="spacer-small"></div>
             <div className="flex flex-wrap items-center justify-center gap-3">
               <a
-                href="https://wa.me/919632208050?text=Hi%20The%20SR%20Pictures!%20I'd%20like%20to%20inquire%20about%20your%20services."
+                href="https://wa.me/919986155516?text=Hi%20The%20SR%20Pictures!%20I'd%20like%20to%20inquire%20about%20your%20services."
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-emerald-600/90 hover:bg-emerald-500 text-white text-xs font-semibold tracking-wide transition-all shadow-lg shadow-emerald-950/50"
               >
-                <span>💬 WhatsApp: +91 96322 08050</span>
+                <span>💬 WhatsApp: +91 99861 55516</span>
               </a>
               <a
-                href="tel:+919632208050"
+                href="tel:+919986155516"
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-white text-xs font-medium tracking-wide transition-all"
               >
                 <span>📞 Call Studio</span>

@@ -47,7 +47,7 @@ export default function PrivacyPolicy() {
                   </div>
                   <div>
                     <span className="text-white block font-semibold">Official Contact:</span>
-                    +91 96322 08050
+                    +91 99861 55516
                   </div>
                   <div>
                     <span className="text-white block font-semibold">Designated Data Desk:</span>
@@ -158,7 +158,7 @@ export default function PrivacyPolicy() {
                   <div><strong className="text-white">Entity:</strong> The SR Pictures</div>
                   <div><strong className="text-white">Address:</strong> Bengaluru, Karnataka - 560076, India</div>
                   <div><strong className="text-white">Email:</strong> thesrpictures@gmail.com (Subject: DPDP Grievance Notice)</div>
-                  <div><strong className="text-white">Hotline:</strong> +91 96322 08050</div>
+                  <div><strong className="text-white">Hotline:</strong> +91 99861 55516</div>
                 </div>
                 <p className="text-xs text-neutral-400 mt-4">
                   Grievances will be formally acknowledged within <strong>24 hours</strong> of receipt and addressed within the statutory window of <strong>15 to 30 calendar days</strong>. If not resolved satisfactorily, you hold the statutory right to escalate your complaint to the <strong>Data Protection Board of India (DPBI)</strong>.
@@ -199,3 +199,4 @@ export default function PrivacyPolicy() {
     </>
   );
 }
+

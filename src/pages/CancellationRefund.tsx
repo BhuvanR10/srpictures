@@ -132,7 +132,7 @@ export default function CancellationRefund() {
                 <div className="text-sm font-mono text-neutral-300 space-y-1">
                   <div><strong>Email:</strong> thesrpictures@gmail.com</div>
                   <div><strong>Subject Line:</strong> CANCELLATION REQUEST - [Booking Invoice / Client Name]</div>
-                  <div><strong>Hotline:</strong> +91 96322 08050</div>
+                  <div><strong>Hotline:</strong> +91 99861 55516</div>
                   <div><strong>Studio Address:</strong> Bengaluru, Karnataka - 560076, India</div>
                 </div>
               </div>
@@ -155,3 +155,4 @@ export default function CancellationRefund() {
     </>
   );
 }
+

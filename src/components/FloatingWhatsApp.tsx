@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const WHATSAPP_NUMBER = '919632208050';
+const WHATSAPP_NUMBER = '919986155516';
 const DEFAULT_MESSAGE =
   "Hi The SR Pictures! I would like to inquire about your photography and cinematography services.";
 
@@ -21,7 +21,7 @@ export default function FloatingWhatsApp() {
       >
         <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 mr-2" />
         <span>Chat on WhatsApp</span>
-        <span className="text-neutral-400 font-mono text-[10px] ml-1.5">+91 96322 08050</span>
+        <span className="text-neutral-400 font-mono text-[10px] ml-1.5">+91 99861 55516</span>
       </div>
 
       {/* Sleek Dark Glassmorphic Floating Button */}
@@ -31,7 +31,7 @@ export default function FloatingWhatsApp() {
         rel="noopener noreferrer"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
-        aria-label="Chat on WhatsApp with The SR Pictures (+91 96322 08050)"
+        aria-label="Chat on WhatsApp with The SR Pictures (+91 99861 55516)"
         className="relative w-12 h-12 sm:w-13 sm:h-13 rounded-full bg-zinc-900/90 hover:bg-emerald-950/40 backdrop-blur-md border border-white/15 hover:border-emerald-500/50 text-white hover:text-emerald-300 flex items-center justify-center shadow-2xl transition-all duration-300 hover:scale-105 active:scale-95 group"
       >
         {/* Subtle ambient hover tint */}

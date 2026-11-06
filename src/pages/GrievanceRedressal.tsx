@@ -63,7 +63,7 @@ export default function GrievanceRedressal() {
                   </div>
                   <div>
                     <span className="text-white block font-semibold">Direct Telephone:</span>
-                    +91 96322 08050
+                    +91 99861 55516
                   </div>
                   <div>
                     <span className="text-white block font-semibold">Operational Hours:</span>
@@ -156,3 +156,4 @@ export default function GrievanceRedressal() {
     </>
   );
 }
+

@@ -1,7 +1,7 @@
 /**
  * Shared WhatsApp configuration and pre-built inquiry links for The SR Pictures.
  */
-export const WHATSAPP_PHONE = '919632208050';
+export const WHATSAPP_PHONE = '919986155516';
 
 export const WHATSAPP_GET_IN_TOUCH_MESSAGE = [
   'Hello The SR Pictures! 📸',

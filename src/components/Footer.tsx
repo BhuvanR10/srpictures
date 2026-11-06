@@ -43,7 +43,7 @@ export default function Footer() {
                   <p className="text-size-medium text-color-secondary">Bengaluru's premier photography &amp; cinematography studio. Crafting timeless wedding films, portraits, and cinematic visual stories.</p>
                 </div>
                 <div className="spacer-small"></div>
-                <div className="link-wrapper"><LinkButton to="tel:+919632208050">+91 96322 08050</LinkButton></div>
+                <div className="link-wrapper"><LinkButton to="tel:+919986155516">+91 99861 55516</LinkButton></div>
                 <div className="link-wrapper"><LinkButton to="mailto:thesrpictures@gmail.com">thesrpictures@gmail.com</LinkButton></div>
                 <div className="spacer-small"></div>
                 <SocialLinks />

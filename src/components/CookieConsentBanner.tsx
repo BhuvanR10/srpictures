@@ -82,3 +82,4 @@ export default function CookieConsentBanner() {
     </div>
   );
 }
+

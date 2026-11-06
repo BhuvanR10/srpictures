@@ -17,8 +17,8 @@ function Field({ error, id, children }: { error?: string; id: string; children: 
   );
 }
 
-const SUCCESS_NOTE = 'Inquiry formatted! Connecting you directly to our WhatsApp studio team (+91 96322 08050)...';
-const WHATSAPP_PHONE = '919632208050';
+const SUCCESS_NOTE = 'Inquiry formatted! Connecting you directly to our WhatsApp studio team (+91 99861 55516)...';
+const WHATSAPP_PHONE = '919986155516';
 
 export function ContactForm() {
   const [errors, setErrors] = useState<Errors>({});
@@ -135,7 +135,7 @@ export function ContactForm() {
           </div>
           <div>
             <div className="text-white text-sm font-medium">Prefer Instant WhatsApp Chat?</div>
-            <div className="text-xs text-neutral-400">Direct studio hotline: +91 96322 08050</div>
+            <div className="text-xs text-neutral-400">Direct studio hotline: +91 99861 55516</div>
           </div>
         </div>
         <a
@@ -277,7 +277,7 @@ export function ContactForm() {
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-[#25D366] hover:bg-[#20ba5a] text-black font-semibold text-sm shadow-xl hover:scale-105 active:scale-95 transition-all"
             >
-              <span>Open in WhatsApp (+91 96322 08050)</span>
+              <span>Open in WhatsApp (+91 99861 55516)</span>
               <span>→</span>
             </a>
           )}
