@@ -246,12 +246,8 @@ export function setupPage(): () => void {
 
     mm.add('(max-width: 991px)', () => {
       gsap.set(qa('.accordion-content-item .accordion-title-item'), { clearProps: 'all' });
-
-      // Service items initial states on mobile
-      gsap.set(qa('.service-title'), { yPercent: -200 });
-      gsap.set(qa('.service-bg-image'), { opacity: 0 });
-      gsap.set(qa('.service-image-item'), { opacity: 0.85, scale: 1 });
-      gsap.set(qa('.service-description, .service-subitle'), { color: 'rgb(128,128,128)' });
+      gsap.set(qa('.service-title'), { clearProps: 'all' });
+      gsap.set(qa('.service-description, .service-subitle'), { clearProps: 'all' });
 
       const serviceItems = qa('.service-content-item');
       serviceItems.forEach((item, index) => {
