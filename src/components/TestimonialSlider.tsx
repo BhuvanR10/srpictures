@@ -1,380 +1,685 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { Play, Pause, Volume2, VolumeX } from 'lucide-react';
-import { slideLeft01, slideLeft02, slideRight01, slideRight02, starPath } from '../data/icons';
-import { testimonialIds, testimonials, type TestimonialItem } from '../data/content';
+import { useEffect, useRef, useState, useCallback } from 'react';
+import {
+  Volume2,
+  VolumeX,
+  ChevronLeft,
+  ChevronRight,
+  Play,
+  Pause,
+  X,
+  Maximize2,
+} from 'lucide-react';
+import { testimonials, type TestimonialItem } from '../data/content';
 import { isMotionPaused, subscribeMotion } from '../lib/motion';
 
-const DELAY = 6000; // autoplay delay
-const DURATION = 500; // slide transition
-
-function Arrow({ d, cls }: { d: string; cls: string }) {
-  return (
-    <div className={`slide-arrow ${cls} w-embed`} aria-hidden="true">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-        <path d={d}></path>
-      </svg>
-    </div>
-  );
+interface TestimonialSliderProps {
+  page?: 'home' | 'pricing';
+  withDivider?: boolean;
 }
 
 /**
- * Editorial Video Testimonial Carousel
- * Mobile layout matching the phone interface design with crisp 4:3 / portrait preview,
- * authentic rating, clean bold typography, and desktop split-card experience.
+ * High-End Cinematic Reels Horizontal Testimonial Carousel
+ * - Horizontal continuous marquee of 9:16 vertical video cards matching reference.
+ * - Smooth infinite loop with interactive drag-to-scroll, touch swipe, and wheel scroll.
+ * - Tap on any card opens in immersive Fullscreen Cinema Mode.
+ * - Dedicated per-card Mute/Unmute buttons with guaranteed event isolation.
+ * - Full keyboard navigation (Escape, Left/Right arrows, Spacebar).
  */
 export default function TestimonialSlider({
-  page = 'home',
   withDivider = false,
-}: {
-  page?: 'home' | 'pricing';
-  withDivider?: boolean;
-}) {
-  const n = testimonials.length;
-  const ids = testimonialIds[page] || [];
-  const [index, setIndex] = useState(0);
-  const [prev, setPrev] = useState(0);
-  const [hold, setHold] = useState(false);
-  const [paused, setPaused] = useState(isMotionPaused());
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [isMuted, setIsMuted] = useState(false);
-  const [progress, setProgress] = useState(0);
+}: TestimonialSliderProps) {
+  // Duplicated list (2 sets = 16 cards) provides ~4,800px track for infinite wrapping without overloading GPU decoders
+  const displayItems = [...testimonials, ...testimonials];
 
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
-  const drag = useRef<{ x: number; id: number } | null>(null);
+  const isDraggingRef = useRef(false);
+  const dragStartXRef = useRef(0);
+  const dragStartScrollLeftRef = useRef(0);
+  const hasMovedRef = useRef(false);
 
-  const stopVideos = useCallback(() => {
-    videoRefs.current.forEach((v) => {
-      if (v && !v.paused) {
-        v.pause();
-        v.currentTime = 0;
-      }
-    });
-    setIsPlaying(false);
-    setProgress(0);
-  }, []);
+  const [isSectionVisible, setIsSectionVisible] = useState(true);
+  const [activeCardId, setActiveCardId] = useState<number>(2); // Default active card
+  const [unmutedIndex, setUnmutedIndex] = useState<number | null>(null);
+  const [isHovered, setIsHovered] = useState(false);
+  const [paused, setPaused] = useState(isMotionPaused());
 
-  const go = useCallback(
-    (dir: 1 | -1) => {
-      stopVideos();
-      setIndex((cur) => {
-        setPrev(cur);
-        return (cur + dir + n) % n;
-      });
-    },
-    [n, stopVideos],
-  );
+  // Fullscreen Cinema Modal State
+  const [fullscreenItem, setFullscreenItem] = useState<TestimonialItem | null>(null);
+  const [isFullscreenPlaying, setIsFullscreenPlaying] = useState(true);
+  const [isFullscreenMuted, setIsFullscreenMuted] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const fullscreenVideoRef = useRef<HTMLVideoElement | null>(null);
+  const modalContainerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => subscribeMotion(() => setPaused(isMotionPaused())), []);
 
-  // Autoplay pauses when user hovers or is watching the client video
+  // Section-level visibility observer: pause all videos and scroll loop when section is offscreen
   useEffect(() => {
-    if (hold || paused || isPlaying) return;
-    const t = window.setTimeout(() => go(1), DELAY);
-    return () => window.clearTimeout(t);
-  }, [index, hold, paused, isPlaying, go]);
+    const section = sectionRef.current;
+    if (!section) return;
 
-  const togglePlay = (e?: React.MouseEvent) => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const inView = entry.isIntersecting;
+        setIsSectionVisible(inView);
+        if (!inView) {
+          // Immediately pause all cards to free hardware video decoders
+          videoRefs.current.forEach((v) => {
+            if (v && !v.paused) v.pause();
+          });
+        }
+      },
+      { threshold: 0.05 }
+    );
+
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, []);
+
+  // Card-level visibility observer: only cards currently inside or near the viewport decode & play
+  useEffect(() => {
+    const container = scrollRef.current;
+    if (!container || !isSectionVisible) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const idxStr = entry.target.getAttribute('data-index');
+          if (idxStr === null) return;
+          const idx = parseInt(idxStr, 10);
+          const video = videoRefs.current[idx];
+          if (!video) return;
+
+          if (entry.isIntersecting && !fullscreenItem) {
+            const p = video.play();
+            if (p !== undefined) p.catch(() => {});
+          } else {
+            video.pause();
+          }
+        });
+      },
+      {
+        root: container,
+        rootMargin: '0px 100px 0px 100px',
+        threshold: 0.05,
+      }
+    );
+
+    cardRefs.current.forEach((card) => {
+      if (card) observer.observe(card);
+    });
+
+    return () => observer.disconnect();
+  }, [isSectionVisible, fullscreenItem]);
+
+  // Pause all carousel videos when fullscreen modal is active
+  useEffect(() => {
+    if (fullscreenItem) {
+      videoRefs.current.forEach((v) => {
+        if (v && !v.paused) v.pause();
+      });
+    }
+  }, [fullscreenItem]);
+
+  // Silky smooth continuous marquee using performance.now() delta-time (framerate independent)
+  useEffect(() => {
+    let animId: number;
+    let lastTime = performance.now();
+    const speed = 42; // Pixels per second: cinematic, steady motion
+
+    const step = (now: number) => {
+      const dt = (now - lastTime) / 1000;
+      lastTime = now;
+
+      const container = scrollRef.current;
+      if (
+        container &&
+        isSectionVisible &&
+        !isHovered &&
+        !isDraggingRef.current &&
+        !paused &&
+        !fullscreenItem
+      ) {
+        const half = container.scrollWidth / 2;
+
+        if (dt > 0 && dt < 0.1) {
+          container.scrollLeft += speed * dt;
+        }
+
+        // Seamless infinite wrap
+        if (container.scrollLeft >= half) {
+          container.scrollLeft -= half;
+        } else if (container.scrollLeft <= 0) {
+          container.scrollLeft += half;
+        }
+      }
+
+      animId = requestAnimationFrame(step);
+    };
+
+    animId = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(animId);
+  }, [isSectionVisible, isHovered, paused, fullscreenItem]);
+
+  // Center initial scroll position so backward dragging wraps smoothly
+  useEffect(() => {
+    const container = scrollRef.current;
+    if (container) {
+      const half = container.scrollWidth / 2;
+      if (container.scrollLeft < 10) {
+        container.scrollLeft = 50;
+      }
+    }
+  }, []);
+
+  // Handle Drag / Touch Interaction on the Track
+  const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    // If the click is on or inside an interactive button, do not initiate dragging
+    if ((e.target as HTMLElement).closest('button')) {
+      return;
+    }
+
+    const container = scrollRef.current;
+    if (!container) return;
+    isDraggingRef.current = true;
+    hasMovedRef.current = false;
+    dragStartXRef.current = e.clientX;
+    dragStartScrollLeftRef.current = container.scrollLeft;
+  };
+
+  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!isDraggingRef.current || !scrollRef.current) return;
+    const dx = e.clientX - dragStartXRef.current;
+    if (Math.abs(dx) > 6) {
+      hasMovedRef.current = true;
+      scrollRef.current.scrollLeft = dragStartScrollLeftRef.current - dx;
+    }
+  };
+
+  const handlePointerUp = () => {
+    isDraggingRef.current = false;
+  };
+
+  // 1-Click Smooth Arrow Stepping
+  const handleScrollStep = (direction: 'left' | 'right') => {
+    const container = scrollRef.current;
+    if (!container) return;
+    const scrollAmount = 300;
+    container.scrollBy({
+      left: direction === 'left' ? -scrollAmount : scrollAmount,
+      behavior: 'smooth',
+    });
+  };
+
+  // Audio Toggle for Individual Card in Carousel
+  const toggleCardAudio = useCallback(
+    (e: React.MouseEvent, index: number) => {
+      e.stopPropagation();
+      e.preventDefault();
+
+      const currentVideo = videoRefs.current[index];
+      if (!currentVideo) return;
+
+      if (unmutedIndex === index) {
+        // Mute this video
+        currentVideo.muted = true;
+        currentVideo.setAttribute('muted', '');
+        setUnmutedIndex(null);
+      } else {
+        // Mute all other videos in the carousel
+        videoRefs.current.forEach((v, i) => {
+          if (v) {
+            v.muted = true;
+            v.setAttribute('muted', '');
+          }
+        });
+
+        // Unmute and play target video
+        currentVideo.muted = false;
+        currentVideo.volume = 1.0;
+        currentVideo.removeAttribute('muted');
+        const p = currentVideo.play();
+        if (p !== undefined) {
+          p.catch(() => {});
+        }
+        setUnmutedIndex(index);
+        setActiveCardId(displayItems[index]?.id ?? 0);
+      }
+    },
+    [unmutedIndex, displayItems],
+  );
+
+  // Open Fullscreen Cinema Mode on Card Tap
+  const openFullscreen = (item: TestimonialItem, videoEl?: HTMLVideoElement | null) => {
+    // Mute all background cards
+    videoRefs.current.forEach((v) => {
+      if (v) {
+        v.muted = true;
+        v.setAttribute('muted', '');
+      }
+    });
+    setUnmutedIndex(null);
+    setActiveCardId(item.id);
+
+    setFullscreenItem(item);
+    setIsFullscreenPlaying(true);
+    setIsFullscreenMuted(false);
+    setCurrentTime(0);
+    document.body.style.overflow = 'hidden';
+
+    // On iOS Safari mobile, trigger native fullscreen directly on tap gesture
+    if (videoEl) {
+      try {
+        if ((videoEl as any).webkitEnterFullscreen) {
+          videoEl.muted = false;
+          videoEl.volume = 1.0;
+          videoEl.removeAttribute('muted');
+          videoEl.play().catch(() => {});
+          (videoEl as any).webkitEnterFullscreen();
+        }
+      } catch {}
+    }
+  };
+
+  // Card Tap Handler (Triggered on pointer up or click if no drag occurred)
+  const handleCardTap = (e: React.MouseEvent | React.PointerEvent, item: TestimonialItem, idx: number) => {
+    if ((e.target as HTMLElement).closest('button')) {
+      return;
+    }
+    if (hasMovedRef.current) {
+      return;
+    }
+    const vid = videoRefs.current[idx];
+    openFullscreen(item, vid);
+  };
+
+  const closeFullscreen = useCallback(() => {
+    if (document.fullscreenElement) {
+      document.exitFullscreen().catch(() => {});
+    }
+    if (fullscreenVideoRef.current) {
+      fullscreenVideoRef.current.pause();
+    }
+    setFullscreenItem(null);
+    document.body.style.overflow = '';
+  }, []);
+
+  // Navigate between videos within Fullscreen Modal
+  const navigateModal = useCallback(
+    (direction: 1 | -1) => {
+      if (!fullscreenItem) return;
+      const currentIndex = testimonials.findIndex((t) => t.id === fullscreenItem.id);
+      const nextIndex = (currentIndex + direction + testimonials.length) % testimonials.length;
+      const nextItem = testimonials[nextIndex];
+
+      setFullscreenItem(nextItem);
+      setActiveCardId(nextItem.id);
+      setCurrentTime(0);
+      setIsFullscreenPlaying(true);
+    },
+    [fullscreenItem],
+  );
+
+  // Modal Video Play/Pause Toggle
+  const toggleModalPlay = (e?: React.MouseEvent) => {
     e?.stopPropagation();
-    const vid = videoRefs.current[index];
+    const vid = fullscreenVideoRef.current;
     if (!vid) return;
 
     if (vid.paused) {
-      vid.muted = isMuted;
-      vid
-        .play()
-        .then(() => setIsPlaying(true))
-        .catch(() => {
-          vid.muted = true;
-          setIsMuted(true);
-          vid.play().then(() => setIsPlaying(true));
-        });
+      vid.play().then(() => setIsFullscreenPlaying(true)).catch(() => {});
     } else {
       vid.pause();
-      setIsPlaying(false);
+      setIsFullscreenPlaying(false);
     }
   };
 
-  const toggleMute = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    const vid = videoRefs.current[index];
+  // Modal Video Mute Toggle
+  const toggleModalMute = (e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    const vid = fullscreenVideoRef.current;
     if (!vid) return;
-    const next = !isMuted;
-    vid.muted = next;
-    setIsMuted(next);
+
+    const nextMuted = !vid.muted;
+    vid.muted = nextMuted;
+    if (!nextMuted) {
+      vid.volume = 1.0;
+      vid.removeAttribute('muted');
+      vid.play().catch(() => {});
+    } else {
+      vid.setAttribute('muted', '');
+    }
+    setIsFullscreenMuted(nextMuted);
   };
 
-  const position = (i: number) => {
-    let pos = (i - index + n) % n;
-    if (pos > n / 2) pos -= n;
-    return pos;
-  };
+  // Trigger Device Native Fullscreen Mode
+  const triggerNativeFullscreen = (e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    const target = fullscreenVideoRef.current || modalContainerRef.current;
+    if (!target) return;
 
-  const prevPosition = (i: number) => {
-    let pos = (i - prev + n) % n;
-    if (pos > n / 2) pos -= n;
-    return pos;
-  };
-
-  const onKey = (dir: 1 | -1) => (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      go(dir);
+    try {
+      if (document.fullscreenElement) {
+        document.exitFullscreen().catch(() => {});
+      } else if (target.requestFullscreen) {
+        target.requestFullscreen().catch(() => {});
+      } else if ((target as any).webkitRequestFullscreen) {
+        (target as any).webkitRequestFullscreen().catch(() => {});
+      } else if ((target as any).webkitEnterFullscreen) {
+        (target as any).webkitEnterFullscreen();
+      }
+    } catch (err) {
+      console.warn('Native fullscreen trigger error:', err);
     }
   };
+
+  // Keyboard Shortcuts for Modal
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!fullscreenItem) return;
+
+      if (e.key === 'Escape') {
+        closeFullscreen();
+      } else if (e.key === 'ArrowLeft') {
+        navigateModal(-1);
+      } else if (e.key === 'ArrowRight') {
+        navigateModal(1);
+      } else if (e.key === ' ' || e.key === 'k') {
+        e.preventDefault();
+        toggleModalPlay();
+      } else if (e.key === 'm' || e.key === 'M') {
+        e.preventDefault();
+        toggleModalMute();
+      } else if (e.key === 'f' || e.key === 'F') {
+        e.preventDefault();
+        triggerNativeFullscreen();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [fullscreenItem, closeFullscreen, navigateModal]);
 
   return (
-    <div className="testimonial-component">
-      <div
-        className="testimonial-slider w-slider"
-        role="region"
-        aria-roledescription="carousel"
-        aria-label="Client testimonials"
-        onMouseEnter={() => setHold(true)}
-        onMouseLeave={() => setHold(false)}
-        onFocus={() => setHold(true)}
-        onBlur={() => setHold(false)}
-        onKeyDown={(e) => {
-          if (e.key === 'ArrowLeft') go(-1);
-          if (e.key === 'ArrowRight') go(1);
-        }}
+    <div ref={sectionRef} className="w-full relative py-2 select-none group/carousel">
+      {/* Optional Left Navigation Button */}
+      <button
+        type="button"
+        onClick={() => handleScrollStep('left')}
+        aria-label="Scroll testimonials left"
+        className="hidden md:flex absolute -left-3 lg:-left-5 top-1/2 -translate-y-1/2 z-30 w-11 h-11 rounded-full bg-black/80 hover:bg-black border border-white/25 hover:border-white/50 text-white items-center justify-center backdrop-blur-md shadow-2xl opacity-0 group-hover/carousel:opacity-100 transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer"
       >
-        <div
-          className="mask w-slider-mask relative min-h-[620px] sm:min-h-[580px] lg:min-h-[540px]"
-          style={{ touchAction: 'pan-y' }}
-          onPointerDown={(e) => {
-            if (e.pointerType === 'mouse') return;
-            drag.current = { x: e.clientX, id: e.pointerId };
-          }}
-          onPointerUp={(e) => {
-            const d = drag.current;
-            drag.current = null;
-            if (!d) return;
-            const dx = e.clientX - d.x;
-            if (Math.abs(dx) > 40) go(dx < 0 ? 1 : -1);
-          }}
-          aria-live={hold || paused || isPlaying ? 'polite' : 'off'}
-        >
-          {testimonials.map((t: TestimonialItem, i: number) => {
-            const pos = position(i);
-            const jump = Math.abs(pos - prevPosition(i)) > 1;
-            const [imgId, blockId, contentId] = ids[i] || [];
-            const isCurrent = i === index;
+        <ChevronLeft className="w-5 h-5" />
+      </button>
 
-            return (
+      {/* Optional Right Navigation Button */}
+      <button
+        type="button"
+        onClick={() => handleScrollStep('right')}
+        aria-label="Scroll testimonials right"
+        className="hidden md:flex absolute -right-3 lg:-right-5 top-1/2 -translate-y-1/2 z-30 w-11 h-11 rounded-full bg-black/80 hover:bg-black border border-white/25 hover:border-white/50 text-white items-center justify-center backdrop-blur-md shadow-2xl opacity-0 group-hover/carousel:opacity-100 transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer"
+      >
+        <ChevronRight className="w-5 h-5" />
+      </button>
+
+      {/* Edge Gradient Fades for Cinema Vignette */}
+      <div className="pointer-events-none absolute left-0 inset-y-0 w-8 sm:w-16 bg-gradient-to-r from-black via-black/60 to-transparent z-10" />
+      <div className="pointer-events-none absolute right-0 inset-y-0 w-8 sm:w-16 bg-gradient-to-l from-black via-black/60 to-transparent z-10" />
+
+      {/* Interactive Horizontal Track */}
+      <div
+        ref={scrollRef}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerCancel={handlePointerUp}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        className="flex items-center gap-4 sm:gap-5 overflow-x-auto scroll-smooth py-4 px-3 sm:px-6 cursor-grab active:cursor-grabbing [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+        style={{ touchAction: 'pan-y', willChange: 'scroll-position', transform: 'translateZ(0)' }}
+      >
+        {displayItems.map((item: TestimonialItem, idx: number) => {
+          const isActive = item.id === activeCardId;
+          const isCardUnmuted = unmutedIndex === idx;
+
+          return (
+            <div
+              key={`${item.id}-${idx}`}
+              ref={(el) => {
+                cardRefs.current[idx] = el;
+              }}
+              data-index={idx}
+              onClick={(e) => handleCardTap(e, item, idx)}
+              className={`group/card relative shrink-0 w-[210px] sm:w-[250px] md:w-[270px] lg:w-[285px] aspect-[9/16] rounded-2xl sm:rounded-[22px] overflow-hidden bg-[#0c0c0e] transition-transform duration-300 cursor-pointer ${
+                isActive
+                  ? 'ring-2 ring-[#a3e635] shadow-[0_0_28px_rgba(163,230,53,0.35)] scale-[1.01]'
+                  : 'border border-white/10 hover:border-white/30 hover:scale-[1.005]'
+              }`}
+              style={{ transform: 'translateZ(0)' }}
+            >
+              {/* Hardware-optimized Loop Video (Plays only when intersecting) */}
+              <video
+                ref={(el) => {
+                  videoRefs.current[idx] = el;
+                }}
+                src={item.video}
+                poster={item.poster}
+                loop
+                muted={!isCardUnmuted}
+                playsInline
+                preload="metadata"
+                className="w-full h-full object-cover pointer-events-none"
+              />
+
+              {/* Circular Sound Toggle Button (Bottom-Right, matching reference screenshot) */}
+              <button
+                type="button"
+                onPointerDown={(e) => {
+                  e.stopPropagation();
+                }}
+                onPointerUp={(e) => {
+                  e.stopPropagation();
+                }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  e.preventDefault();
+                  toggleCardAudio(e, idx);
+                }}
+                aria-label={isCardUnmuted ? `Mute ${item.name} reel` : `Unmute ${item.name} reel`}
+                className={`absolute bottom-3.5 right-3.5 z-30 w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center backdrop-blur-md transition-all duration-300 shadow-xl cursor-pointer active:scale-90 ${
+                  isCardUnmuted
+                    ? 'bg-[#a3e635] text-black ring-2 ring-[#a3e635]/50 shadow-[0_0_15px_rgba(163,230,53,0.6)]'
+                    : 'bg-black/75 hover:bg-black/95 text-white border border-white/25 hover:border-white/50'
+                }`}
+              >
+                {isCardUnmuted ? (
+                  <Volume2 className="w-4 h-4 fill-current animate-pulse" />
+                ) : (
+                  <VolumeX className="w-4 h-4 text-neutral-200" />
+                )}
+              </button>
+            </div>
+          );
+        })}
+      </div>
+
+      {withDivider && <div className="dividing-line mt-8"></div>}
+
+      {/* ========================================================================= */}
+      {/* FULLSCREEN CINEMA REELS MODAL (CLEAN VIDEO ONLY - ZERO TEXT OVERLAYS)    */}
+      {/* ========================================================================= */}
+      {fullscreenItem && (
+        <div
+          ref={modalContainerRef}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Fullscreen Video Player"
+          className="fixed inset-0 z-[99999] bg-black/95 backdrop-blur-2xl flex items-center justify-center p-2 sm:p-4 select-none animate-fadeIn"
+          onClick={closeFullscreen}
+        >
+          {/* Top-Right: Close Button */}
+          <div className="absolute top-4 right-4 sm:top-6 sm:right-6 z-50">
+            <button
+              type="button"
+              onClick={closeFullscreen}
+              aria-label="Close fullscreen video"
+              className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white/10 hover:bg-white text-white hover:text-black flex items-center justify-center backdrop-blur-md border border-white/20 hover:border-transparent transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer shadow-2xl"
+            >
+              <X className="w-5 h-5 sm:w-6 sm:h-6" />
+            </button>
+          </div>
+
+          {/* Modal Left Arrow Button */}
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              navigateModal(-1);
+            }}
+            aria-label="Previous film"
+            className="hidden sm:flex absolute left-3 sm:left-6 lg:left-10 top-1/2 -translate-y-1/2 z-50 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-black/70 hover:bg-white text-white hover:text-black border border-white/20 items-center justify-center backdrop-blur-md transition-all duration-200 hover:scale-110 active:scale-95 cursor-pointer shadow-2xl"
+          >
+            <ChevronLeft className="w-6 h-6" />
+          </button>
+
+          {/* Modal Right Arrow Button */}
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              navigateModal(1);
+            }}
+            aria-label="Next film"
+            className="hidden sm:flex absolute right-3 sm:right-6 lg:right-10 top-1/2 -translate-y-1/2 z-50 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-black/70 hover:bg-white text-white hover:text-black border border-white/20 items-center justify-center backdrop-blur-md transition-all duration-200 hover:scale-110 active:scale-95 cursor-pointer shadow-2xl"
+          >
+            <ChevronRight className="w-6 h-6" />
+          </button>
+
+          {/* 9:16 Vertical Video Screen - Pure Visuals (Zero Text) */}
+          <div
+            className="relative h-[92vh] max-h-[92vh] max-w-[95vw] aspect-[9/16] rounded-2xl sm:rounded-[28px] overflow-hidden bg-black shadow-[0_0_80px_rgba(0,0,0,0.95)] ring-1 ring-white/15 group/modalVideo cursor-pointer flex items-center justify-center"
+            onClick={() => toggleModalPlay()}
+            onDoubleClick={triggerNativeFullscreen}
+          >
+            <video
+              ref={(el) => {
+                fullscreenVideoRef.current = el;
+                if (el) {
+                  el.muted = isFullscreenMuted;
+                  if (!isFullscreenMuted) {
+                    el.volume = 1.0;
+                  }
+                }
+              }}
+              src={fullscreenItem.video}
+              poster={fullscreenItem.poster}
+              autoPlay
+              loop
+              playsInline
+              className="w-full h-full object-cover"
+              onTimeUpdate={(e) => {
+                const target = e.target as HTMLVideoElement;
+                setCurrentTime(target.currentTime);
+                if (target.duration) {
+                  setDuration(target.duration);
+                }
+              }}
+              onLoadedMetadata={(e) => {
+                const target = e.target as HTMLVideoElement;
+                setDuration(target.duration);
+              }}
+            />
+
+            {/* Center Play/Pause Pulsing Icon on Hover or Pause */}
+            <div
+              className={`absolute inset-0 flex items-center justify-center transition-all duration-300 pointer-events-none z-20 ${
+                !isFullscreenPlaying ? 'opacity-100 scale-100' : 'opacity-0 scale-90 group-hover/modalVideo:opacity-100'
+              }`}
+            >
+              <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-black/70 border border-white/25 text-white flex items-center justify-center backdrop-blur-md shadow-2xl">
+                {!isFullscreenPlaying ? (
+                  <Play className="w-7 h-7 sm:w-8 sm:h-8 fill-current ml-1" />
+                ) : (
+                  <Pause className="w-7 h-7 sm:w-8 sm:h-8 fill-current" />
+                )}
+              </div>
+            </div>
+
+            {/* Bottom Scrim Bar with Controls (Icon-Only, Zero Text) */}
+            <div
+              className="absolute inset-x-0 bottom-0 p-3 sm:p-5 bg-gradient-to-t from-black/90 via-black/50 to-transparent z-20 flex flex-col gap-2.5 opacity-90 hover:opacity-100 transition-opacity"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Scrubbing Progress Bar */}
               <div
-                key={t.id || t.name}
-                className="testimonial-slide w-slide absolute inset-0 w-full h-full"
-                role="group"
-                aria-roledescription="slide"
-                aria-label={`${i + 1} of ${n}`}
-                aria-hidden={!isCurrent}
-                style={{
-                  transform: `translateX(${(pos - i) * 100}%)`,
-                  transition: jump ? 'none' : `transform ${DURATION}ms cubic-bezier(.25,.1,.25,1)`,
-                  visibility: Math.abs(pos) > 1 ? 'hidden' : 'visible',
-                  pointerEvents: isCurrent ? 'auto' : 'none',
+                className="w-full h-1.5 bg-white/20 hover:h-2 rounded-full overflow-hidden cursor-pointer relative transition-all"
+                onClick={(e) => {
+                  const rect = e.currentTarget.getBoundingClientRect();
+                  const clickX = e.clientX - rect.left;
+                  const percent = Math.max(0, Math.min(1, clickX / rect.width));
+                  if (fullscreenVideoRef.current && duration) {
+                    fullscreenVideoRef.current.currentTime = percent * duration;
+                  }
                 }}
               >
-                {/* CARD CONTAINER: Dark background with luxury top/left highlight */}
-                <div className="testimonial-content-wrap bg-[#141416] border border-white/10 rounded-[28px] p-5 sm:p-7 lg:p-9 shadow-2xl relative overflow-hidden">
-                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-center">
-                    
-                    {/* VIDEO CONTAINER: 4:3 / phone crop on mobile, 9:16 portrait on desktop */}
-                    <div className="lg:col-span-5 flex justify-center w-full">
-                      <div
-                        id={imgId}
-                        className="relative w-full aspect-[4/3] sm:aspect-[16/10] lg:aspect-[9/16] lg:max-w-[320px] rounded-2xl overflow-hidden select-none bg-neutral-950 border border-white/10 shadow-lg group"
-                      >
-                        <video
-                          ref={(el) => {
-                            videoRefs.current[i] = el;
-                          }}
-                          src={t.video}
-                          poster={t.poster}
-                          preload="metadata"
-                          playsInline
-                          className="w-full h-full object-cover cursor-pointer"
-                          onClick={() => togglePlay()}
-                          onTimeUpdate={(e) => {
-                            if (isCurrent) {
-                              const target = e.target as HTMLVideoElement;
-                              if (target.duration) {
-                                setProgress((target.currentTime / target.duration) * 100);
-                              }
-                            }
-                          }}
-                          onEnded={() => {
-                            setIsPlaying(false);
-                            setProgress(0);
-                          }}
-                        />
-
-                        {/* Top-Left: CLIENT FILM */}
-                        <div className="absolute top-3.5 left-3.5 pointer-events-none z-10">
-                          <span className="text-[10px] sm:text-[11px] font-mono tracking-[0.2em] uppercase text-neutral-200 bg-black/60 px-3 py-1.5 rounded-md backdrop-blur-md border border-white/10">
-                            {isCurrent && isPlaying ? 'PLAYING' : 'CLIENT FILM'}
-                          </span>
-                        </div>
-
-                        {/* Top-Right: DURATION */}
-                        <div className="absolute top-3.5 right-3.5 pointer-events-none z-10">
-                          <span className="text-[10px] sm:text-[11px] font-mono tracking-widest text-neutral-300 bg-black/60 px-2.5 py-1.5 rounded-md backdrop-blur-md border border-white/10">
-                            {t.duration}
-                          </span>
-                        </div>
-
-                        {/* Center: Circular Glass Play Button */}
-                        <div
-                          className={`absolute inset-0 flex items-center justify-center transition-all duration-300 pointer-events-none z-10 ${
-                            isCurrent && isPlaying ? 'opacity-0 group-hover:opacity-100' : 'opacity-100'
-                          }`}
-                        >
-                          <button
-                            type="button"
-                            onClick={(e) => togglePlay(e)}
-                            className="pointer-events-auto w-14 h-14 rounded-full bg-black/60 hover:bg-white text-white hover:text-black flex items-center justify-center backdrop-blur-md transition-all duration-300 hover:scale-105 border border-white/20 shadow-xl"
-                            aria-label={isCurrent && isPlaying ? 'Pause video' : 'Play video'}
-                          >
-                            {isCurrent && isPlaying ? (
-                              <Pause className="w-5 h-5 fill-current" />
-                            ) : (
-                              <Play className="w-5 h-5 fill-current ml-0.5" />
-                            )}
-                          </button>
-                        </div>
-
-                        {/* Bottom: Progress line & Mute toggle */}
-                        <div
-                          className={`absolute bottom-0 inset-x-0 p-3 bg-gradient-to-t from-black/85 via-black/40 to-transparent transition-opacity duration-300 z-10 flex flex-col gap-2 ${
-                            isCurrent && isPlaying ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
-                          }`}
-                        >
-                          <div className="flex items-center justify-between px-1">
-                            <button
-                              type="button"
-                              onClick={toggleMute}
-                              className="p-1.5 rounded-full bg-black/60 hover:bg-black/90 text-white/90 hover:text-white border border-white/15 backdrop-blur-md transition-colors"
-                              aria-label={isMuted ? 'Unmute' : 'Mute'}
-                            >
-                              {isMuted ? (
-                                <VolumeX className="w-3.5 h-3.5 text-neutral-400" />
-                              ) : (
-                                <Volume2 className="w-3.5 h-3.5" />
-                              )}
-                            </button>
-                            <span className="text-[10px] font-mono tracking-widest text-neutral-400">
-                              {String(i + 1).padStart(2, '0')} / {String(n).padStart(2, '0')}
-                            </span>
-                          </div>
-
-                          <div className="w-full h-[2px] bg-white/20 rounded-full overflow-hidden">
-                            <div
-                              className="h-full bg-white transition-all duration-150"
-                              style={{ width: `${progress}%` }}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* REVIEW DETAILS & TEXT CONTENT */}
-                    <div id={blockId} className="lg:col-span-7 flex flex-col justify-between h-full relative">
-                      <div>
-                        {/* Rating row: 5.0/5  -  ★★★★★ */}
-                        <div className="flex items-center gap-2.5 text-sm sm:text-base mb-4 sm:mb-5">
-                          <span className="font-mono text-white font-medium">{t.rating}</span>
-                          <span className="text-neutral-500 font-mono text-sm" aria-hidden="true">-</span>
-                          <div className="flex items-center gap-1" role="img" aria-label={`Rated ${t.rating}`}>
-                            {[0, 1, 2, 3, 4].map((s) => (
-                              <div className="w-embed text-white" key={s} aria-hidden="true">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 fill-white">
-                                  <path d={starPath}></path>
-                                </svg>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-
-                        {withDivider && <div className="dividing-line mb-5"></div>}
-
-                        {/* Bold quote matching phone interface */}
-                        <p className="text-white text-base sm:text-lg md:text-xl font-semibold leading-relaxed tracking-normal">
-                          &ldquo;{t.quote}&rdquo;
-                        </p>
-                      </div>
-
-                      {/* Author & Event info with background watermark quote icon */}
-                      <div id={contentId} className="mt-6 sm:mt-8 pt-4 border-t border-white/5 relative flex items-end justify-between">
-                        <div>
-                          <div className="text-white font-medium sm:font-semibold text-base sm:text-lg tracking-wide">
-                            {t.name}
-                          </div>
-                          <div className="text-neutral-400 font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.18em] mt-1">
-                            {t.role}
-                          </div>
-                        </div>
-
-                        {/* Subtle watermark quote icon in bottom-right matching screenshot */}
-                        <img
-                          className="w-14 h-14 sm:w-18 sm:h-18 opacity-[0.08] pointer-events-none select-none"
-                          src="/assets/695ffd835d32c9c7b020916d_quote-right-icon-1.svg"
-                          alt=""
-                          loading="lazy"
-                        />
-                      </div>
-
-                    </div>
-                  </div>
-                </div>
+                <div
+                  className="h-full bg-[#a3e635] transition-all duration-100"
+                  style={{
+                    width: `${duration ? (currentTime / duration) * 100 : 0}%`,
+                  }}
+                />
               </div>
-            );
-          })}
-        </div>
 
-        {/* AUTHENTIC PREVIOUS ARROW BUTTON */}
-        <div
-          className="left-arrow w-slider-arrow-left"
-          role="button"
-          tabIndex={0}
-          aria-label="Previous testimonial"
-          onClick={() => go(-1)}
-          onKeyDown={onKey(-1)}
-        >
-          <div className="slide-block">
-            <div className="slide-arrow-wrap">
-              <Arrow d={slideLeft01} cls="left-01" />
-              <Arrow d={slideLeft02} cls="left-02" />
-            </div>
-            <div className="slide-text-wrap" aria-hidden="true">
-              <div className="slide-text">Previous</div>
-              <div className="slide-text">Previous</div>
+              {/* Control Action Buttons Row */}
+              <div className="flex items-center justify-between text-white">
+                <div className="flex items-center gap-2.5">
+                  {/* Play/Pause Button */}
+                  <button
+                    type="button"
+                    onClick={toggleModalPlay}
+                    aria-label={isFullscreenPlaying ? 'Pause' : 'Play'}
+                    className="w-9 h-9 rounded-full bg-white/10 hover:bg-white text-white hover:text-black flex items-center justify-center backdrop-blur-md border border-white/20 transition-all cursor-pointer active:scale-95"
+                  >
+                    {isFullscreenPlaying ? (
+                      <Pause className="w-4 h-4 fill-current" />
+                    ) : (
+                      <Play className="w-4 h-4 fill-current ml-0.5" />
+                    )}
+                  </button>
+
+                  {/* Mute/Unmute Button (Icon Only, Zero Text) */}
+                  <button
+                    type="button"
+                    onClick={toggleModalMute}
+                    aria-label={isFullscreenMuted ? 'Unmute video' : 'Mute video'}
+                    className="w-9 h-9 rounded-full bg-white/10 hover:bg-white text-white hover:text-black flex items-center justify-center backdrop-blur-md border border-white/20 transition-all cursor-pointer active:scale-95"
+                  >
+                    {isFullscreenMuted ? (
+                      <VolumeX className="w-4 h-4 text-neutral-300" />
+                    ) : (
+                      <Volume2 className="w-4 h-4 text-[#a3e635] animate-pulse" />
+                    )}
+                  </button>
+                </div>
+
+                {/* Native Device Fullscreen Mode Toggle */}
+                <button
+                  type="button"
+                  onClick={triggerNativeFullscreen}
+                  aria-label="Toggle native fullscreen mode"
+                  className="w-9 h-9 rounded-full bg-white/10 hover:bg-white text-white hover:text-black flex items-center justify-center backdrop-blur-md border border-white/20 transition-all cursor-pointer active:scale-95"
+                >
+                  <Maximize2 className="w-4 h-4" />
+                </button>
+              </div>
             </div>
           </div>
         </div>
-
-        {/* AUTHENTIC NEXT ARROW BUTTON */}
-        <div
-          className="right-arrow w-slider-arrow-right"
-          role="button"
-          tabIndex={0}
-          aria-label="Next testimonial"
-          onClick={() => go(1)}
-          onKeyDown={onKey(1)}
-        >
-          <div className="slide-block">
-            <div className="slide-text-wrap" aria-hidden="true">
-              <div className="slide-text">Next</div>
-              <div className="slide-text">Next</div>
-            </div>
-            <div className="slide-arrow-wrap">
-              <Arrow d={slideRight01} cls="right-01" />
-              <Arrow d={slideRight02} cls="right-02" />
-            </div>
-          </div>
-        </div>
-
-        <div className="slide-nav w-slider-nav"></div>
-      </div>
+      )}
     </div>
   );
 }

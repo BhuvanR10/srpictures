@@ -1,3 +1,5 @@
+import { useState, useRef, useEffect } from 'react';
+import { Volume2, VolumeX } from 'lucide-react';
 import GallerySection from '../components/GallerySection';
 import CtaButton from '../components/CtaButton';
 import CtaWrapper from '../components/CtaWrapper';
@@ -17,8 +19,124 @@ export default function Home() {
     description: 'Premier photography and cinematography studio based in Bengaluru. Crafting authentic, cinematic stories with natural light and high-end cine optics.',
   });
 
+  const headerRef = useRef<HTMLElement | null>(null);
+  const heroVideoRef = useRef<HTMLVideoElement | null>(null);
+  const [isSoundEnabled, setIsSoundEnabled] = useState(false);
+  const [isHeroInView, setIsHeroInView] = useState(true);
+  const userWantsSoundRef = useRef(false);
+
+  // Keep ref synchronized for immediate access inside listeners
+  userWantsSoundRef.current = isSoundEnabled;
+
+  // Sound plays ONLY when the user explicitly enabled it AND the hero section is in view
+  const effectiveMuted = !isSoundEnabled || !isHeroInView;
+
+  // Automatically silence sound when scrolling away from hero, and resume when scrolling back
+  useEffect(() => {
+    const header = headerRef.current;
+    if (!header) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const inView = entry.isIntersecting;
+        setIsHeroInView(inView);
+
+        const v = heroVideoRef.current || document.querySelector<HTMLVideoElement>('.section-home-header video');
+        if (!v) return;
+
+        if (!inView) {
+          // Immediately mute audio when user leaves the hero section
+          v.muted = true;
+          v.setAttribute('muted', '');
+        } else if (userWantsSoundRef.current) {
+          // Automatically restore audio when re-entering the hero section
+          v.muted = false;
+          v.volume = 1.0;
+          v.removeAttribute('muted');
+          const p = v.play();
+          if (p !== undefined) {
+            p.catch(() => {});
+          }
+        }
+      },
+      {
+        threshold: 0.15,
+      }
+    );
+
+    observer.observe(header);
+
+    // Also auto-pause audio when user switches tabs or minimizes browser
+    const handleVisibilityChange = () => {
+      const v = heroVideoRef.current || document.querySelector<HTMLVideoElement>('.section-home-header video');
+      if (!v) return;
+
+      if (document.hidden) {
+        v.muted = true;
+        v.setAttribute('muted', '');
+      } else if (userWantsSoundRef.current && isHeroInView) {
+        v.muted = false;
+        v.volume = 1.0;
+        v.removeAttribute('muted');
+        const p = v.play();
+        if (p !== undefined) {
+          p.catch(() => {});
+        }
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      observer.disconnect();
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [isHeroInView]);
+
+  const toggleHeroMute = (e?: React.MouseEvent) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    let v = heroVideoRef.current;
+    if (!v) {
+      v = document.querySelector<HTMLVideoElement>('.section-home-header video');
+      if (v) heroVideoRef.current = v;
+    }
+
+    const nextSoundEnabled = !isSoundEnabled;
+    userWantsSoundRef.current = nextSoundEnabled;
+    setIsSoundEnabled(nextSoundEnabled);
+
+    if (v) {
+      if (nextSoundEnabled && isHeroInView) {
+        v.muted = false;
+        v.volume = 1.0;
+        v.removeAttribute('muted');
+        const p = v.play();
+        if (p !== undefined) {
+          p.catch((err) => {
+            console.warn('Playback error upon unmute:', err);
+          });
+        }
+      } else {
+        v.muted = true;
+        v.setAttribute('muted', '');
+      }
+    }
+  };
+
+  const handleHeroTap = (e: React.MouseEvent) => {
+    // If the click originated from an interactive link or button, let that element handle its own event
+    if ((e.target as HTMLElement).closest('a, button')) {
+      return;
+    }
+    toggleHeroMute(e);
+  };
+
   const handleScrollToGallery = (e: React.MouseEvent) => {
     e.preventDefault();
+    e.stopPropagation();
     const gallery = document.getElementById('gallery');
     if (gallery) {
       gallery.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -28,10 +146,25 @@ export default function Home() {
   return (
     <>
     <div id="top" className="top"></div>
-    <header className="section-home-header">
+    <header
+      ref={headerRef}
+      onClick={handleHeroTap}
+      className="section-home-header cursor-pointer select-none"
+      title="Tap anywhere to mute / unmute audio"
+    >
       <div className="w-layout-grid header-component-grid">
         <div id="w-node-cd060b03-ce5d-09c9-ac8d-89dcbc0c13eb-805165a1" className="background-video-wrapper relative w-full h-full overflow-hidden">
-          <Video className="background-video !opacity-95" poster="/assets/hero-cinematic-poster.jpg" src="/assets/hero-bg-720p.mp4" priority />
+          <Video
+            className="background-video !opacity-95"
+            poster="/assets/hero-cinematic-poster.jpg"
+            src="/assets/hero-bg-720p.mp4"
+            desktopSrc="/assets/hero-bg-1080p.mp4"
+            priority
+            muted={effectiveMuted}
+            onVideoRef={(node) => {
+              heroVideoRef.current = node;
+            }}
+          />
           <div className="video-opacity pointer-events-none"></div>
         </div>
 
@@ -101,12 +234,50 @@ export default function Home() {
                   VIEW PORTFOLIO
                 </div>
               </a>
-              <div id="w-node-a6327672-a489-8e8e-89e9-2601a1ceeffc-805165a1" className="location-wrap">
-                <div className="header-text">BASED IN BENGALURU, INDIA</div>
-                <div className="location-icon w-embed">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM9.71002 19.6674C8.74743 17.6259 8.15732 15.3742 8.02731 13H4.06189C4.458 16.1765 6.71639 18.7747 9.71002 19.6674ZM10.0307 13C10.1811 15.4388 10.8778 17.7297 12 19.752C13.1222 17.7297 13.8189 15.4388 13.9693 13H10.0307ZM19.9381 13H15.9727C15.8427 15.3742 15.2526 17.6259 14.29 19.6674C17.2836 18.7747 19.542 16.1765 19.9381 13ZM4.06189 11H8.02731C8.15732 8.62577 8.74743 6.37407 9.71002 4.33256C6.71639 5.22533 4.458 7.8235 4.06189 11ZM10.0307 11H13.9693C13.8189 8.56122 13.1222 6.27025 12 4.24799C10.8778 6.27025 10.1811 8.56122 10.0307 11ZM14.29 4.33256C15.2526 6.37407 15.8427 8.62577 15.9727 11H19.9381C19.542 7.8235 17.2836 5.22533 14.29 4.33256Z"></path>
-                  </svg>
+
+              {/* Interactive Audio Controls & Studio Location Cluster */}
+              <div
+                id="w-node-a6327672-a489-8e8e-89e9-2601a1ceeffc-805165a1"
+                className="flex flex-col items-end justify-end gap-3 select-none pointer-events-auto z-30"
+              >
+                {/* High-Visibility Cinematic Mute / Unmute Toggle Button */}
+                <button
+                  type="button"
+                  onClick={toggleHeroMute}
+                  aria-label={isSoundEnabled ? 'Mute cinematic video soundtrack' : 'Unmute cinematic video soundtrack'}
+                  className="group flex items-center gap-2.5 px-4 py-2 sm:px-5 sm:py-2.5 rounded-full bg-black/85 hover:bg-black/95 border border-white/25 hover:border-white/60 text-white backdrop-blur-md shadow-[0_4px_24px_rgba(0,0,0,0.7)] hover:shadow-[0_4px_30px_rgba(255,255,255,0.15)] transition-all duration-300 pointer-events-auto cursor-pointer active:scale-95"
+                >
+                  {!isSoundEnabled ? (
+                    <>
+                      <VolumeX className="w-4 h-4 text-neutral-300 group-hover:text-white transition-colors" />
+                      <span className="text-[11px] sm:text-xs font-mono font-medium tracking-[0.2em] uppercase text-neutral-200 group-hover:text-white transition-colors">
+                        SOUND OFF
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      <span className="relative flex h-2.5 w-2.5">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]"></span>
+                      </span>
+                      <Volume2 className="w-4 h-4 text-emerald-400 group-hover:text-emerald-300 transition-colors animate-pulse" />
+                      <span className="text-[11px] sm:text-xs font-mono font-medium tracking-[0.2em] uppercase text-emerald-300 group-hover:text-white transition-colors">
+                        SOUND ON
+                      </span>
+                    </>
+                  )}
+                </button>
+
+                {/* Studio Location Badge */}
+                <div className="location-wrap !m-0 !p-0">
+                  <div className="header-text font-mono text-[11px] tracking-[0.2em] uppercase text-neutral-400">
+                    BASED IN BENGALURU, INDIA
+                  </div>
+                  <div className="location-icon w-embed">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM9.71002 19.6674C8.74743 17.6259 8.15732 15.3742 8.02731 13H4.06189C4.458 16.1765 6.71639 18.7747 9.71002 19.6674ZM10.0307 13C10.1811 15.4388 10.8778 17.7297 12 19.752C13.1222 17.7297 13.8189 15.4388 13.9693 13H10.0307ZM19.9381 13H15.9727C15.8427 15.3742 15.2526 17.6259 14.29 19.6674C17.2836 18.7747 19.542 16.1765 19.9381 13ZM4.06189 11H8.02731C8.15732 8.62577 8.74743 6.37407 9.71002 4.33256C6.71639 5.22533 4.458 7.8235 4.06189 11ZM10.0307 11H13.9693C13.8189 8.56122 13.1222 6.27025 12 4.24799C10.8778 6.27025 10.1811 8.56122 10.0307 11ZM14.29 4.33256C15.2526 6.37407 15.8427 8.62577 15.9727 11H19.9381C19.542 7.8235 17.2836 5.22533 14.29 4.33256Z"></path>
+                    </svg>
+                  </div>
                 </div>
               </div>
             </div>

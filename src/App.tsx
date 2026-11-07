@@ -57,6 +57,8 @@ export default function App() {
               <Route path="/categories/:slug" element={<CategoryView />} />
               <Route path="/project/:slug" element={<Project />} />
               <Route path="/pricing" element={<Pricing />} />
+              <Route path="/packages" element={<Pricing />} />
+              <Route path="/investment" element={<Pricing />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/blog" element={<Blog />} />
               <Route path="/blog-post/:slug" element={<BlogPost />} />
