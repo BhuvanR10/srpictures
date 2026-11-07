@@ -4,46 +4,43 @@ export default function TermsOfService() {
   return (
     <>
       <div id="top" className="top"></div>
-      <header className="section-licenses-header">
+      <header className="section-licenses-header pt-28 sm:pt-36 pb-8">
         <div className="padding-global">
           <div className="container-large">
-            <div className="padding-top-header">
-              <div className="spacer-medium"></div>
-              <div className="text-center max-w-3xl mx-auto">
-                <span className="inline-block px-3 py-1 rounded-full text-xs font-mono tracking-widest uppercase bg-amber-400/10 text-amber-400 border border-amber-400/20 mb-4">
-                  Indian Contract Act &amp; Copyright Framework
-                </span>
-                <h1 className="heading-style-h2 text-white">Terms of Service</h1>
-                <div className="spacer-tiny"></div>
-                <p className="text-size-medium text-neutral-400">
-                  Effective Date: November 2026 • Governed by the laws of India, including the Indian Contract Act, 1872, Copyright Act, 1957, and DGCA Drone Regulations.
-                </p>
-              </div>
+            <div className="text-center max-w-3xl mx-auto">
+              <span className="inline-block px-3 py-1 rounded-full text-xs font-mono tracking-widest uppercase bg-amber-400/10 text-amber-400 border border-amber-400/20 mb-4">
+                Indian Contract Act &amp; Copyright Framework
+              </span>
+              <h1 className="legal-header-title text-white">Terms of Service</h1>
+              <div className="spacer-tiny"></div>
+              <p className="text-sm text-neutral-400 max-w-xl mx-auto leading-relaxed">
+                Effective Date: November 2026 • Governed by the laws of India, including the Indian Contract Act, 1872, Copyright Act, 1957, and DGCA Drone Regulations.
+              </p>
             </div>
           </div>
         </div>
       </header>
 
-      <section className="section-licenses-content py-12 sm:py-16">
+      <section className="section-licenses-content py-8 sm:py-12">
         <div className="padding-global">
-          <div className="container-large max-w-4xl mx-auto">
-            <div className="space-y-12 text-neutral-300 leading-relaxed font-sans">
+          <div className="legal-doc-container">
+            <div className="space-y-10 text-neutral-300 font-sans">
 
               {/* Introduction & Binding Nature */}
-              <div className="p-6 sm:p-8 rounded-2xl bg-neutral-900/60 border border-white/10">
-                <h2 className="text-xl sm:text-2xl font-serif text-white mb-3">1. Agreement to Terms</h2>
-                <p className="mb-3">
+              <div className="legal-card-panel">
+                <h2 className="legal-section-title">1. Agreement to Terms</h2>
+                <p className="mb-3 text-sm text-neutral-300">
                   These Terms of Service ("Terms") constitute a legally binding agreement made between you, whether personally or on behalf of an entity ("Client", "you"), and <strong>The SR Pictures</strong> ("Studio", "we", "us", or "our"), concerning your access to our website and the provision of photography, cinematography, post-production, and drone imaging services.
                 </p>
-                <p className="text-sm text-neutral-400">
+                <p className="text-xs text-neutral-400 m-0">
                   By engaging our services, remitting a booking deposit, or signing a shoot contract, you acknowledge that you have read, understood, and agreed to be bound by all of these Terms under the <strong>Indian Contract Act, 1872</strong>.
                 </p>
               </div>
 
               {/* Scope of Production Services */}
               <div>
-                <h2 className="text-xl sm:text-2xl font-serif text-white mb-4">2. Scope of Services & Booking Confirmation</h2>
-                <p className="mb-3">
+                <h2 className="legal-section-title">2. Scope of Services &amp; Booking Confirmation</h2>
+                <p className="mb-3 text-sm text-neutral-300">
                   The SR Pictures provides specialized visual production services, including wedding cinematography, candid wedding photography, traditional portraiture, pre-wedding &amp; engagement films, maternity &amp; newborn sessions, commercial fashion, and corporate event documentation.
                 </p>
                 <ul className="list-disc list-inside space-y-2 pl-2 text-neutral-400 text-sm">
@@ -54,43 +51,43 @@ export default function TermsOfService() {
               </div>
 
               {/* Intellectual Property & Copyright Act, 1957 */}
-              <div className="p-6 sm:p-8 rounded-2xl bg-neutral-900/40 border border-amber-500/20">
-                <h2 className="text-xl sm:text-2xl font-serif text-white mb-3">3. Copyright &amp; Intellectual Property Ownership</h2>
-                <p className="mb-3">
+              <div className="legal-card-panel border-amber-500/20">
+                <h2 className="legal-section-title text-amber-200">3. Copyright &amp; Intellectual Property Ownership</h2>
+                <p className="mb-3 text-sm text-neutral-300">
                   Under Section 17 of the <strong>Indian Copyright Act, 1957</strong>, the copyright of all photographic works, cinematic captures, RAW digital negatives, and video edits created during the assignment remains the exclusive intellectual property of <strong>The SR Pictures</strong>:
                 </p>
                 <div className="space-y-3 text-sm">
                   <div>
                     <strong className="text-amber-300 block">Client Usage License:</strong>
-                    Upon receipt of full payment, the Client is granted a perpetual, non-exclusive, non-transferable license to view, reproduce, print, and share finalized high-resolution photographs and edited films for personal, family, and non-commercial purposes across private social media profiles.
+                    <span className="text-neutral-400">Upon receipt of full payment, the Client is granted a perpetual, non-exclusive, non-transferable license to view, reproduce, print, and share finalized high-resolution photographs and edited films for personal, family, and non-commercial purposes across private social media profiles.</span>
                   </div>
                   <div>
                     <strong className="text-amber-300 block">Commercial Restriction:</strong>
-                    No images or films may be licensed, sublicensed, sold, or supplied to third-party commercial vendors (e.g. makeup artists, banquet venues, decorators, attire designers) for commercial advertising without explicit written consent and licensing terms from The SR Pictures.
+                    <span className="text-neutral-400">No images or films may be licensed, sublicensed, sold, or supplied to third-party commercial vendors (e.g. makeup artists, banquet venues, decorators, attire designers) for commercial advertising without explicit written consent and licensing terms from The SR Pictures.</span>
                   </div>
                   <div>
                     <strong className="text-amber-300 block">Studio Promotional Rights:</strong>
-                    Unless a written Non-Disclosure Agreement (NDA) or privacy exemption is mutually signed prior to production, the Studio reserves the legitimate right to display select edited works across its official website portfolio, social media channels, and award submissions.
+                    <span className="text-neutral-400">Unless a written Non-Disclosure Agreement (NDA) or privacy exemption is mutually signed prior to production, the Studio reserves the legitimate right to display select edited works across its official website portfolio, social media channels, and award submissions.</span>
                   </div>
                 </div>
               </div>
 
               {/* DGCA Drone Regulations Compliance */}
-              <div className="p-6 sm:p-8 rounded-2xl bg-neutral-900/60 border border-white/10">
-                <h2 className="text-xl sm:text-2xl font-serif text-white mb-3">4. Aerial Drone Cinematography &amp; DGCA Compliance</h2>
-                <p className="mb-3 text-sm">
+              <div className="legal-card-panel">
+                <h2 className="legal-section-title">4. Aerial Drone Cinematography &amp; DGCA Compliance</h2>
+                <p className="mb-3 text-sm text-neutral-300">
                   All aerial cinematography operations conducted by The SR Pictures strictly comply with the <strong>Drone Rules, 2021</strong> framed by the Ministry of Civil Aviation, Government of India, and the Directorate General of Civil Aviation (DGCA):
                 </p>
                 <ul className="list-disc list-inside space-y-2 pl-2 text-neutral-400 text-sm">
                   <li><strong>Airspace Zoning:</strong> Drone operations are subject to Digital Sky airspace categorization. Flights are strictly prohibited within designated Red Zones (e.g. within vicinity of airports, military bases, high-security state assets) and require statutory clearance in Yellow Zones.</li>
-                  <li><strong>Safety & Weather Contingency:</strong> The certified drone remote pilot in command holds absolute discretionary authority to cancel or abort flights in case of torrential rainfall, heavy wind gusts, electrical storms, or dense bird activity. In such events, the safety of human life and equipment takes precedence.</li>
+                  <li><strong>Safety &amp; Weather Contingency:</strong> The certified drone remote pilot in command holds absolute discretionary authority to cancel or abort flights in case of torrential rainfall, heavy wind gusts, electrical storms, or dense bird activity. In such events, the safety of human life and equipment takes precedence.</li>
                   <li><strong>Venue Clearances:</strong> The Client is solely responsible for obtaining venue management permissions and local municipal approvals for drone takeoff and operation over private event grounds.</li>
                 </ul>
               </div>
 
               {/* Client Cooperation & Deliverables */}
               <div>
-                <h2 className="text-xl sm:text-2xl font-serif text-white mb-4">5. Production Deliverables & Revision Guidelines</h2>
+                <h2 className="legal-section-title">5. Production Deliverables &amp; Revision Guidelines</h2>
                 <div className="space-y-3 text-sm text-neutral-400">
                   <p>
                     <strong>Delivery Timelines:</strong> Highlight films, teaser clips, and curated photo previews are typically delivered within 3 to 6 weeks. Master wedding films, documentary edits, and complete photo galleries are released within 8 to 12 weeks post-event, allowing for cinematic color grading and audio mastering.
@@ -106,7 +103,7 @@ export default function TermsOfService() {
 
               {/* Payment Terms & Invoicing */}
               <div>
-                <h2 className="text-xl sm:text-2xl font-serif text-white mb-4">6. Payment Terms &amp; Taxes</h2>
+                <h2 className="legal-section-title">6. Payment Terms &amp; Taxes</h2>
                 <ul className="list-disc list-inside space-y-2 pl-2 text-neutral-400 text-sm">
                   <li><strong>Advance Deposit:</strong> 40% non-refundable booking deposit required upon date confirmation.</li>
                   <li><strong>Pre-Event Milestone:</strong> 50% due on or prior to the first day of shooting/coverage.</li>
@@ -117,7 +114,7 @@ export default function TermsOfService() {
 
               {/* Force Majeure & Limitation of Liability */}
               <div>
-                <h2 className="text-xl sm:text-2xl font-serif text-white mb-4">7. Force Majeure &amp; Limitation of Liability</h2>
+                <h2 className="legal-section-title">7. Force Majeure &amp; Limitation of Liability</h2>
                 <p className="text-sm text-neutral-400 mb-3">
                   Neither party shall be liable for failure to perform obligations if hindered or delayed by a Force Majeure event, including acts of God, extreme natural calamities, pandemics, government curfews, civic disturbances, or sudden venue sealings. In such cases, both parties will make bona fide efforts to reschedule to an agreeable alternate date.
                 </p>
@@ -127,12 +124,12 @@ export default function TermsOfService() {
               </div>
 
               {/* Governing Law & Bengaluru Jurisdiction */}
-              <div className="p-6 sm:p-8 rounded-2xl bg-neutral-900/80 border border-white/10">
-                <h2 className="text-xl sm:text-2xl font-serif text-white mb-3">8. Governing Law &amp; Exclusive Jurisdiction</h2>
+              <div className="legal-card-panel">
+                <h2 className="legal-section-title">8. Governing Law &amp; Exclusive Jurisdiction</h2>
                 <p className="text-sm mb-3 text-neutral-300">
                   This Agreement and any dispute, controversy, or claim arising out of or relating to it shall be governed by, interpreted, and construed in accordance with the substantive laws of the <strong>Republic of India</strong>.
                 </p>
-                <div className="p-4 rounded-xl bg-black/40 border border-white/5 text-sm font-mono text-amber-300">
+                <div className="p-4 rounded-xl bg-black/40 border border-white/5 text-xs font-mono text-amber-300">
                   The competent civil and commercial courts situated exclusively in <strong>Bengaluru, Karnataka, India</strong> shall have exclusive jurisdiction to settle any disputes or legal proceedings arising out of this Agreement.
                 </div>
               </div>
@@ -155,4 +152,3 @@ export default function TermsOfService() {
     </>
   );
 }
-

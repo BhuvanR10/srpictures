@@ -4,47 +4,44 @@ export default function GrievanceRedressal() {
   return (
     <>
       <div id="top" className="top"></div>
-      <header className="section-licenses-header">
+      <header className="section-licenses-header pt-28 sm:pt-36 pb-8">
         <div className="padding-global">
           <div className="container-large">
-            <div className="padding-top-header">
-              <div className="spacer-medium"></div>
-              <div className="text-center max-w-3xl mx-auto">
-                <span className="inline-block px-3 py-1 rounded-full text-xs font-mono tracking-widest uppercase bg-amber-400/10 text-amber-400 border border-amber-400/20 mb-4">
-                  Statutory Redressal Mechanism
-                </span>
-                <h1 className="heading-style-h2 text-white">Grievance Redressal Portal</h1>
-                <div className="spacer-tiny"></div>
-                <p className="text-size-medium text-neutral-400">
-                  Mandatory disclosure under Section 13 of the Digital Personal Data Protection Act, 2023 (DPDP Act) and Rule 3(2) of the Information Technology (Intermediary Guidelines and Digital Media Ethics Code) Rules, 2021.
-                </p>
-              </div>
+            <div className="text-center max-w-3xl mx-auto">
+              <span className="inline-block px-3 py-1 rounded-full text-xs font-mono tracking-widest uppercase bg-amber-400/10 text-amber-400 border border-amber-400/20 mb-4">
+                Statutory Redressal Mechanism
+              </span>
+              <h1 className="legal-header-title text-white">Grievance Redressal Portal</h1>
+              <div className="spacer-tiny"></div>
+              <p className="text-sm text-neutral-400 max-w-xl mx-auto leading-relaxed">
+                Mandatory disclosure under Section 13 of the Digital Personal Data Protection Act, 2023 (DPDP Act) and Rule 3(2) of the Information Technology (Intermediary Guidelines and Digital Media Ethics Code) Rules, 2021.
+              </p>
             </div>
           </div>
         </div>
       </header>
 
-      <section className="section-licenses-content py-12 sm:py-16">
+      <section className="section-licenses-content py-8 sm:py-12">
         <div className="padding-global">
-          <div className="container-large max-w-4xl mx-auto">
-            <div className="space-y-12 text-neutral-300 leading-relaxed font-sans">
+          <div className="legal-doc-container">
+            <div className="space-y-10 text-neutral-300 font-sans">
 
               {/* Statutory Commitment */}
-              <div className="p-6 sm:p-8 rounded-2xl bg-neutral-900/60 border border-white/10">
-                <h2 className="text-xl sm:text-2xl font-serif text-white mb-3">1. Legal Commitment &amp; Transparency</h2>
-                <p className="text-sm text-neutral-300 mb-3">
+              <div className="legal-card-panel">
+                <h2 className="legal-section-title">1. Legal Commitment &amp; Transparency</h2>
+                <p className="text-sm text-neutral-300 m-0">
                   <strong>The SR Pictures</strong> is deeply committed to upholding user privacy, digital rights, and ethical customer care. Pursuant to the <strong>Digital Personal Data Protection Act, 2023 (DPDP Act)</strong> and the <strong>Information Technology Act, 2000</strong>, we provide this dedicated statutory channel to enable Data Principals and clients to lodge grievances, seek rectification, or exercise their statutory data rights.
                 </p>
               </div>
 
               {/* Designated Grievance Officer */}
-              <div className="p-6 sm:p-8 rounded-2xl bg-neutral-900/80 border border-amber-500/20">
-                <h2 className="text-xl sm:text-2xl font-serif text-white mb-4">2. Designated Grievance &amp; Data Protection Officer</h2>
+              <div className="legal-card-panel border-amber-500/20">
+                <h2 className="legal-section-title text-amber-200">2. Designated Grievance &amp; Data Protection Officer</h2>
                 <p className="text-sm text-neutral-300 mb-4">
                   In compliance with statutory requirements, our appointed Grievance Officer details are published below for prompt communication:
                 </p>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-5 rounded-xl bg-black/40 border border-white/5 text-sm font-mono text-neutral-300">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 rounded-xl bg-black/40 border border-white/5 text-xs font-mono text-neutral-300">
                   <div>
                     <span className="text-white block font-semibold">Grievance Officer:</span>
                     S. R. Gowda (Legal &amp; Operations Desk)
@@ -74,33 +71,33 @@ export default function GrievanceRedressal() {
 
               {/* 3-Step Redressal Process */}
               <div>
-                <h2 className="text-xl sm:text-2xl font-serif text-white mb-4">3. Redressal Procedure &amp; Statutory Timelines</h2>
+                <h2 className="legal-section-title">3. Redressal Procedure &amp; Statutory Timelines</h2>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="p-5 rounded-xl bg-white/[0.02] border border-white/10 flex flex-col justify-between">
+                  <div className="p-4 rounded-xl bg-white/[0.02] border border-white/10 flex flex-col justify-between">
                     <div>
                       <div className="text-xs font-mono text-amber-400 uppercase tracking-wider mb-2">Step 01</div>
-                      <h3 className="text-base font-semibold text-white mb-2">Filing the Grievance</h3>
-                      <p className="text-xs text-neutral-400">
+                      <h3 className="legal-subsection-title">Filing the Grievance</h3>
+                      <p className="text-xs text-neutral-400 m-0 leading-relaxed">
                         Email <strong>thesrpictures@gmail.com</strong> with subject <em>"ATTN: Grievance Officer"</em>, outlining your full name, contact information, relevant booking invoice number (if applicable), and description of your concern.
                       </p>
                     </div>
                   </div>
 
-                  <div className="p-5 rounded-xl bg-white/[0.02] border border-white/10 flex flex-col justify-between">
+                  <div className="p-4 rounded-xl bg-white/[0.02] border border-white/10 flex flex-col justify-between">
                     <div>
                       <div className="text-xs font-mono text-amber-400 uppercase tracking-wider mb-2">Step 02</div>
-                      <h3 className="text-base font-semibold text-white mb-2">Mandatory Acknowledgment</h3>
-                      <p className="text-xs text-neutral-400">
+                      <h3 className="legal-subsection-title">Mandatory Acknowledgment</h3>
+                      <p className="text-xs text-neutral-400 m-0 leading-relaxed">
                         Under Indian IT rules, your communication will be logged and formally acknowledged with a unique Grievance Reference ID within <strong>24 hours</strong> of receipt.
                       </p>
                     </div>
                   </div>
 
-                  <div className="p-5 rounded-xl bg-white/[0.02] border border-white/10 flex flex-col justify-between">
+                  <div className="p-4 rounded-xl bg-white/[0.02] border border-white/10 flex flex-col justify-between">
                     <div>
                       <div className="text-xs font-mono text-amber-400 uppercase tracking-wider mb-2">Step 03</div>
-                      <h3 className="text-base font-semibold text-white mb-2">Resolution</h3>
-                      <p className="text-xs text-neutral-400">
+                      <h3 className="legal-subsection-title">Resolution</h3>
+                      <p className="text-xs text-neutral-400 m-0 leading-relaxed">
                         The Grievance Officer will investigate the matter and deliver a formal resolution or redressal within <strong>15 calendar days</strong> (never exceeding the 30-day statutory ceiling).
                       </p>
                     </div>
@@ -109,8 +106,8 @@ export default function GrievanceRedressal() {
               </div>
 
               {/* Data Rights Requests */}
-              <div className="p-6 sm:p-8 rounded-2xl bg-neutral-900/60 border border-white/10">
-                <h2 className="text-xl sm:text-2xl font-serif text-white mb-3">4. Exercising Data Principal Rights</h2>
+              <div className="legal-card-panel">
+                <h2 className="legal-section-title">4. Exercising Data Principal Rights</h2>
                 <p className="text-sm text-neutral-300 mb-3">
                   Data Principals may submit requests directly to the Grievance Officer for:
                 </p>
@@ -123,17 +120,17 @@ export default function GrievanceRedressal() {
               </div>
 
               {/* Statutory Regulatory Escalation */}
-              <div className="p-6 sm:p-8 rounded-2xl bg-neutral-900/80 border border-white/10">
-                <h2 className="text-xl sm:text-2xl font-serif text-white mb-3">5. Escalation to the Data Protection Board of India</h2>
+              <div className="legal-card-panel">
+                <h2 className="legal-section-title">5. Escalation to the Data Protection Board of India</h2>
                 <p className="text-sm text-neutral-300 mb-4">
                   Under Section 13(3) of the DPDP Act 2023, if your grievance is not resolved by our Grievance Officer within 30 days, or if you are unsatisfied with the resolution provided, you hold the statutory right to file a formal complaint before the:
                 </p>
-                <div className="p-4 rounded-xl bg-black/40 border border-white/5 text-sm font-mono text-neutral-300 space-y-1">
+                <div className="p-4 rounded-xl bg-black/40 border border-white/5 text-xs font-mono text-neutral-300 space-y-1">
                   <div className="text-white font-semibold">Data Protection Board of India (DPBI)</div>
                   <div className="text-neutral-400 text-xs">Ministry of Electronics and Information Technology, Government of India</div>
                   <div className="text-amber-400 text-xs">Official Portal: https://www.meity.gov.in / Designated DPBI Portal</div>
                 </div>
-                <p className="text-xs text-neutral-400 mt-4">
+                <p className="text-xs text-neutral-400 mt-4 leading-relaxed">
                   Additionally, for consumer service disputes, individuals may access the <strong>National Consumer Helpline (NCH)</strong> under the Ministry of Consumer Affairs, Government of India (Toll-free: 1915 or consumerhelpline.gov.in).
                 </p>
               </div>
@@ -156,4 +153,3 @@ export default function GrievanceRedressal() {
     </>
   );
 }
-
