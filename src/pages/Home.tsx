@@ -31,7 +31,7 @@ export default function Home() {
     <header className="section-home-header">
       <div className="w-layout-grid header-component-grid">
         <div id="w-node-cd060b03-ce5d-09c9-ac8d-89dcbc0c13eb-805165a1" className="background-video-wrapper relative w-full h-full overflow-hidden">
-          <Video className="background-video !opacity-95" poster="/assets/hero-cinematic-poster.jpg" src="/assets/hero-bg-1080p.mp4" priority />
+          <Video className="background-video !opacity-95" poster="/assets/hero-cinematic-poster.jpg" src="/assets/hero-bg-720p.mp4" priority />
           <div className="video-opacity pointer-events-none"></div>
         </div>
 

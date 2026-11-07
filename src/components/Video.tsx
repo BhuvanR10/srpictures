@@ -11,16 +11,33 @@ interface VideoProps {
 
 /**
  * Background video (Webflow "w-background-video" equivalent).
- * - Priority: For hero banners, loads immediately and ensures bulletproof autoplay on live HTTPS domains.
+ * - Priority: For hero banners, loads immediately and ensures bulletproof autoplay on live HTTPS domains and Chrome.
  * - Lazy: Other videos only load src when near/in the viewport.
  * - Plays only while visible; pauses when scrolled off-screen to preserve CPU/GPU.
- * - Decorative: hidden from assistive tech, poster stays visible when paused.
+ * - Instant poster display prevents any black frame during network fetch.
  */
 export default function Video({ className = '', poster, src, label, priority = false }: VideoProps) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [near, setNear] = useState(priority);
+  const [isPlaying, setIsPlaying] = useState(false);
   const visibleRef = useRef(priority);
+
+  // Directly set DOM properties on mount so Chrome's autoplay policy sees muted and inline flags instantly
+  const setVideoRef = (node: HTMLVideoElement | null) => {
+    videoRef.current = node;
+    if (node) {
+      node.muted = true;
+      node.defaultMuted = true;
+      node.playsInline = true;
+      node.setAttribute('playsinline', '');
+      node.setAttribute('webkit-playsinline', '');
+      node.setAttribute('muted', '');
+      if (priority && node.paused) {
+        node.play().catch(() => {});
+      }
+    }
+  };
 
   useEffect(() => {
     const v = videoRef.current;
@@ -29,54 +46,58 @@ export default function Video({ className = '', poster, src, label, priority = f
     v.muted = true;
     v.defaultMuted = true;
 
-    const playVideo = () => {
+    const playSafe = () => {
       if (isMotionPaused()) return;
+      v.muted = true;
       const playPromise = v.play();
       if (playPromise !== undefined) {
-        playPromise.catch(() => {
-          // Fallback unlock listener on first user interaction
-          const unlock = () => {
-            v.play().catch(() => {});
-            window.removeEventListener('pointerdown', unlock);
-            window.removeEventListener('touchstart', unlock);
-            window.removeEventListener('click', unlock);
-            window.removeEventListener('scroll', unlock);
-          };
-          window.addEventListener('pointerdown', unlock, { once: true, passive: true });
-          window.addEventListener('touchstart', unlock, { once: true, passive: true });
-          window.addEventListener('click', unlock, { once: true });
-          window.addEventListener('scroll', unlock, { once: true, passive: true });
-        });
+        playPromise
+          .then(() => {
+            setIsPlaying(true);
+          })
+          .catch(() => {
+            // If autoplay is delayed by browser heuristics, unlock on first interaction
+            const unlock = () => {
+              v.muted = true;
+              v.play()
+                .then(() => setIsPlaying(true))
+                .catch(() => {});
+              ['pointerdown', 'touchstart', 'scroll', 'click'].forEach((evt) =>
+                window.removeEventListener(evt, unlock)
+              );
+            };
+            ['pointerdown', 'touchstart', 'scroll', 'click'].forEach((evt) =>
+              window.addEventListener(evt, unlock, { once: true, passive: true })
+            );
+          });
       }
     };
 
     if (priority) {
-      // Force immediate source load & play
-      try {
-        v.load();
-      } catch {
-        // ignore load errors if already loading
-      }
-      playVideo();
+      playSafe();
 
-      // Ensure playback triggers as soon as frames are ready
-      v.addEventListener('canplay', playVideo, { once: true });
-      v.addEventListener('loadeddata', playVideo, { once: true });
+      // Trigger playback as soon as the first frame data is available
+      v.addEventListener('loadeddata', playSafe, { once: true });
+      v.addEventListener('canplay', playSafe, { once: true });
+      v.addEventListener('playing', () => setIsPlaying(true), { once: true });
 
-      // If cinematic intro was playing, re-trigger playback on intro handoff
-      const handleIntroComplete = () => {
-        playVideo();
+      // Handle tab visibility change
+      const handleVisibility = () => {
+        if (document.visibilityState === 'visible' && !isMotionPaused()) {
+          playSafe();
+        }
       };
-      window.addEventListener('sr-intro-complete', handleIntroComplete, { once: true });
+      document.addEventListener('visibilitychange', handleVisibility);
 
       return () => {
-        v.removeEventListener('canplay', playVideo);
-        v.removeEventListener('loadeddata', playVideo);
-        window.removeEventListener('sr-intro-complete', handleIntroComplete);
+        v.removeEventListener('loadeddata', playSafe);
+        v.removeEventListener('canplay', playSafe);
+        document.removeEventListener('visibilitychange', handleVisibility);
       };
     }
   }, [priority, src]);
 
+  // Viewport intersection observer for non-priority videos
   useEffect(() => {
     const wrap = wrapRef.current;
     if (!wrap) return;
@@ -85,9 +106,11 @@ export default function Video({ className = '', poster, src, label, priority = f
       const vid = videoRef.current;
       if (!vid) return;
       if (visibleRef.current && !isMotionPaused()) {
-        vid.play().catch(() => undefined);
+        vid.muted = true;
+        vid.play().then(() => setIsPlaying(true)).catch(() => undefined);
       } else if (!priority) {
         vid.pause();
+        setIsPlaying(false);
       }
     };
 
@@ -112,9 +135,12 @@ export default function Video({ className = '', poster, src, label, priority = f
 
   useEffect(() => {
     if (near && videoRef.current && visibleRef.current && !isMotionPaused()) {
-      videoRef.current.play().catch(() => undefined);
+      videoRef.current.muted = true;
+      videoRef.current.play().then(() => setIsPlaying(true)).catch(() => undefined);
     }
   }, [near]);
+
+  const activeSrc = priority || near ? src : undefined;
 
   return (
     <div
@@ -124,29 +150,39 @@ export default function Video({ className = '', poster, src, label, priority = f
       role={label ? 'img' : undefined}
       aria-label={label}
     >
+      {/* Instant fallback poster layer - guarantees zero black frame before video frames decode */}
+      {poster && (
+        <img
+          src={poster}
+          alt=""
+          aria-hidden="true"
+          className={`w-full h-full object-cover absolute inset-0 pointer-events-none transition-opacity duration-700 ${
+            isPlaying ? 'opacity-0' : 'opacity-100'
+          }`}
+          style={{ zIndex: 0 }}
+        />
+      )}
+
+      {/* Autoplaying background video */}
       <video
-        ref={videoRef}
-        src={priority || near ? src : undefined}
+        ref={setVideoRef}
+        src={activeSrc}
         autoPlay
         loop
         muted
         playsInline
         preload={priority ? 'auto' : 'metadata'}
-        poster={poster}
-        className="w-full h-full object-cover !z-0 absolute inset-0"
+        className="w-full h-full object-cover absolute inset-0"
         style={{
           objectFit: 'cover',
           width: '100%',
           height: '100%',
           position: 'absolute',
           inset: 0,
-          zIndex: 0,
-          backgroundImage: `url("${poster}")`,
+          zIndex: 1,
         }}
         tabIndex={-1}
-      >
-        {(priority || near) && <source src={src} type="video/mp4" />}
-      </video>
+      />
     </div>
   );
 }

@@ -10,8 +10,8 @@ export default function CookieConsentBanner() {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (!stored) {
-        // Smoothly appear shortly after initial render
-        const timer = setTimeout(() => setVisible(true), 1000);
+        // Small delay so it smoothly appears after initial page load
+        const timer = setTimeout(() => setVisible(true), 1200);
         return () => clearTimeout(timer);
       }
     } catch {
@@ -26,7 +26,7 @@ export default function CookieConsentBanner() {
         JSON.stringify({
           choice: preference,
           timestamp: new Date().toISOString(),
-          version: 'dpdp-2023-v2',
+          version: 'dpdp-2023-v3',
         })
       );
     } catch {
@@ -38,75 +38,64 @@ export default function CookieConsentBanner() {
   if (!visible) return null;
 
   return (
-    <div
+    <aside
       role="region"
-      aria-label="Privacy and Cookie Consent"
-      className="fixed bottom-4 inset-x-3 sm:inset-x-auto sm:left-1/2 sm:-translate-x-1/2 sm:max-w-2xl sm:bottom-6 z-50 transition-all duration-500 ease-out animate-in fade-in slide-in-from-bottom-5"
+      aria-label="Cookie and Privacy Notice"
+      className="fixed bottom-0 inset-x-0 z-50 bg-[#080808]/95 backdrop-blur-xl border-t border-white/10 shadow-[0_-12px_40px_rgba(0,0,0,0.9)] animate-in fade-in slide-in-from-bottom duration-300"
     >
-      <div className="relative p-4 sm:px-6 sm:py-3.5 rounded-2xl sm:rounded-full bg-neutral-950/90 backdrop-blur-2xl border border-white/15 shadow-[0_25px_60px_rgba(0,0,0,0.9)] text-neutral-300 font-sans">
-        
-        {/* Desktop Layout: Horizontal luxury capsule */}
-        <div className="hidden sm:flex items-center justify-between gap-5">
-          <div className="flex items-center gap-3 text-xs leading-normal">
-            <span className="flex h-2 w-2 relative shrink-0">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-400"></span>
-            </span>
-            <span className="text-neutral-300">
-              We use essential cookies to ensure privacy &amp; security under India&apos;s{' '}
-              <strong className="text-white font-medium">DPDP Act, 2023</strong>.{' '}
-              <Link
-                to="/privacy-policy"
-                className="text-amber-400/90 hover:text-amber-300 underline decoration-amber-400/40 ml-1 transition-colors"
-              >
-                Policy
-              </Link>
-            </span>
-          </div>
-
-          <div className="flex items-center gap-2 shrink-0">
-            <button
-              type="button"
-              onClick={() => handleChoice('essential')}
-              className="px-3.5 py-1.5 rounded-full text-xs font-medium text-neutral-300 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 active:scale-95 transition-all"
-            >
-              Essential Only
-            </button>
-            <button
-              type="button"
-              onClick={() => handleChoice('all')}
-              className="px-4 py-1.5 rounded-full text-xs font-semibold text-black bg-white hover:bg-amber-300 active:scale-95 transition-all shadow-md"
-            >
-              Accept All
-            </button>
-            <button
-              type="button"
-              onClick={() => handleChoice('essential')}
-              aria-label="Dismiss cookie notice"
-              className="p-1 text-neutral-400 hover:text-white transition-colors ml-1"
-            >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
-              </svg>
-            </button>
-          </div>
-        </div>
-
-        {/* Mobile Layout: Compact, sleek 2-row card */}
-        <div className="flex flex-col sm:hidden gap-3">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
-              <span className="text-[11px] font-mono tracking-wider uppercase text-neutral-400">
-                Privacy &amp; Cookies • DPDP Act 2023
-              </span>
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 py-3.5 sm:py-4">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+          
+          {/* Studio Brand Identification & Compliance Text */}
+          <div className="flex items-start sm:items-center gap-3.5">
+            <img
+              src="/assets/sr-pictures-emblem.png"
+              alt="The SR Pictures"
+              className="w-8 h-8 rounded-full border border-white/20 object-contain shrink-0 mt-0.5 sm:mt-0"
+            />
+            <div className="flex flex-col justify-center">
+              <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 mb-1">
+                <span className="text-[10px] font-mono tracking-[0.22em] uppercase text-white font-semibold">
+                  Privacy &amp; Data Notice
+                </span>
+                <span className="text-neutral-600 text-xs hidden sm:inline" aria-hidden="true">│</span>
+                <span className="text-[10px] font-mono tracking-[0.16em] uppercase text-neutral-400">
+                  DPDP Act, 2023 (India)
+                </span>
+              </div>
+              <p className="text-xs text-neutral-300 m-0 leading-relaxed font-sans max-w-3xl">
+                The SR Pictures uses essential cookies and session telemetry to secure our website, remember your preferences, and process inquiries in accordance with Indian digital privacy law.
+              </p>
             </div>
+          </div>
+
+          {/* Action Buttons & Policy Link */}
+          <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 self-stretch sm:self-end lg:self-center shrink-0 pt-2 lg:pt-0 border-t border-white/5 lg:border-t-0">
+            <Link
+              to="/privacy-policy"
+              className="text-[11px] font-mono tracking-wider uppercase text-neutral-400 hover:text-white transition-colors underline decoration-white/20 mr-1 sm:mr-2"
+            >
+              Policy
+            </Link>
             <button
               type="button"
               onClick={() => handleChoice('essential')}
-              aria-label="Close"
-              className="text-neutral-400 hover:text-white p-1"
+              className="flex-1 sm:flex-initial px-4 py-2 rounded text-[11px] font-mono tracking-wider uppercase text-neutral-300 hover:text-white bg-white/5 hover:bg-white/10 border border-white/20 hover:border-white/40 transition-colors text-center"
+            >
+              Essential Only
+            </button>
+            <button
+              type="button"
+              onClick={() => handleChoice('all')}
+              className="flex-1 sm:flex-initial px-5 py-2 rounded text-[11px] font-mono tracking-wider uppercase font-semibold text-black bg-white hover:bg-neutral-200 transition-colors shadow-sm text-center"
+            >
+              Accept All
+            </button>
+            <button
+              type="button"
+              onClick={() => handleChoice('essential')}
+              aria-label="Dismiss privacy notice"
+              className="p-1.5 text-neutral-400 hover:text-white transition-colors ml-1 hidden sm:inline-flex"
             >
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                 <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -115,32 +104,8 @@ export default function CookieConsentBanner() {
             </button>
           </div>
 
-          <p className="text-xs text-neutral-300 leading-relaxed m-0">
-            We use essential cookies to maintain security and process inquiries in compliance with Indian digital privacy law.{' '}
-            <Link to="/privacy-policy" className="text-amber-400 underline ml-0.5">
-              Read Policy
-            </Link>
-          </p>
-
-          <div className="flex items-center gap-2 pt-1">
-            <button
-              type="button"
-              onClick={() => handleChoice('essential')}
-              className="flex-1 py-2 rounded-xl text-xs font-medium text-neutral-300 bg-white/5 border border-white/10 active:scale-95 transition-all text-center"
-            >
-              Essential Only
-            </button>
-            <button
-              type="button"
-              onClick={() => handleChoice('all')}
-              className="flex-1 py-2 rounded-xl text-xs font-semibold text-black bg-white hover:bg-amber-300 active:scale-95 transition-all text-center"
-            >
-              Accept All
-            </button>
-          </div>
         </div>
-
       </div>
-    </div>
+    </aside>
   );
 }
