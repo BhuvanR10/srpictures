@@ -2,12 +2,24 @@ import React, { useEffect, useRef, useState } from 'react';
 import { gsap } from '../lib/gsap';
 import { reducedMotion } from '../lib/motion';
 
-if (typeof window !== 'undefined' && !reducedMotion()) {
+const isIntroAlreadySeen = () => {
+  if (typeof window === 'undefined') return true;
+  if (reducedMotion()) return true;
+  try {
+    return sessionStorage.getItem('sr_intro_seen') === '1';
+  } catch {
+    return false;
+  }
+};
+
+if (typeof window !== 'undefined' && !isIntroAlreadySeen()) {
   (window as any).__sr_intro_running = true;
+} else if (typeof window !== 'undefined') {
+  (window as any).__sr_intro_running = false;
 }
 
 export default function CinematicIntro() {
-  const [active, setActive] = useState(() => typeof window !== 'undefined' && !reducedMotion());
+  const [active, setActive] = useState(() => !isIntroAlreadySeen());
 
   const containerRef = useRef<HTMLDivElement>(null);
   const maskCircleRef = useRef<SVGCircleElement>(null);
@@ -19,18 +31,17 @@ export default function CinematicIntro() {
   const ambientGlowRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (reducedMotion()) {
+    if (isIntroAlreadySeen()) {
       (window as any).__sr_intro_running = false;
       window.dispatchEvent(new CustomEvent('sr-intro-complete'));
       setActive(false);
       return;
     }
 
-    // Always trigger on every mount / reload
-    (window as any).__sr_intro_running = true;
-    setActive(true);
-
     const handleReplay = () => {
+      try {
+        sessionStorage.removeItem('sr_intro_seen');
+      } catch {}
       (window as any).__sr_intro_running = true;
       setActive(true);
     };
@@ -45,6 +56,9 @@ export default function CinematicIntro() {
     document.body.style.overflow = 'hidden';
 
     const finishIntro = () => {
+      try {
+        sessionStorage.setItem('sr_intro_seen', '1');
+      } catch {}
       (window as any).__sr_intro_running = false;
       document.body.style.overflow = '';
       window.dispatchEvent(new CustomEvent('sr-intro-complete'));
@@ -85,7 +99,7 @@ export default function CinematicIntro() {
       });
       gsap.set(brandTextRef.current, {
         opacity: 0,
-        y: 10,
+        y: 8,
         force3D: true,
       });
       gsap.set(emblemRef.current, {
@@ -105,18 +119,17 @@ export default function CinematicIntro() {
       });
 
       // ----------------------------------------------------------------------
-      // 1. LOGO REVEAL & ILLUMINATION (0.0s - 0.9s)
-      // Reveal the original SR Pictures logo slowly from darkness
+      // 1. SNAPPY LOGO REVEAL (0.0s - 0.4s)
       // ----------------------------------------------------------------------
       tl.to(
         ambientGlowRef.current,
         {
-          opacity: 0.75,
+          opacity: 0.8,
           scale: 1,
-          duration: 0.9,
+          duration: 0.4,
           ease: 'power2.out',
         },
-        0.1
+        0.05
       );
 
       tl.to(
@@ -124,10 +137,10 @@ export default function CinematicIntro() {
         {
           opacity: 1,
           scale: 1,
-          duration: 0.9,
+          duration: 0.4,
           ease: 'power2.out',
         },
-        0.15
+        0.05
       );
 
       tl.to(
@@ -135,130 +148,122 @@ export default function CinematicIntro() {
         {
           opacity: 1,
           y: 0,
-          duration: 0.8,
+          duration: 0.35,
           ease: 'power2.out',
         },
-        0.35
+        0.12
       );
 
       // ----------------------------------------------------------------------
-      // 2. LOGO HOLD (~0.6s) & SILVER LIGHT REFLECTION
-      // Fully illuminated original logo centered against black background.
-      // A subtle silver reflection travels across the logo.
+      // 2. SILVER SHEEN (0.35s - 0.7s)
       // ----------------------------------------------------------------------
       tl.to(
         sheenRef.current,
         {
-          opacity: 0.75,
+          opacity: 0.8,
           xPercent: 140,
-          duration: 0.75,
+          duration: 0.4,
           ease: 'power2.inOut',
         },
-        0.85
+        0.35
       );
 
       // Brief hold for logo recognition
-      tl.to({}, { duration: 0.6 });
+      tl.to({}, { duration: 0.2 });
 
       // ----------------------------------------------------------------------
-      // 3. APERTURE TRANSITION & HOMEPAGE EMERGENCE
-      // Smooth expanding circular mask inspired by a camera aperture.
-      // Black intro overlay opens to reveal the actual homepage underneath.
-      // Synchronised with the homepage hero photography emerging naturally.
+      // 3. RAPID APERTURE IRIS TRANSITION (0.75s - 1.25s)
       // ----------------------------------------------------------------------
-      // Fade out the ambient glow behind the logo as aperture opens
       tl.to(
         ambientGlowRef.current,
         {
           opacity: 0,
-          duration: 0.4,
+          duration: 0.25,
           ease: 'power2.out',
         },
-        2.2
+        0.75
       );
 
-      // Aperture mask expands outward like an opening camera iris
       tl.to(
         maskCircleRef.current,
         {
           attr: { r: maxRadius },
-          duration: 1.15,
+          duration: 0.5,
           ease: 'power3.inOut',
         },
-        2.2
+        0.75
       );
 
-      // Optical aperture ring expands along with the mask
       tl.to(
         apertureRingRef.current,
         {
-          opacity: 0.85,
+          opacity: 0.8,
           scale: maxRadius / initialLogoRadius,
-          duration: 1.15,
+          duration: 0.5,
           ease: 'power3.inOut',
         },
-        2.2
-      );
-      tl.to(
-        apertureRingRef.current,
-        {
-          opacity: 0,
-          duration: 0.3,
-          ease: 'power2.in',
-        },
-        3.05
+        0.75
       );
 
-      // Logo gently zooms forward into the scene and dissolves into the live hero
       tl.to(
         logoWrapperRef.current,
         {
-          scale: 1.35,
+          scale: 1.25,
           opacity: 0,
-          duration: 0.7,
+          duration: 0.4,
           ease: 'power2.in',
         },
-        2.25
+        0.75
       );
 
       // ----------------------------------------------------------------------
-      // 4. FINAL HANDOFF (Complete handoff to the live homepage)
-      // Intro overlay completely disappears, leaving the fully rendered homepage
+      // 4. FINAL HANDOFF (Fade out overlay completely)
       // ----------------------------------------------------------------------
       tl.to(
         containerRef.current,
         {
           opacity: 0,
-          duration: 0.3,
+          duration: 0.2,
           ease: 'power1.out',
         },
-        3.25
+        1.1
       );
     }, containerRef);
 
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        finishIntro();
-      }
+    const handleQuickDismiss = () => {
+      finishIntro();
     };
-    window.addEventListener('keydown', handleKeyDown);
+
+    window.addEventListener('keydown', handleQuickDismiss);
 
     return () => {
       document.body.style.overflow = '';
-      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('keydown', handleQuickDismiss);
       ctx.revert();
     };
   }, [active]);
+
+  const handleSkip = () => {
+    try {
+      sessionStorage.setItem('sr_intro_seen', '1');
+    } catch {}
+    (window as any).__sr_intro_running = false;
+    document.body.style.overflow = '';
+    window.dispatchEvent(new CustomEvent('sr-intro-complete'));
+    setActive(false);
+  };
 
   if (!active) return null;
 
   return (
     <div
       ref={containerRef}
-      className="fixed inset-0 z-[9999] pointer-events-auto select-none overflow-hidden max-w-full will-change-[opacity]"
+      onClick={handleSkip}
+      className="fixed inset-0 z-[9999] pointer-events-auto select-none overflow-hidden max-w-full will-change-[opacity] cursor-pointer"
       aria-label="The SR Pictures Intro"
       role="dialog"
       aria-modal="true"
+      title="Click or tap anywhere to skip"
     >
       {/* 
         CAMERA APERTURE EXPANDING CIRCULAR MASK (SVG)
@@ -291,12 +296,7 @@ export default function CinematicIntro() {
       <div className="absolute top-5 right-5 sm:top-8 sm:right-8 z-50 pointer-events-auto">
         <button
           type="button"
-          onClick={() => {
-            (window as any).__sr_intro_running = false;
-            document.body.style.overflow = '';
-            window.dispatchEvent(new CustomEvent('sr-intro-complete'));
-            setActive(false);
-          }}
+          onClick={handleSkip}
           className="px-3.5 py-1.5 rounded-full bg-white/[0.04] hover:bg-white/[0.12] border border-white/10 text-[#929493] hover:text-[#D8D8D5] transition-all font-mono text-[9px] sm:text-[10px] tracking-widest uppercase cursor-pointer backdrop-blur-sm"
         >
           SKIP [ESC]

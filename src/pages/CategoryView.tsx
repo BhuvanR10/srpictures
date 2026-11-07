@@ -1,4 +1,4 @@
-import { useState, useMemo, Component, type ReactNode } from 'react';
+import { useState, useMemo, Component, type ReactNode, lazy, Suspense } from 'react';
 import { useParams, Link, Navigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -8,10 +8,12 @@ import {
   Image as ImageIcon,
 } from 'lucide-react';
 import Subtitle from '../components/Subtitle';
-import InvertedDome from '../components/InvertedDome';
+import ApertureLoader from '../components/ApertureLoader';
 import { usePageSeo } from '../lib/usePageSeo';
 import { CATEGORIES_DATA, type CategoryImage } from '../data/categoriesData';
 import { WHATSAPP_PHONE } from '../lib/whatsapp';
+
+const InvertedDome = lazy(() => import('../components/InvertedDome'));
 
 class DomeErrorBoundary extends Component<
   { fallback?: ReactNode; children: ReactNode },
@@ -140,25 +142,33 @@ export default function CategoryView() {
           /* Full-viewport interactive dome — edge-to-edge */
           <div className="relative w-full" style={{ height: 'calc(100vh - 220px)', minHeight: 560, maxHeight: 960 }}>
             <DomeErrorBoundary>
-              <InvertedDome
-                images={imageSources}
-                tileWidth={260}
-                tileHeight={195}
-                gap={14}
-                borderRadius={18}
-                curve={0.38}
-                curveRadius={1.4}
-                zoom={0.09}
-                grayscale={0}
-                vignette={0.0}
-                autoScrollX={10}
-                backgroundColor="#000000"
-                enableDrag={true}
-                enableWheel={true}
-                openOnClick={false}
-                onLoad={() => setDomeLoaded(true)}
-                onTileClick={(idx) => setLightboxIndex(idx)}
-              />
+              <Suspense
+                fallback={
+                  <div className="w-full h-full min-h-[560px] flex items-center justify-center bg-black">
+                    <ApertureLoader label="Loading 3D Visual Optics..." size="lg" />
+                  </div>
+                }
+              >
+                <InvertedDome
+                  images={imageSources}
+                  tileWidth={260}
+                  tileHeight={195}
+                  gap={14}
+                  borderRadius={18}
+                  curve={0.38}
+                  curveRadius={1.4}
+                  zoom={0.09}
+                  grayscale={0}
+                  vignette={0.0}
+                  autoScrollX={10}
+                  backgroundColor="#000000"
+                  enableDrag={true}
+                  enableWheel={true}
+                  openOnClick={false}
+                  onLoad={() => setDomeLoaded(true)}
+                  onTileClick={(idx) => setLightboxIndex(idx)}
+                />
+              </Suspense>
             </DomeErrorBoundary>
 
             {/* Subtle editorial hint — fades in only after dome is loaded */}
