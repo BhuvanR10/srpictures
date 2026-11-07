@@ -36,7 +36,7 @@ export const servicesData: ServiceItem[] = [
     slug: 'car-delivery',
     tagline: '▶︎ Milestone vehicle reveals & reels',
     description: 'High-octane delivery films capturing the excitement, surprise keys handover, and family celebration of your dream vehicle.',
-    image: '/assets/testimonials/testimonial-5-poster.jpg',
+    image: '/assets/car_delivery/car-delivery-02.jpg',
   },
   {
     num: '04',
@@ -52,7 +52,7 @@ export const servicesData: ServiceItem[] = [
     slug: 'commercials',
     tagline: '▶︎ Brand & industrial storytelling',
     description: 'High-impact commercial films, industrial production showcases, and corporate visual campaigns crafted for maximum presence.',
-    image: '/assets/testimonials/testimonial-3-poster.jpg',
+    image: '/assets/categories/commercials/commercials-14.webp',
   },
   {
     num: '06',
