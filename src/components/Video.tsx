@@ -228,6 +228,13 @@ export default function Video({
         muted={muted}
         playsInline
         preload={priority ? 'auto' : 'metadata'}
+        onPlay={() => setIsPlaying(true)}
+        onPlaying={() => setIsPlaying(true)}
+        onLoadedData={() => {
+          if (priority && videoRef.current && videoRef.current.paused) {
+            videoRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
+          }
+        }}
         className="w-full h-full object-cover absolute inset-0"
         style={{
           objectFit: 'cover',
@@ -238,7 +245,9 @@ export default function Video({
           zIndex: 1,
         }}
         tabIndex={-1}
-      />
+      >
+        {activeSrc && <source src={activeSrc} type="video/mp4" />}
+      </video>
     </div>
   );
 }
