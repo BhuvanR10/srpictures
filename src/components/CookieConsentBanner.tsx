@@ -87,9 +87,12 @@ export default function CookieConsentBanner() {
             <button
               type="button"
               onClick={() => handleChoice('all')}
-              className="flex-1 sm:flex-initial px-5 py-2 rounded text-[11px] font-mono tracking-wider uppercase font-semibold text-black bg-white hover:bg-neutral-200 transition-colors shadow-sm text-center"
+              className="flex-1 sm:flex-initial px-5 py-2 rounded text-[11px] font-mono tracking-wider uppercase font-bold bg-amber-400 hover:bg-amber-300 transition-colors shadow-sm text-center"
+              style={{ color: '#000000', WebkitTextFillColor: '#000000' }}
             >
-              Accept All
+              <span style={{ color: '#000000', WebkitTextFillColor: '#000000', fontWeight: 700 }}>
+                Accept All
+              </span>
             </button>
             <button
               type="button"

@@ -45,7 +45,7 @@ export default function About() {
                 >
                   We are
                   <br />
-                  The SR Pictures®
+                  The SR Pictures
                 </h1>
               </div>
               <p className="text-size-regular text-neutral-300 mt-5 max-w-sm font-light leading-relaxed">

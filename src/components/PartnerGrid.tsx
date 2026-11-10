@@ -43,7 +43,7 @@ function PartnerCardItem({ partner }: PartnerCardItemProps) {
     <div
       ref={cardRef}
       role="listitem"
-      className="partner-card group relative select-none cursor-pointer"
+      className="partner-card group relative select-none cursor-pointer min-h-[140px] sm:min-h-[155px]"
       onMouseMove={handleMouseMove}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
@@ -71,7 +71,7 @@ function PartnerCardItem({ partner }: PartnerCardItemProps) {
                 : undefined,
             }}
           >
-            <div className="front-logo relative overflow-hidden w-full h-full flex items-center justify-center">
+            <div className="front-logo relative overflow-hidden w-full h-full flex items-center justify-center p-3 sm:p-4">
               {/* Subtle spotlight glow on hover */}
               {isHovered && (
                 <div
@@ -82,7 +82,7 @@ function PartnerCardItem({ partner }: PartnerCardItemProps) {
                 />
               )}
               <img
-                className="partner-logo object-contain max-h-12 w-auto transition-all duration-300 group-hover:scale-110 group-hover:opacity-100"
+                className="partner-logo !opacity-100 object-contain !h-14 sm:!h-16 md:!h-[4.5rem] w-auto max-w-[85%] max-h-[75%] transition-all duration-300 group-hover:scale-110"
                 style={{
                   filter: isHovered ? 'brightness(1.2) drop-shadow(0 0 10px rgba(255,255,255,0.3))' : undefined,
                 }}
@@ -103,7 +103,7 @@ function PartnerCardItem({ partner }: PartnerCardItemProps) {
                 : undefined,
             }}
           >
-            <div className="back-logo relative overflow-hidden w-full h-full flex items-center justify-center">
+            <div className="back-logo relative overflow-hidden w-full h-full flex items-center justify-center p-3 sm:p-4">
               {isHovered && (
                 <div
                   className="pointer-events-none absolute inset-0 transition-opacity duration-300"
@@ -113,7 +113,7 @@ function PartnerCardItem({ partner }: PartnerCardItemProps) {
                 />
               )}
               <img
-                className="partner-logo back object-contain max-h-12 w-auto transition-all duration-300 group-hover:scale-110 group-hover:opacity-100"
+                className="partner-logo back !opacity-100 object-contain !h-14 sm:!h-16 md:!h-[4.5rem] w-auto max-w-[85%] max-h-[75%] transition-all duration-300 group-hover:scale-110"
                 style={{
                   filter: isHovered ? 'brightness(1.2) drop-shadow(0 0 10px rgba(255,255,255,0.3))' : undefined,
                 }}

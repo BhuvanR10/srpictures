@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import {
   ArrowUpRight,
   Camera,
@@ -66,7 +66,7 @@ const PRICING_CATEGORIES: PricingCategory[] = [
     title: 'Car Delivery Cinematography',
     shortTitle: 'Car Delivery',
     slug: 'car-delivery',
-    priceRange: '₹8,000 – ₹24,999',
+    priceRange: 'Starting from ₹8,000',
     tagline: 'Milestone vehicle reveals, key handover ceremonies & cinematic reels.',
     image: '/assets/car_delivery/car-delivery-02.jpg',
     gallerySlug: 'car-delivery',
@@ -163,7 +163,7 @@ const PRICING_CATEGORIES: PricingCategory[] = [
         'Cinematic overhead and dynamic rolling footage',
         'Professionally edited 4K drone sequences',
       ],
-      note: 'Premium package with drone: ₹29,999. Drone operations subject to local airspace clearances and weather.',
+      note: 'Drone add-on: +₹5,000 to any package. Drone operations subject to local airspace clearances and weather.',
     },
   },
   {
@@ -172,7 +172,7 @@ const PRICING_CATEGORIES: PricingCategory[] = [
     title: 'Wedding Photography & Films',
     shortTitle: 'Weddings',
     slug: 'wedding',
-    priceRange: '₹79,999 – ₹1,69,999',
+    priceRange: 'Starting from ₹79,999',
     tagline: 'Cinematic wedding films, candid storytelling & handcrafted lay-flat heirloom albums.',
     image: '/assets/1Y9A5246.jpg',
     gallerySlug: 'wedding',
@@ -276,7 +276,7 @@ const PRICING_CATEGORIES: PricingCategory[] = [
     title: 'Couple Photoshoots',
     shortTitle: 'Couples',
     slug: 'couple',
-    priceRange: '₹24,999 – ₹49,999',
+    priceRange: 'Starting from ₹24,999',
     tagline: 'Pre-wedding narratives, scenic romantic getaways & concept portraits.',
     image: '/assets/RSD_8118.jpg',
     gallerySlug: 'pre-wedding',
@@ -374,7 +374,7 @@ const PRICING_CATEGORIES: PricingCategory[] = [
     title: 'Resort & Hospitality Films',
     shortTitle: 'Resorts',
     slug: 'resort',
-    priceRange: '₹29,999 – ₹89,999',
+    priceRange: 'Starting from ₹29,999',
     tagline: 'Architectural showcases, hospitality promotional films & destination campaigns.',
     image: '/assets/categories/resort/resort-04.webp',
     gallerySlug: 'resort',
@@ -478,10 +478,34 @@ export default function Pricing() {
   // Default: View All
   const [activeTab, setActiveTab] = useState<string>('all');
   const [expandedPackage, setExpandedPackage] = useState<string | null>(null);
+  const location = useLocation();
+
+  // Listen to URL hash and scroll/activate matching category tab
+  useEffect(() => {
+    const rawHash = (location.hash || '').replace('#', '').trim().toLowerCase();
+    if (!rawHash) return;
+
+    const validTabs = ['car-delivery', 'wedding', 'couple', 'resort', 'drone'];
+    if (validTabs.includes(rawHash)) {
+      setActiveTab(rawHash);
+    }
+
+    const timer = setTimeout(() => {
+      const el = document.getElementById(rawHash);
+      if (el) {
+        const topOffset = el.getBoundingClientRect().top + window.scrollY - 110;
+        window.scrollTo({ top: Math.max(0, topOffset), behavior: 'smooth' });
+      }
+    }, 150);
+
+    return () => clearTimeout(timer);
+  }, [location.hash]);
 
   const togglePackage = (pkgId: string) => {
     setExpandedPackage((prev) => (prev === pkgId ? null : pkgId));
   };
+
+  const HIDE_PRICE_CATEGORIES = ['car-delivery', 'wedding', 'couple', 'resort'];
 
   const getWhatsAppBookingUrl = (pkgName: string, categoryTitle: string, price: string) => {
     const text = [
@@ -492,8 +516,27 @@ export default function Pricing() {
     return `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(text)}`;
   };
 
+  const getWhatsAppInquiryUrl = (pkgName: string, categoryTitle: string) => {
+    const text = [
+      'Hello The SR Pictures! 📸',
+      `I would like to inquire about the pricing and availability for the *${pkgName}* (${categoryTitle}) package.`,
+      'Could you please share the pricing details, inclusions, and booking process?',
+    ].join('\n\n');
+    return `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(text)}`;
+  };
+
   const handleTabClick = (tabId: string) => {
     setActiveTab(tabId);
+    if (tabId === 'drone') {
+      setTimeout(() => {
+        const droneEl = document.getElementById('drone');
+        if (droneEl) {
+          const topOffset = droneEl.getBoundingClientRect().top + window.scrollY - 110;
+          window.scrollTo({ top: Math.max(0, topOffset), behavior: 'smooth' });
+        }
+      }, 50);
+      return;
+    }
     const el = document.getElementById('pricing-categories-root');
     if (el) {
       const topOffset = el.getBoundingClientRect().top + window.scrollY - 90;
@@ -548,17 +591,20 @@ export default function Pricing() {
               {/* Category Pills */}
               <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
                 
-                {/* 1. VIEW ALL FIRST */}
+                {/* 1. ALL PACKAGES PILL */}
                 <button
                   type="button"
                   onClick={() => handleTabClick('all')}
+                  data-active-pill={activeTab === 'all' ? 'true' : 'false'}
                   className={`whitespace-nowrap shrink-0 px-4 py-2 rounded-full text-xs font-mono tracking-widest uppercase transition-all duration-200 ${
                     activeTab === 'all'
-                      ? 'bg-white text-black font-semibold shadow-md'
-                      : 'bg-white/5 border border-white/10 text-neutral-300 hover:text-white hover:bg-white/10'
+                      ? 'filter-pill-active font-bold shadow-md'
+                      : 'bg-[#18181c] border border-white/15 text-neutral-300 hover:text-white hover:bg-white/10'
                   }`}
                 >
-                  View All
+                  <span className={activeTab === 'all' ? 'text-white font-bold' : 'text-neutral-300'}>
+                    All Packages
+                  </span>
                 </button>
 
                 {/* 2. THEN PACKAGE CATEGORIES */}
@@ -569,35 +615,43 @@ export default function Pricing() {
                       key={cat.id}
                       type="button"
                       onClick={() => handleTabClick(cat.id)}
+                      data-active-pill={isActive ? 'true' : 'false'}
                       className={`whitespace-nowrap shrink-0 px-4 py-2 rounded-full text-xs font-mono tracking-widest uppercase transition-all duration-200 ${
                         isActive
-                          ? 'bg-white text-black font-semibold shadow-md'
-                          : 'bg-white/5 border border-white/10 text-neutral-300 hover:text-white hover:bg-white/10'
+                          ? 'filter-pill-active font-bold shadow-md'
+                          : 'bg-[#18181c] border border-white/15 text-neutral-300 hover:text-white hover:bg-white/10'
                       }`}
                     >
-                      <span className={isActive ? 'text-neutral-600 mr-1.5' : 'text-neutral-500 mr-1.5'}>
+                      <span className={isActive ? 'text-amber-400 font-bold mr-1.5' : 'text-neutral-500 mr-1.5'}>
                         {cat.num}.
                       </span>
-                      <span>{cat.shortTitle}</span>
+                      <span className={isActive ? 'text-white font-bold' : 'text-neutral-300'}>
+                        {cat.shortTitle}
+                      </span>
                     </button>
                   );
                 })}
 
-                {/* 3. DRONE CINEMATOGRAPHY TAB */}
+                {/* 05. DRONE CINEMATOGRAPHY PILL */}
                 <button
                   type="button"
                   onClick={() => handleTabClick('drone')}
+                  data-active-pill={activeTab === 'drone' ? 'true' : 'false'}
                   className={`whitespace-nowrap shrink-0 px-4 py-2 rounded-full text-xs font-mono tracking-widest uppercase transition-all duration-200 ${
                     activeTab === 'drone'
-                      ? 'bg-white text-black font-semibold shadow-md'
-                      : 'bg-white/5 border border-white/10 text-neutral-300 hover:text-white hover:bg-white/10'
+                      ? 'filter-pill-active font-bold shadow-md'
+                      : 'bg-[#18181c] border border-white/15 text-neutral-300 hover:text-white hover:bg-white/10'
                   }`}
                 >
-                  <span className={activeTab === 'drone' ? 'text-neutral-600 mr-1.5' : 'text-neutral-500 mr-1.5'}>
+                  <span className={activeTab === 'drone' ? 'text-amber-400 font-bold mr-1.5' : 'text-neutral-500 mr-1.5'}>
                     05.
                   </span>
-                  <span>Drone</span>
+                  <span className={activeTab === 'drone' ? 'text-white font-bold' : 'text-neutral-300'}>
+                    Drone
+                  </span>
                 </button>
+
+
               </div>
 
               {/* Quick WhatsApp Assistance Link */}
@@ -627,76 +681,10 @@ export default function Pricing() {
           <div className="container-large">
             <div className="space-y-16 sm:space-y-24">
               
-              {/* DRONE TAB VIEW (When 'drone' tab is selected) */}
-              {activeTab === 'drone' ? (
-                <div className="scroll-mt-36">
-                  <div
-                    className="package-content-block relative overflow-hidden group"
-                    style={{
-                      padding: '2.5rem',
-                      borderRadius: '1.25rem',
-                      border: '1px solid rgba(255,255,255,0.15)',
-                      background: '#0a0a0c',
-                    }}
-                  >
-                    {/* Drone Aerial Background */}
-                    <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-                      <img
-                        src="/assets/categories/resort/resort-01.webp"
-                        alt="Aerial Drone Cinematography"
-                        className="w-full h-full object-cover object-right sm:object-center opacity-70 group-hover:opacity-85 group-hover:scale-105 transition-all duration-700"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-r from-[#080808] via-[#080808]/85 via-50% to-transparent" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#080808]/60 via-transparent to-transparent" />
-                    </div>
-
-                    <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-8">
-                      <div className="max-w-3xl">
-                        <div className="flex items-center gap-2 mb-2">
-                          <img src="/assets/695c47e4e7da0bba805165b3_star-icon.svg" alt="SR Pictures emblem" className="star-icon inline-block w-4 h-4" />
-                          <span className="text-xs font-mono tracking-widest uppercase text-neutral-400">
-                            AERIAL PERSPECTIVE
-                          </span>
-                        </div>
-                        <h3 className="heading-style-h3 text-white m-0">
-                          Drone Cinematography
-                        </h3>
-                        <div className="spacer-tiny"></div>
-                        <p className="text-size-regular text-color-secondary m-0">
-                          Elevate your visuals with breathtaking 4K aerial shots. Sweeping reveals, vehicle rolling sequences, outdoor venue geography, and sunset landscape coverage.
-                        </p>
-                        <div className="dark-line my-4"></div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs font-mono text-neutral-300">
-                          <div><span className="text-neutral-500 mr-2">{"◉"}</span>DGCA certified pilot &amp; safety protocols</div>
-                          <div><span className="text-neutral-500 mr-2">{"◉"}</span>4K 60fps high dynamic range capture</div>
-                          <div><span className="text-neutral-500 mr-2">{"◉"}</span>Available as +₹5,000 upgrade on single sessions</div>
-                          <div><span className="text-neutral-500 mr-2">{"◉"}</span>Included in Luxury Wedding &amp; Grand Resort</div>
-                        </div>
-                        <div className="spacer-small"></div>
-                        <div className="text-[11px] font-mono text-neutral-400">
-                          * Drone availability depends on location permissions, DGCA airspace restrictions, and local weather safety.
-                        </div>
-                      </div>
-
-                      <div className="shrink-0 text-left lg:text-right pt-4 lg:pt-0 border-t lg:border-t-0 border-white/10">
-                        <div className="text-xs font-mono uppercase tracking-widest text-neutral-400 mb-1">
-                          Standalone Add-On
-                        </div>
-                        <div className="text-3xl font-mono font-bold text-white mb-4">
-                          +₹5,000
-                        </div>
-                        <MainButton to={`https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent('Hello The SR Pictures! I would like to inquire about Drone Cinematography coverage.')}`}>
-                          Inquire Drone
-                        </MainButton>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ) : (
-                /* CATEGORIES LIST */
-                PRICING_CATEGORIES
-                  .filter((cat) => activeTab === 'all' || activeTab === cat.id)
-                  .map((category) => (
+              {/* CATEGORIES LIST */}
+              {PRICING_CATEGORIES
+                .filter((cat) => activeTab === 'all' || activeTab === cat.id)
+                .map((category) => (
                     <div
                       key={category.id}
                       id={category.id}
@@ -760,8 +748,9 @@ export default function Pricing() {
                       {/* 3 Package Tier Columns */}
                       <div className="p-6 sm:p-8 lg:p-10 bg-[#141416]">
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                          {category.packages.map((pkg) => {
+                          {category.packages.map((pkg, pkgIndex) => {
                             const isExpanded = expandedPackage === pkg.id;
+                            const isContactPricing = HIDE_PRICE_CATEGORIES.includes(category.id) && pkgIndex > 0;
 
                             return (
                               <div
@@ -808,9 +797,22 @@ export default function Pricing() {
                                       {pkg.name}
                                     </h4>
 
-                                    <div className="my-2.5 flex items-baseline gap-2">
-                                      <div className="pricing-pkg-price text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
-                                        {pkg.price}
+                                    <div className="my-3 flex items-center justify-between gap-2">
+                                      <div className="relative flex items-center gap-2.5">
+                                        {isContactPricing ? (
+                                          <div className="flex items-center gap-2 flex-wrap">
+                                            <span className="text-lg sm:text-xl font-mono uppercase tracking-wider text-amber-300 font-bold">
+                                              Contact for Pricing
+                                            </span>
+                                            <span className="text-[10px] font-mono tracking-widest uppercase px-2 py-0.5 rounded bg-white/10 text-neutral-300 border border-white/15">
+                                              Custom Quote
+                                            </span>
+                                          </div>
+                                        ) : (
+                                          <div className="pricing-pkg-price text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] flex items-center gap-2">
+                                            <span>{pkg.price}</span>
+                                          </div>
+                                        )}
                                       </div>
                                     </div>
 
@@ -876,11 +878,17 @@ export default function Pricing() {
                                     </div>
                                   </div>
 
-                                  {/* Booking CTA */}
+                                  {/* Booking or Contact CTA */}
                                   <div className="pt-4 border-t border-white/10 mt-4">
-                                    <MainButton to={getWhatsAppBookingUrl(pkg.name, category.title, pkg.price)}>
-                                      Book Package
-                                    </MainButton>
+                                    {isContactPricing ? (
+                                      <MainButton to={getWhatsAppInquiryUrl(pkg.name, category.title)}>
+                                        Contact for Pricing
+                                      </MainButton>
+                                    ) : (
+                                      <MainButton to={getWhatsAppBookingUrl(pkg.name, category.title, pkg.price)}>
+                                        Book Package
+                                      </MainButton>
+                                    )}
                                   </div>
                                 </div>
                               </div>
@@ -932,7 +940,73 @@ export default function Pricing() {
                         )}
                       </div>
                     </div>
-                  ))
+                  ))}
+
+              {/* Standalone Drone Cinematography Card placed directly after Resort & Hospitality Films */}
+              {(activeTab === 'all' || activeTab === 'resort' || activeTab === 'drone') && (
+                <div id="drone" className="scroll-mt-36">
+                  <div
+                    className="package-content-block relative overflow-hidden group"
+                    style={{
+                      padding: '2.5rem',
+                      borderRadius: '1.25rem',
+                      border: '1px solid rgba(255,255,255,0.12)',
+                      background: '#141416',
+                    }}
+                  >
+                    {/* Aerial Drone Background Image */}
+                    <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+                      <img
+                        src="/assets/categories/resort/resort-01.webp"
+                        alt="Drone Aerial Cinematography"
+                        className="w-full h-full object-cover object-right sm:object-center opacity-70 group-hover:opacity-85 group-hover:scale-105 transition-all duration-700 ease-out"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-r from-[#080808] via-[#080808]/85 via-50% to-transparent" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#080808]/60 via-transparent to-transparent" />
+                    </div>
+
+                    <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-8">
+                      <div className="max-w-3xl">
+                        <div className="flex items-center gap-2 mb-2">
+                          <img src="/assets/695c47e4e7da0bba805165b3_star-icon.svg" alt="SR Pictures emblem" className="star-icon inline-block w-4 h-4" />
+                          <span className="text-xs font-mono tracking-widest uppercase text-neutral-400">
+                            AERIAL PERSPECTIVE
+                          </span>
+                        </div>
+                        <h3 className="heading-style-h3 text-white m-0">
+                          Drone Cinematography
+                        </h3>
+                        <div className="spacer-tiny"></div>
+                        <p className="text-size-regular text-color-secondary m-0">
+                          Elevate your visuals with breathtaking 4K aerial shots. Sweeping reveals, vehicle rolling sequences, outdoor venue geography, and sunset landscape coverage.
+                        </p>
+                        <div className="dark-line my-4"></div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs font-mono text-neutral-300">
+                          <div><span className="text-neutral-500 mr-2">{"◉"}</span>DGCA certified pilot &amp; safety protocols</div>
+                          <div><span className="text-neutral-500 mr-2">{"◉"}</span>4K 60fps high dynamic range capture</div>
+                          <div><span className="text-neutral-500 mr-2">{"◉"}</span>Available as +₹5,000 upgrade on single sessions</div>
+                          <div><span className="text-neutral-500 mr-2">{"◉"}</span>Included in Luxury Wedding &amp; Grand Resort</div>
+                        </div>
+                        <div className="spacer-small"></div>
+                        <div className="text-[11px] font-mono text-neutral-400">
+                          * Drone availability depends on location permissions, DGCA airspace restrictions, and local weather safety.
+                        </div>
+                      </div>
+
+                      <div className="shrink-0 text-left lg:text-right pt-4 lg:pt-0 border-t lg:border-t-0 border-white/10">
+                        <div className="text-xs font-mono uppercase tracking-widest text-neutral-400 mb-1">
+                          Standalone Add-On
+                        </div>
+                        <div className="text-3xl font-mono font-bold text-white mb-4">
+                          +₹5,000
+                        </div>
+                        <MainButton to={`https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent('Hello The SR Pictures! 📸 I would like to inquire about Drone Cinematography add-on coverage (+₹5,000).')}`}>
+                          Inquire Drone
+                        </MainButton>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               )}
 
             </div>
@@ -940,81 +1014,7 @@ export default function Pricing() {
         </div>
       </section>
 
-      {/* ========================================================= */}
-      {/* 4. DEDICATED DRONE CINEMATOGRAPHY (When not on drone tab) */}
-      {/* ========================================================= */}
-      {activeTab !== 'drone' && (
-        <section id="drone-cinematography" className="section-service-content scroll-mt-36">
-          <div className="padding-global">
-            <div className="container-large">
-              <div className="padding-bottom padding-xhuge">
-                <div
-                  className="package-content-block relative overflow-hidden group"
-                  style={{
-                    padding: '2.5rem',
-                    borderRadius: '1.25rem',
-                    border: '1px solid rgba(255,255,255,0.12)',
-                    background: '#141416',
-                  }}
-                >
-                  {/* Aerial Drone Background Image */}
-                  <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-                    <img
-                      src="/assets/categories/resort/resort-01.webp"
-                      alt="Drone Aerial Cinematography"
-                      className="w-full h-full object-cover object-right sm:object-center opacity-70 group-hover:opacity-85 group-hover:scale-105 transition-all duration-700 ease-out"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-r from-[#080808] via-[#080808]/85 via-50% to-transparent" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#080808]/60 via-transparent to-transparent" />
-                  </div>
 
-                  <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-8">
-                    <div className="max-w-3xl">
-                      <div className="flex items-center gap-2 mb-2">
-                        <img src="/assets/695c47e4e7da0bba805165b3_star-icon.svg" alt="SR Pictures emblem" className="star-icon inline-block w-4 h-4" />
-                        <span className="text-xs font-mono tracking-widest uppercase text-neutral-400">
-                          AERIAL PERSPECTIVE
-                        </span>
-                      </div>
-                      <h3 className="heading-style-h3 text-white m-0">
-                        Drone Cinematography
-                      </h3>
-                      <div className="spacer-tiny"></div>
-                      <p className="text-size-regular text-color-secondary m-0">
-                        Elevate your visuals with breathtaking 4K aerial shots. Sweeping reveals, vehicle rolling sequences, outdoor venue geography, and sunset landscape coverage.
-                      </p>
-                      <div className="dark-line my-4"></div>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs font-mono text-neutral-300">
-                        <div><span className="text-neutral-500 mr-2">{"◉"}</span>DGCA certified pilot &amp; safety protocols</div>
-                        <div><span className="text-neutral-500 mr-2">{"◉"}</span>4K 60fps high dynamic range capture</div>
-                        <div><span className="text-neutral-500 mr-2">{"◉"}</span>Available as +₹5,000 upgrade on single sessions</div>
-                        <div><span className="text-neutral-500 mr-2">{"◉"}</span>Included in Luxury Wedding &amp; Grand Resort</div>
-                      </div>
-                      <div className="spacer-small"></div>
-                      <div className="text-[11px] font-mono text-neutral-400">
-                        * Drone availability depends on location permissions, DGCA airspace restrictions, and local weather safety.
-                      </div>
-                    </div>
-
-                    <div className="shrink-0 text-left lg:text-right pt-4 lg:pt-0 border-t lg:border-t-0 border-white/10">
-                      <div className="text-xs font-mono uppercase tracking-widest text-neutral-400 mb-1">
-                        Standalone Add-On
-                      </div>
-                      <div className="text-3xl font-mono font-bold text-white mb-4">
-                        +₹5,000
-                      </div>
-                      <MainButton to={`https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent('Hello The SR Pictures! I would like to inquire about Drone Cinematography coverage.')}`}>
-                        Inquire Drone
-                      </MainButton>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="dividing-line"></div>
-            </div>
-          </div>
-        </section>
-      )}
 
       {/* ========================================================= */}
       {/* 5. STUDIO COMMITMENTS / INCLUDED IN EVERY PACKAGE         */}
@@ -1142,13 +1142,17 @@ export default function Pricing() {
         <div className="padding-global">
           <div className="container-large">
             <div className="padding-top padding-xhuge padding-bottom padding-xhuge">
-              <div className="heading-wrap is-center">
+              <div className="heading-wrap is-center text-center w-full flex flex-col items-center justify-center">
                 <Subtitle>Reserve Your Date</Subtitle>
-                <div className="title-wrapper">
-                  <h2 className="heading-style-h2">Let&apos;s Create</h2>
+                <div className="title-wrapper w-full flex justify-center text-center">
+                  <div className="top-title w-full flex justify-center text-center">
+                    <h2 className="cta-heading-style text-center">Let&apos;s Create</h2>
+                  </div>
                 </div>
-                <div className="title-wrapper">
-                  <h2 className="heading-style-h2">Something Timeless</h2>
+                <div className="title-wrapper w-full flex justify-center text-center">
+                  <div className="bottom-title w-full flex justify-center text-center">
+                    <h2 className="cta-heading-style text-center">Something Timeless</h2>
+                  </div>
                 </div>
                 <div className="spacer-small"></div>
                 <div className="max-width-medium align-center">

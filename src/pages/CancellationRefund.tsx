@@ -1,6 +1,11 @@
 import { Link } from 'react-router-dom';
+import { usePageSeo } from '../lib/usePageSeo';
 
 export default function CancellationRefund() {
+  usePageSeo({
+    title: 'Cancellation & Refund Policy | The SR Pictures',
+    description: 'Transparent cancellation, rescheduling and refund matrix for photography bookings with The SR Pictures.',
+  });
   return (
     <>
       <div id="top" className="top"></div>

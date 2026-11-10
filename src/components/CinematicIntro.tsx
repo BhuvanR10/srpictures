@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { gsap } from '../lib/gsap';
 import { reducedMotion } from '../lib/motion';
 
@@ -12,14 +13,19 @@ const isIntroAlreadySeen = () => {
   }
 };
 
-if (typeof window !== 'undefined' && !isIntroAlreadySeen()) {
-  (window as any).__sr_intro_running = true;
-} else if (typeof window !== 'undefined') {
-  (window as any).__sr_intro_running = false;
+if (typeof window !== 'undefined') {
+  const isHomePage = window.location.pathname === '/' || window.location.pathname === '';
+  if (isHomePage && !isIntroAlreadySeen()) {
+    (window as any).__sr_intro_running = true;
+  } else {
+    (window as any).__sr_intro_running = false;
+  }
 }
 
 export default function CinematicIntro() {
-  const [active, setActive] = useState(() => !isIntroAlreadySeen());
+  const location = useLocation();
+  const isHome = location.pathname === '/' || location.pathname === '';
+  const [active, setActive] = useState(() => isHome && !isIntroAlreadySeen());
 
   const containerRef = useRef<HTMLDivElement>(null);
   const maskCircleRef = useRef<SVGCircleElement>(null);
@@ -31,6 +37,13 @@ export default function CinematicIntro() {
   const ambientGlowRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (!isHome) {
+      (window as any).__sr_intro_running = false;
+      document.body.style.overflow = '';
+      setActive(false);
+      return;
+    }
+
     if (isIntroAlreadySeen()) {
       (window as any).__sr_intro_running = false;
       window.dispatchEvent(new CustomEvent('sr-intro-complete'));
@@ -48,10 +61,13 @@ export default function CinematicIntro() {
 
     window.addEventListener('replay-sr-intro', handleReplay);
     return () => window.removeEventListener('replay-sr-intro', handleReplay);
-  }, []);
+  }, [isHome]);
 
   useEffect(() => {
-    if (!active) return;
+    if (!isHome || !active) {
+      document.body.style.overflow = '';
+      return;
+    }
 
     document.body.style.overflow = 'hidden';
 
@@ -253,7 +269,7 @@ export default function CinematicIntro() {
     setActive(false);
   };
 
-  if (!active) return null;
+  if (!isHome || !active) return null;
 
   return (
     <div

@@ -30,12 +30,12 @@ export default function VybnParallaxGrid() {
   const yCol2 = useTransform(smoothProgress, [0, 1], [-65, 65]);
   const yCol3 = useTransform(smoothProgress, [0, 1], [55, -55]);
 
-  // Distribute 12 real Google Drive master videos across 4 columns x 3 rows to reduce GPU/decoding load
-  const displayVideos = ALL_DRIVE_VIDEOS.slice(0, 12);
-  const col0 = displayVideos.slice(0, 3);
-  const col1 = displayVideos.slice(3, 6);
-  const col2 = displayVideos.slice(6, 9);
-  const col3 = displayVideos.slice(9, 12);
+  // Distribute 8 unique Google Drive master reels across 4 columns x 2 rows (zero duplicates)
+  const displayVideos = ALL_DRIVE_VIDEOS;
+  const col0 = displayVideos.slice(0, 2);
+  const col1 = displayVideos.slice(2, 4);
+  const col2 = displayVideos.slice(4, 6);
+  const col3 = displayVideos.slice(6, 8);
 
   // Lightbox Navigation Functions
   const handleNextVideo = () => {

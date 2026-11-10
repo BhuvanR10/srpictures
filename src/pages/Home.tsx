@@ -11,6 +11,7 @@ import Subtitle from '../components/Subtitle';
 import TestimonialSlider from '../components/TestimonialSlider';
 import Video from '../components/Video';
 import VideoServicesSection from '../components/VideoServicesSection';
+import HomePackagesSection from '../components/HomePackagesSection';
 import { usePageSeo } from '../lib/usePageSeo';
 
 export default function Home() {
@@ -316,7 +317,7 @@ export default function Home() {
                     <div className="intro-content-block">
                       <img src="/assets/695c47e4e7da0bba805165b3_star-icon.svg" alt="SR Pictures Star Icon" className="star-icon" />
                       <div className="text-align-center">
-                        <p className="text-size-large">{"We craft cinematic visual experiences that blend storytelling, photography, and high-end cinematography. Based in Bengaluru, we capture timeless weddings, evocative portraits, and commercial narratives that stand the test of time ™."}</p>
+                        <p className="text-size-large">{"We craft cinematic visual experiences that blend storytelling, photography, and high-end cinematography. Based in Bengaluru, we capture timeless weddings, evocative portraits, and commercial narratives that stand the test of time."}</p>
                       </div>
                       <SocialLinks />
                       <MainButton to="/about">About Us</MainButton>
@@ -388,177 +389,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <section className="section-home-pricing">
-        <div className="padding-global">
-          <div className="container-large">
-            <div className="padding-section-large">
-              <div className="w-layout-grid top-content-grid">
-                <div id="w-node-_072086c7-c350-009a-e9b2-16293ebef924-805165a1" className="heading-wrap">
-                  <Subtitle>Bengaluru Packages</Subtitle>
-                  <div className="title-wrapper">
-                    <div className="top-title">
-                      <h2 className="heading-style-h2">Wedding</h2>
-                    </div>
-                  </div>
-                  <div className="title-wrapper">
-                    <div className="bottom-title">
-                      <h2 className="heading-style-h2">Cinema</h2>
-                    </div>
-                  </div>
-                </div>
-                <div id="w-node-_072086c7-c350-009a-e9b2-16293ebef92d-805165a1" className="content-item">
-                  <MainButton to="/pricing">All Packages</MainButton>
-                </div>
-              </div>
-              <div className="spacer-xlarge"></div>
-              <div className="w-layout-grid package-component-grid">
-                <div id="w-node-_28ea525f-125d-38fb-5355-ec1f6c3bb978-6c3bb977" className="package-content-block">
-                  <div className="package-content">
-                    <div className="spacer-xsmall"></div>
-                    <div className="text-size-regular">{"◉ Flagship Wedding Inclusions"}</div>
-                    <div className="spacer-xlarge"></div>
-                    <div className="dark-line"></div>
-                    <div className="spacer-medium"></div>
-                    <div className="pricing-feature-wrap">
-                      <div className="pricing-feature-item">
-                        <div className="check-icon w-embed">
-                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22ZM17.4571 9.45711L11 15.9142L6.79289 11.7071L8.20711 10.2929L11 13.0858L16.0429 8.04289L17.4571 9.45711Z"></path>
-                          </svg>
-                        </div>
-                        <div className="text-size-regular">4K Cinematic Wedding Highlights &amp; Teaser</div>
-                      </div>
-                      <div className="pricing-feature-item">
-                        <div className="check-icon w-embed">
-                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22ZM17.4571 9.45711L11 15.9142L6.79289 11.7071L8.20711 10.2929L11 13.0858L16.0429 8.04289L17.4571 9.45711Z"></path>
-                          </svg>
-                        </div>
-                        <div className="text-size-regular">Candid &amp; Traditional Photography Coverage</div>
-                      </div>
-                      <div className="pricing-feature-item">
-                        <div className="check-icon w-embed">
-                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22ZM17.4571 9.45711L11 15.9142L6.79289 11.7071L8.20711 10.2929L11 13.0858L16.0429 8.04289L17.4571 9.45711Z"></path>
-                          </svg>
-                        </div>
-                        <div className="text-size-regular">Licensed 4K Drone Aerial Cinematography</div>
-                      </div>
-                      <div className="pricing-feature-item">
-                        <div className="check-icon w-embed">
-                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22ZM17.4571 9.45711L11 15.9142L6.79289 11.7071L8.20711 10.2929L11 13.0858L16.0429 8.04289L17.4571 9.45711Z"></path>
-                          </svg>
-                        </div>
-                        <div className="text-size-regular">12x36 Flush-Mount Lay-Flat Photobook (40 Sheets)</div>
-                      </div>
-                      <div className="pricing-feature-item">
-                        <div className="check-icon w-embed">
-                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22ZM17.4571 9.45711L11 15.9142L6.79289 11.7071L8.20711 10.2929L11 13.0858L16.0429 8.04289L17.4571 9.45711Z"></path>
-                          </svg>
-                        </div>
-                        <div className="text-size-regular">All Master Color-Graded High-Res Deliverables</div>
-                      </div>
-                      <div className="pricing-feature-item">
-                        <div className="check-icon w-embed">
-                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22ZM17.4571 9.45711L11 15.9142L6.79289 11.7071L8.20711 10.2929L11 13.0858L16.0429 8.04289L17.4571 9.45711Z"></path>
-                          </svg>
-                        </div>
-                        <div className="text-size-regular">Dedicated Multi-Camera Bengaluru Crew</div>
-                      </div>
-                    </div>
-                    <div className="spacer-xlarge"></div>
-                    <div className="dark-line"></div>
-                    <div className="feature-spacer"></div>
-                    <div className="pricing-feature-item">
-                      <div className="refund-icon w-embed">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                          <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22ZM17.4571 9.45711L11 15.9142L6.79289 11.7071L8.20711 10.2929L11 13.0858L16.0429 8.04289L17.4571 9.45711Z"></path>
-                        </svg>
-                      </div>
-                      <div className="text-size-regular text-color-secondary">Free pre-shoot consultation &amp; date lock</div>
-                    </div>
-                  </div>
-                </div>
-                <div className="w-layout-grid package-content-grid">
-                  <div className="package-content-block">
-                    <div className="package-content">
-                      <div className="w-layout-grid package-inner-grid">
-                        <div id="w-node-_28ea525f-125d-38fb-5355-ec1f6c3bb9a4-6c3bb977" className="package-top-content">
-                          <div className="package-content-item">
-                            <div className="client-rating-wrap">
-                              <div className="client-rating-block">
-                                <img alt="The SR Pictures bride" src="/assets/1Y9A5246-1024x683.jpg" className="client-avatar _01" />
-                                <img alt="The SR Pictures couple" src="/assets/RSD_8118-1024x683.jpg" className="client-avatar _02" />
-                                <img alt="The SR Pictures wedding" src="/assets/RSD_8625-1024x683.jpg" className="client-avatar _03" />
-                                <img alt="The SR Pictures celebration" src="/assets/RSD_1969-1024x683.jpg" className="client-avatar _05" />
-                              </div>
-                              <div className="rating-block">
-                                <div className="star-rating-block">
-                                  {[...Array(5)].map((_, i) => (
-                                    <div className="star-rating w-embed" key={i}>
-                                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M12.0006 18.26L4.94715 22.2082L6.52248 14.2799L0.587891 8.7918L8.61493 7.84006L12.0006 0.5L15.3862 7.84006L23.4132 8.7918L17.4787 14.2799L19.054 22.2082L12.0006 18.26Z"></path>
-                                      </svg>
-                                    </div>
-                                  ))}
-                                  <div className="text-size-regular">4.9/5</div>
-                                </div>
-                                <div className="text-size-regular text-color-secondary">+500 Weddings &amp; Events in Bengaluru</div>
-                              </div>
-                            </div>
-                            <div className="horizontal-flex">
-                              <div className="text-size-medium">{"◉"}</div>
-                            </div>
-                          </div>
-                          <div className="spacer-small"></div>
-                          <div className="dark-line"></div>
-                          <div className="spacer-small"></div>
-                          <div className="price-wrap">
-                            <div className="price-block">
-                              <div className="price-text">₹95,000</div>
-                              <h2 className="prcing-title">₹75,000</h2>
-                            </div>
-                            <div className="text-size-small">/ Wedding Celebration</div>
-                          </div>
-                        </div>
-                        <div id="w-node-_28ea525f-125d-38fb-5355-ec1f6c3bb9c5-6c3bb977" className="benefit-wrapper">
-                          <div className="benefit-block">
-                            <div className="text-size-regular">
-                              <span className="text-weight-semibold">{"◉ 4K Cinema Quality"}</span>
-                              {" "}{"– Multi-angle Sony FX cinema rigs."}
-                            </div>
-                            <div className="text-size-regular">
-                              <span className="text-weight-semibold">{"◉ Candid Emotion"}</span>
-                              {"– Natural, unscripted heartfelt moments."}
-                            </div>
-                            <div className="text-size-regular">
-                              <span className="text-weight-semibold">{"◉ Heirloom Albums"}</span>
-                              {"– Handcrafted lay-flat luster photobooks."}
-                            </div>
-                            <div className="text-size-regular">
-                              <span className="text-weight-semibold">{"◉ Express Delivery"}</span>
-                              {"– 48h Instagram teaser &amp; high-res drive link."}
-                            </div>
-                          </div>
-                        </div>
-                        <div className="dark-line"></div>
-                        <div id="w-node-_28ea525f-125d-38fb-5355-ec1f6c3bb9d8-6c3bb977" className="text-size-small text-color-secondary">* Complete two-day wedding package covering Muhurtham, Sangeet &amp; Reception. Customizable for destination celebrations across India.</div>
-                      </div>
-                    </div>
-                  </div>
-                  <div id="w-node-_28ea525f-125d-38fb-5355-ec1f6c3bb9da-6c3bb977" className="price-button">
-                    <MainButton to="/pricing">Explore Pricing</MainButton>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="dividing-line"></div>
-          </div>
-        </div>
-      </section>
+      <HomePackagesSection />
       <section className="section-home-faq">
         <div className="padding-global">
           <div className="container-large">

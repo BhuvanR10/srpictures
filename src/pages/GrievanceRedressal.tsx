@@ -1,6 +1,11 @@
 import { Link } from 'react-router-dom';
+import { usePageSeo } from '../lib/usePageSeo';
 
 export default function GrievanceRedressal() {
+  usePageSeo({
+    title: 'Grievance Redressal Portal | The SR Pictures',
+    description: 'Designated Grievance Officer and Data Protection Redressal mechanism for The SR Pictures.',
+  });
   return (
     <>
       <div id="top" className="top"></div>

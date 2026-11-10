@@ -17,9 +17,18 @@ export default function SiteLayout() {
   useEffect(() => subscribeMotion(() => setPaused(isMotionPaused())), []);
 
   useLayoutEffect(() => {
+    ScrollTrigger.clearScrollMemory();
     window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
     const cleanup = setupPage();
-    const t = window.setTimeout(() => ScrollTrigger.refresh(), 400);
+    const t = window.setTimeout(() => {
+      ScrollTrigger.clearScrollMemory();
+      ScrollTrigger.refresh();
+      window.scrollTo(0, 0);
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    }, 400);
     return () => {
       window.clearTimeout(t);
       cleanup();

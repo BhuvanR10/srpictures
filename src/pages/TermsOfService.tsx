@@ -1,6 +1,11 @@
 import { Link } from 'react-router-dom';
+import { usePageSeo } from '../lib/usePageSeo';
 
 export default function TermsOfService() {
+  usePageSeo({
+    title: 'Terms of Service | The SR Pictures',
+    description: 'Terms of Service and production contract terms for photography and cinematography by The SR Pictures.',
+  });
   return (
     <>
       <div id="top" className="top"></div>

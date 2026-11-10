@@ -193,13 +193,13 @@ export default function VideoServicesSection() {
                               {" "}{service.title}
                             </h2>
                           </div>
-                          <div className="service-description-wrap">
-                            <div className="service-subitle">{service.tagline}</div>
-                            <p className="service-description">{service.description}</p>
+                          <div className="service-image-item">
+                            <img src={service.image} alt={service.title} className="service-thumbnail" />
                           </div>
-                        </div>
-                        <div className="service-image-item">
-                          <img src={service.image} alt={service.title} className="service-thumbnail" />
+                          <div className="service-description-wrap ml-auto justify-self-end text-left max-w-sm lg:max-w-md">
+                            <div className="service-subitle text-left">{service.tagline}</div>
+                            <p className="service-description text-left">{service.description}</p>
+                          </div>
                         </div>
                       </Link>
                     </div>

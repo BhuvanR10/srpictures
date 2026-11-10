@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { upArrow } from '../data/icons';
 import LinkButton from './LinkButton';
 import SocialLinks from './SocialLinks';
@@ -14,6 +14,26 @@ const legalPages: Array<[string, string]> = [
 ];
 
 export default function Footer() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleReplayIntro = () => {
+    try {
+      sessionStorage.removeItem('sr_intro_seen');
+      sessionStorage.removeItem('sr_cinema_intro_seen');
+    } catch {}
+    if (location.pathname !== '/') {
+      navigate('/');
+      setTimeout(() => {
+        window.dispatchEvent(new CustomEvent('replay-sr-intro'));
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }, 50);
+    } else {
+      window.dispatchEvent(new CustomEvent('replay-sr-intro'));
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
   return (
     <footer>
       <div className="padding-global">
@@ -59,7 +79,9 @@ export default function Footer() {
                   <div>
                     <div className="text-size-regular text-color-secondary font-mono text-xs uppercase tracking-wider mb-2">Legal (India):</div>
                     {legalPages.map(([to, l]) => (
-                      <div className="link-wrapper" key={to}><LinkButton to={to}>{l}</LinkButton></div>
+                      <div className="link-wrapper" key={to}>
+                        <LinkButton to={to}>{l}</LinkButton>
+                      </div>
                     ))}
                   </div>
                 </div>
@@ -110,11 +132,7 @@ export default function Footer() {
               <div className="footer-link-wrap">
                 <button
                   type="button"
-                  onClick={() => {
-                    sessionStorage.removeItem('sr_cinema_intro_seen');
-                    window.dispatchEvent(new CustomEvent('replay-sr-intro'));
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                  }}
+                  onClick={handleReplayIntro}
                   className="link-text text-neutral-400 hover:text-amber-400 transition-colors uppercase font-mono text-[11px] tracking-wider cursor-pointer bg-transparent border-0 p-0"
                   aria-label="Replay Cinematic Intro"
                 >
@@ -122,7 +140,9 @@ export default function Footer() {
                 </button>
               </div>
               {[['/privacy-policy', 'Privacy'], ['/terms-of-service', 'Terms'], ['/cancellation-refund', 'Refunds'], ['/grievance-redressal', 'Grievance']].map(([to, l]) => (
-                <div className="footer-link-wrap" key={to}><LinkButton to={to}>{l}</LinkButton></div>
+                <div className="footer-link-wrap" key={to}>
+                  <LinkButton to={to}>{l}</LinkButton>
+                </div>
               ))}
             </div>
           </div>
