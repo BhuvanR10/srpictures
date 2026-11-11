@@ -155,7 +155,7 @@ const PRICING_CATEGORIES: PricingCategory[] = [
     ],
     droneUpgrade: {
       title: 'Drone Cinematography Upgrade',
-      price: '+₹5,000',
+      price: '+₹8,000',
       description: 'Sweeping 4K aerials capturing the showroom reveal, overhead tracking, and exit drive.',
       features: [
         'Aerial vehicle tracking and overhead reveal shots',
@@ -163,7 +163,7 @@ const PRICING_CATEGORIES: PricingCategory[] = [
         'Cinematic overhead and dynamic rolling footage',
         'Professionally edited 4K drone sequences',
       ],
-      note: 'Drone add-on: +₹5,000 to any package. Drone operations subject to local airspace clearances and weather.',
+      note: 'Drone add-on: +₹8,000 to any package. Drone operations subject to local airspace clearances and weather.',
     },
   },
   {
@@ -931,8 +931,8 @@ export default function Pricing() {
                               </div>
 
                               <div className="shrink-0">
-                                <MainButton to={getWhatsAppBookingUrl('Car Delivery with Drone Upgrade', 'Car Delivery', '₹29,999')}>
-                                  Add Drone (+₹5,000)
+                                <MainButton to={getWhatsAppBookingUrl('Car Delivery with Drone Upgrade', 'Car Delivery', '₹32,999')}>
+                                  Add Drone (+₹8,000)
                                 </MainButton>
                               </div>
                             </div>
@@ -982,9 +982,7 @@ export default function Pricing() {
                         </p>
                         <div className="dark-line my-4"></div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs font-mono text-neutral-300">
-                          <div><span className="text-neutral-500 mr-2">{"◉"}</span>DGCA certified pilot &amp; safety protocols</div>
                           <div><span className="text-neutral-500 mr-2">{"◉"}</span>4K 60fps high dynamic range capture</div>
-                          <div><span className="text-neutral-500 mr-2">{"◉"}</span>Available as +₹5,000 upgrade on single sessions</div>
                           <div><span className="text-neutral-500 mr-2">{"◉"}</span>Included in Luxury Wedding &amp; Grand Resort</div>
                         </div>
                         <div className="spacer-small"></div>
@@ -998,9 +996,9 @@ export default function Pricing() {
                           Standalone Add-On
                         </div>
                         <div className="text-3xl font-mono font-bold text-white mb-4">
-                          +₹5,000
+                          +₹8,000
                         </div>
-                        <MainButton to={`https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent('Hello The SR Pictures! 📸 I would like to inquire about Drone Cinematography add-on coverage (+₹5,000).')}`}>
+                        <MainButton to={`https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent('Hello The SR Pictures! 📸 I would like to inquire about Drone Cinematography add-on coverage (+₹8,000).')}`}>
                           Inquire Drone
                         </MainButton>
                       </div>

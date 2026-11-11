@@ -122,16 +122,20 @@ export default function Navbar() {
             <div className="nav-row flex items-center justify-between w-full">
             
             {/* Brand Logo & Studio Name */}
-            <Link to="/" className="brand-link flex items-center gap-3 no-underline group" aria-label="The SR Pictures home">
-              <div className="logo-wrap h-9 w-9 sm:h-10 sm:w-10 flex-shrink-0 relative overflow-hidden rounded-full border border-white/20 shadow-md">
+            <Link
+              to="/"
+              className="brand-link flex !flex-row items-center gap-3 sm:gap-3.5 no-underline group"
+              aria-label="The SR Pictures home"
+            >
+              <div className="logo-wrap h-11 w-11 sm:h-12 sm:w-12 flex-shrink-0 relative overflow-hidden rounded-full border border-white/20 shadow-md bg-black/40">
                 <img
                   src="/assets/sr-pictures-emblem.png"
                   alt="The SR Pictures"
-                  className="logo h-9 w-9 sm:h-10 sm:w-10 object-contain rounded-full transition-transform duration-300 group-hover:scale-105"
+                  className="logo h-11 w-11 sm:h-12 sm:w-12 object-contain rounded-full transition-transform duration-300 group-hover:scale-105"
                 />
               </div>
               <div className="flex flex-col justify-center">
-                <span className="font-cinema-logo font-medium text-[13px] sm:text-[15px] tracking-[0.18em] leading-none text-white uppercase whitespace-nowrap">
+                <span className="font-cinema-logo font-medium text-[14px] sm:text-[16px] tracking-[0.18em] leading-none text-white uppercase whitespace-nowrap">
                   The SR Pictures
                 </span>
               </div>
@@ -232,9 +236,9 @@ export default function Navbar() {
             <img
               src="/assets/sr-pictures-emblem.png"
               alt="The SR Pictures"
-              className="h-9 w-9 object-contain rounded-full border border-white/20 shadow-md"
+              className="h-11 w-11 object-contain rounded-full border border-white/20 shadow-md"
             />
-            <span className="font-cinema-logo font-medium text-[14px] tracking-[0.18em] leading-none text-white uppercase">
+            <span className="font-cinema-logo font-medium text-[15px] tracking-[0.18em] leading-none text-white uppercase">
               The SR Pictures
             </span>
           </Link>

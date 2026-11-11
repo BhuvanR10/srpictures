@@ -143,40 +143,92 @@ textarea:focus-visible, select:focus-visible, summary:focus-visible {
 
 .brand-link {
   display: flex !important;
+  flex-direction: row !important;
+  flex-flow: row nowrap !important;
   align-items: center !important;
   text-decoration: none !important;
   flex-shrink: 0 !important;
+  gap: 0.85rem !important;
   z-index: 25 !important;
 }
 
 .brand-wrap {
   display: flex !important;
+  flex-direction: row !important;
   align-items: center !important;
-  gap: 10px !important;
+  gap: 12px !important;
 }
 
 .logo-wrap {
   display: flex !important;
-  flex-direction: column !important;
-  height: 2.25rem !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 3rem !important;
+  width: 3rem !important;
   overflow: hidden !important;
   position: relative !important;
+  border-radius: 9999px !important;
 }
 
 .logo {
-  height: 2.25rem !important;
-  width: auto !important;
-  max-height: 2.25rem !important;
-  display: block !important;
-  object-fit: contain !important;
-}
-
-.footer-logo {
   height: 3rem !important;
-  width: auto !important;
+  width: 3rem !important;
   max-height: 3rem !important;
   display: block !important;
   object-fit: contain !important;
+  border-radius: 9999px !important;
+}
+
+@media screen and (max-width: 640px) {
+  .logo-wrap {
+    height: 2.65rem !important;
+    width: 2.65rem !important;
+  }
+  .logo {
+    height: 2.65rem !important;
+    width: 2.65rem !important;
+    max-height: 2.65rem !important;
+  }
+}
+
+.footer-logo {
+  height: 4.5rem !important;
+  width: 4.5rem !important;
+  max-height: 4.5rem !important;
+  min-width: 4.5rem !important;
+  display: block !important;
+  object-fit: contain !important;
+  border-radius: 9999px !important;
+}
+
+@media screen and (min-width: 640px) {
+  .footer-logo {
+    height: 5.5rem !important;
+    width: 5.5rem !important;
+    max-height: 5.5rem !important;
+    min-width: 5.5rem !important;
+  }
+}
+
+/* Prevent overlap of Back to top and Let's Talk button */
+.footer-inner-grid {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  align-items: flex-start !important;
+  gap: 1.5rem !important;
+  height: auto !important;
+}
+
+@media screen and (min-width: 768px) {
+  .footer-inner-grid {
+    align-items: flex-end !important;
+  }
+}
+
+.back-to-top-wrapper,
+.back-to-top-text {
+  transform: none !important;
 }
 
 @media screen and (min-width: 992px) {

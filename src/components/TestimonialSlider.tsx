@@ -45,6 +45,16 @@ export default function TestimonialSlider({
   const [unmutedIndex, setUnmutedIndex] = useState<number | null>(null);
   const [isHovered, setIsHovered] = useState(false);
   const [paused, setPaused] = useState(isMotionPaused());
+  const [isManualInteracting, setIsManualInteracting] = useState(false);
+  const interactionTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const triggerManualPause = useCallback(() => {
+    setIsManualInteracting(true);
+    if (interactionTimerRef.current) clearTimeout(interactionTimerRef.current);
+    interactionTimerRef.current = setTimeout(() => {
+      setIsManualInteracting(false);
+    }, 4500);
+  }, []);
 
   // Fullscreen Cinema Modal State
   const [fullscreenItem, setFullscreenItem] = useState<TestimonialItem | null>(null);
@@ -141,6 +151,7 @@ export default function TestimonialSlider({
         isSectionVisible &&
         !isHovered &&
         !isDraggingRef.current &&
+        !isManualInteracting &&
         !paused &&
         !fullscreenItem
       ) {
@@ -163,7 +174,7 @@ export default function TestimonialSlider({
 
     animId = requestAnimationFrame(step);
     return () => cancelAnimationFrame(animId);
-  }, [isSectionVisible, isHovered, paused, fullscreenItem]);
+  }, [isSectionVisible, isHovered, isManualInteracting, paused, fullscreenItem]);
 
   // Center initial scroll position so backward dragging wraps smoothly
   useEffect(() => {
@@ -185,6 +196,7 @@ export default function TestimonialSlider({
 
     const container = scrollRef.current;
     if (!container) return;
+    triggerManualPause();
     isDraggingRef.current = true;
     hasMovedRef.current = false;
     dragStartXRef.current = e.clientX;
@@ -204,11 +216,22 @@ export default function TestimonialSlider({
     isDraggingRef.current = false;
   };
 
-  // 1-Click Smooth Arrow Stepping
+  // 1-Click Smooth Arrow Stepping (Next / Previous)
   const handleScrollStep = (direction: 'left' | 'right') => {
     const container = scrollRef.current;
     if (!container) return;
-    const scrollAmount = 300;
+    triggerManualPause();
+
+    const card = container.querySelector('[data-index]') as HTMLElement | null;
+    const scrollAmount = card ? card.offsetWidth + 20 : 300;
+
+    const half = container.scrollWidth / 2;
+    if (direction === 'right' && container.scrollLeft >= half) {
+      container.scrollLeft -= half;
+    } else if (direction === 'left' && container.scrollLeft <= 20) {
+      container.scrollLeft += half;
+    }
+
     container.scrollBy({
       left: direction === 'left' ? -scrollAmount : scrollAmount,
       behavior: 'smooth',
@@ -406,24 +429,24 @@ export default function TestimonialSlider({
 
   return (
     <div ref={sectionRef} className="w-full relative py-2 select-none group/carousel">
-      {/* Optional Left Navigation Button */}
+      {/* Prominent Left Navigation Button (Always visible on mobile & laptop) */}
       <button
         type="button"
         onClick={() => handleScrollStep('left')}
-        aria-label="Scroll testimonials left"
-        className="hidden md:flex absolute -left-3 lg:-left-5 top-1/2 -translate-y-1/2 z-30 w-11 h-11 rounded-full bg-black/80 hover:bg-black border border-white/25 hover:border-white/50 text-white items-center justify-center backdrop-blur-md shadow-2xl opacity-0 group-hover/carousel:opacity-100 transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer"
+        aria-label="Previous client story"
+        className="flex absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-30 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black/85 hover:bg-black active:scale-90 border border-white/30 hover:border-white/70 text-white items-center justify-center backdrop-blur-md shadow-2xl transition-all duration-200 cursor-pointer"
       >
-        <ChevronLeft className="w-5 h-5" />
+        <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
       </button>
 
-      {/* Optional Right Navigation Button */}
+      {/* Prominent Right Navigation Button (Always visible on mobile & laptop) */}
       <button
         type="button"
         onClick={() => handleScrollStep('right')}
-        aria-label="Scroll testimonials right"
-        className="hidden md:flex absolute -right-3 lg:-right-5 top-1/2 -translate-y-1/2 z-30 w-11 h-11 rounded-full bg-black/80 hover:bg-black border border-white/25 hover:border-white/50 text-white items-center justify-center backdrop-blur-md shadow-2xl opacity-0 group-hover/carousel:opacity-100 transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer"
+        aria-label="Next client story"
+        className="flex absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-30 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black/85 hover:bg-black active:scale-90 border border-white/30 hover:border-white/70 text-white items-center justify-center backdrop-blur-md shadow-2xl transition-all duration-200 cursor-pointer"
       >
-        <ChevronRight className="w-5 h-5" />
+        <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
       </button>
 
       {/* Edge Gradient Fades for Cinema Vignette */}
@@ -439,8 +462,8 @@ export default function TestimonialSlider({
         onPointerCancel={handlePointerUp}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
-        className="flex items-center gap-4 sm:gap-5 overflow-x-auto scroll-smooth py-4 px-3 sm:px-6 cursor-grab active:cursor-grabbing [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
-        style={{ touchAction: 'pan-y', willChange: 'scroll-position', transform: 'translateZ(0)' }}
+        className="flex items-center gap-4 sm:gap-5 overflow-x-auto scroll-smooth py-4 px-14 sm:px-20 cursor-grab active:cursor-grabbing [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+        style={{ touchAction: 'pan-x pan-y', willChange: 'scroll-position', transform: 'translateZ(0)', WebkitOverflowScrolling: 'touch' }}
       >
         {displayItems.map((item: TestimonialItem, idx: number) => {
           const isActive = item.id === activeCardId;
@@ -506,6 +529,8 @@ export default function TestimonialSlider({
           );
         })}
       </div>
+
+
 
       {withDivider && <div className="dividing-line mt-8"></div>}
 

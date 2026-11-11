@@ -4274,9 +4274,10 @@ blockquote {
 
 .brand-link {
   z-index: 20;
-  flex-flow: column;
+  flex-flow: row nowrap;
   justify-content: flex-start;
-  align-items: flex-start;
+  align-items: center;
+  gap: 12px;
   transition: all .35s;
   display: flex;
   position: relative;

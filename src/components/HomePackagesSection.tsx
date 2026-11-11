@@ -120,7 +120,7 @@ export const FILTER_PILLS = [
   { id: 'wedding', num: '02', category: 'Weddings', price: '₹79,999' },
   { id: 'couple', num: '03', category: 'Couples', price: '₹24,999' },
   { id: 'resort', num: '04', category: 'Resorts', price: '₹29,999' },
-  { id: 'drone', num: '05', category: 'Drone', price: '+₹5,000' },
+  { id: 'drone', num: '05', category: 'Drone', price: '+₹8,000' },
 ];
 
 export default function HomePackagesSection() {
@@ -382,9 +382,7 @@ export default function HomePackagesSection() {
                       <div className="dark-line my-4"></div>
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm font-mono text-neutral-300">
-                        <div><span className="text-neutral-500 mr-2">{"◉"}</span>DGCA certified pilot &amp; safety protocols</div>
                         <div><span className="text-neutral-500 mr-2">{"◉"}</span>4K 60fps high dynamic range capture</div>
-                        <div><span className="text-neutral-500 mr-2">{"◉"}</span>Available as +₹5,000 upgrade on single sessions</div>
                         <div><span className="text-neutral-500 mr-2">{"◉"}</span>Included in Luxury Wedding &amp; Grand Resort</div>
                       </div>
 
@@ -400,7 +398,7 @@ export default function HomePackagesSection() {
                           Standalone Add-On
                         </div>
                         <div className="text-3xl sm:text-4xl font-mono font-bold text-white mb-2">
-                          +₹5,000
+                          +₹8,000
                         </div>
                       </div>
                       
@@ -413,7 +411,7 @@ export default function HomePackagesSection() {
                           <ArrowUpRight className="w-4 h-4 stroke-[2.5]" />
                         </Link>
                         <a
-                          href={`https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent('Hello The SR Pictures! 📸 I would like to inquire about Drone Cinematography add-on coverage (+₹5,000).')}`}
+                          href={`https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent('Hello The SR Pictures! 📸 I would like to inquire about Drone Cinematography add-on coverage (+₹8,000).')}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="px-5 py-3 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-white text-xs font-mono uppercase tracking-wider font-semibold flex items-center justify-center gap-2 transition-all active:scale-[0.98]"
