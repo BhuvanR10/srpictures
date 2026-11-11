@@ -11,8 +11,26 @@ import { usePageSeo } from '../lib/usePageSeo';
 
 export default function About() {
   usePageSeo({
-    title: 'About the Studio & Philosophy',
-    description: 'Learn about The SR Pictures story, our craft philosophy, and our journey capturing milestone celebrations and cinematic moments.',
+    title: 'About The Studio & Cinema Craft | The SR Pictures Bengaluru',
+    description: 'Meet The SR Pictures team in Bengaluru. Discover our philosophy in cinematic wedding films, car delivery shoots, resort production, and DGCA drone operations across Karnataka and South India.',
+    keywords: 'About The SR Pictures, Bengaluru wedding photographers, automotive cinematography Bangalore, resort filmmakers Karnataka, professional drone pilot Bengaluru',
+    canonicalPath: '/about',
+    schemaJson: {
+      '@type': 'AboutPage',
+      name: 'About The SR Pictures',
+      description: 'The story, cinema philosophy, and optical craft of The SR Pictures visual studio in Bengaluru, India.',
+      mainEntity: {
+        '@type': 'PhotographyStudio',
+        name: 'The SR Pictures',
+        address: {
+          '@type': 'PostalAddress',
+          addressLocality: 'Bengaluru',
+          addressRegion: 'Karnataka',
+          postalCode: '560001',
+          addressCountry: 'IN',
+        },
+      },
+    },
   });
   return (
     <>

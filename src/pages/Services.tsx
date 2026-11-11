@@ -5,8 +5,40 @@ import { usePageSeo } from '../lib/usePageSeo';
 
 export default function Services() {
   usePageSeo({
-    title: 'Studio Services & Cine Craft',
-    description: 'Cinematic wedding cinematography, candid photography, pre-wedding films, aerial drone coverage, and commercial visual storytelling.',
+    title: 'Cinematography & Photography Services | The SR Pictures Bengaluru',
+    description: 'Explore our core services: Wedding Cinema & Candid Photography, Car Delivery Shoots, Resort Promotional Films, and 4K Aerial Drone Cinematography across South India.',
+    keywords: 'Wedding cinematography Bengaluru, car delivery shoot Bangalore, resort films Karnataka, drone videography, commercial photography services Bangalore',
+    canonicalPath: '/services',
+    schemaJson: {
+      '@type': 'ItemList',
+      name: 'The SR Pictures Production Services',
+      itemListElement: [
+        {
+          '@type': 'Service',
+          position: 1,
+          name: 'Wedding Cinematography & Candid Photography',
+          description: 'Comprehensive Indian wedding film production with multi-camera Sony FX cinema rigs, drone aerials, and handcrafted flush-mount lay-flat albums.',
+        },
+        {
+          '@type': 'Service',
+          position: 2,
+          name: 'Car Delivery Shoots & Automotive Reels',
+          description: 'Cinematic showroom reveal coverage, key handover celebration, rolling highway shots, and 4K Instagram reels starting at ₹14,999.',
+        },
+        {
+          '@type': 'Service',
+          position: 3,
+          name: 'Resort & Hospitality Promotional Films',
+          description: 'Luxury architectural walkthroughs, villa experiences, and high-end drone landscape captures for resorts in Coorg, Chikmagalur, Kabini, and Goa.',
+        },
+        {
+          '@type': 'Service',
+          position: 4,
+          name: '4K Aerial Drone Cinematography',
+          description: 'DGCA certified drone piloting providing 4K 60fps HDR overhead video for grand events, venues, and automotive tracking.',
+        },
+      ],
+    },
   });
   return (
     <>

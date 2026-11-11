@@ -4,6 +4,7 @@ import Subtitle from '../components/Subtitle';
 import SocialLinks from '../components/SocialLinks';
 import { authorSocials } from '../data/icons';
 import { blogPosts } from '../data/blog';
+import { usePageSeo } from '../lib/usePageSeo';
 import NotFound from './NotFound';
 
 export function PostCard({ slug }: { slug: string }) {
@@ -39,6 +40,32 @@ export function PostCard({ slug }: { slug: string }) {
 export default function BlogPost() {
   const { slug } = useParams();
   const post = blogPosts.find((p) => p.slug === slug);
+
+  usePageSeo({
+    title: post ? `${post.title} | The SR Pictures Journal` : 'Creative Journal',
+    description: post ? post.summary : 'Cinematography journal article by The SR Pictures.',
+    keywords: post ? `${post.title}, ${post.category}, cinematography Bengaluru, wedding filming techniques` : 'The SR Pictures',
+    canonicalPath: post ? `/blog/${post.slug}` : '/blog',
+    image: post?.image,
+    type: 'article',
+    schemaJson: post ? {
+      '@type': 'BlogPosting',
+      headline: post.title,
+      description: post.summary,
+      image: post.image.startsWith('http') ? post.image : `https://photoportfolio-lake.vercel.app${post.image}`,
+      author: {
+        '@type': 'Person',
+        name: post.author.name,
+        jobTitle: post.author.role,
+      },
+      publisher: {
+        '@type': 'PhotographyStudio',
+        name: 'The SR Pictures',
+      },
+      articleSection: post.category,
+    } : undefined,
+  });
+
   if (!post) return <NotFound />;
   return (
     <>

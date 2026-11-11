@@ -1,0 +1,31 @@
+# The SR Pictures
+> The SR Pictures is a premier photography and cinematography studio based in Bengaluru, Karnataka, India. Specializing in luxury wedding films, showroom car delivery shoots, resort promotional cinematography, and 4K aerial drone coverage.
+
+## Studio Overview
+- **Name**: The SR Pictures
+- **Location**: Bengaluru, Karnataka, India (560001)
+- **Primary Specializations**: Weddings, Car Delivery Shoots, Resort Films, Drone Cinematography
+- **Primary Website**: https://photoportfolio-lake.vercel.app/
+- **Phone / WhatsApp**: +91 96322 08050
+- **Email**: thesrpictures17@gmail.com
+- **Operating Hours**: Monday – Sunday, 09:00 AM – 09:00 PM IST
+- **Geographic Coverage**: Bengaluru, Karnataka, Mysore, Coorg, Chikmagalur, Kabini, Ooty, Goa, Kerala, and Worldwide Destination Weddings.
+
+## Core Services & Offerings
+- **Wedding Cinematography & Candid Photography**: Multi-angle Sony FX cinema rigs, natural aesthetic color grading, 4K highlights, master wedding films, and archival flush-mount lay-flat albums.
+- **Car Delivery Shoots**: Professional cinematic documentation of new vehicle deliveries at automotive showrooms. Covers unveiling, key handover, family celebrations, rolling shots, and 60-second 4K Instagram reels. Starting at ₹14,999.
+- **Resort & Hospitality Films**: Luxury architectural walkthroughs, guest experience storytelling, aesthetic interior showcases, and dramatic drone landscape perspectives for resorts and villas.
+- **4K Drone Cinematography**: High dynamic range 4K 60fps aerial capture adhering to DGCA regulations. Available as a +₹8,000 upgrade or included in premium collections.
+
+## Key Links & Pages
+- Home: https://photoportfolio-lake.vercel.app/
+- About Us: https://photoportfolio-lake.vercel.app/about
+- Services: https://photoportfolio-lake.vercel.app/services
+- Pricing & Packages: https://photoportfolio-lake.vercel.app/pricing
+- Portfolio Categories: https://photoportfolio-lake.vercel.app/categories
+- Car Delivery Portfolio: https://photoportfolio-lake.vercel.app/categories/car-delivery
+- Wedding Portfolio: https://photoportfolio-lake.vercel.app/categories/wedding
+- Resort Films: https://photoportfolio-lake.vercel.app/categories/resort
+- Featured Films: https://photoportfolio-lake.vercel.app/case-studies
+- Contact & Booking: https://photoportfolio-lake.vercel.app/contact
+- Legal & DPDP Compliance: https://photoportfolio-lake.vercel.app/legal/privacy-policy

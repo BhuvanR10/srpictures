@@ -3,11 +3,33 @@ import LinkButton from '../components/LinkButton';
 import MainButton from '../components/MainButton';
 import Subtitle from '../components/Subtitle';
 import { projects } from '../data/projects';
+import { usePageSeo } from '../lib/usePageSeo';
 import NotFound from './NotFound';
 
 export default function Project() {
   const { slug } = useParams();
   const p = projects.find((x) => x.slug === slug);
+
+  usePageSeo({
+    title: p ? `${p.name} — ${p.service} | The SR Pictures Bengaluru` : 'Project Story',
+    description: p ? p.summary : 'Cinematic film project by The SR Pictures.',
+    keywords: p ? `${p.name}, ${p.service}, ${p.industry}, The SR Pictures, Bengaluru film project` : 'The SR Pictures',
+    canonicalPath: p ? `/project/${p.slug}` : '/case-studies',
+    image: p?.poster,
+    schemaJson: p ? {
+      '@type': 'VideoObject',
+      name: `${p.name} - ${p.service}`,
+      description: p.summary,
+      thumbnailUrl: p.poster.startsWith('http') ? p.poster : `https://photoportfolio-lake.vercel.app${p.poster}`,
+      uploadDate: `${p.year}-01-01T08:00:00+05:30`,
+      embedUrl: p.vimeo,
+      publisher: {
+        '@type': 'PhotographyStudio',
+        name: 'The SR Pictures',
+      },
+    } : undefined,
+  });
+
   if (!p) return <NotFound />;
   const next = projects.find((x) => x.slug === p.next) ?? projects[0];
   const meta: Array<[string, string]> = [['Service:', p.service], ['Industry:', p.industry], ['Year:', p.year]];

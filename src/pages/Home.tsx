@@ -16,8 +16,11 @@ import { usePageSeo } from '../lib/usePageSeo';
 
 export default function Home() {
   usePageSeo({
-    title: 'Cinematic Wedding & Commercial Studio',
-    description: 'Premier photography and cinematography studio based in Bengaluru. Crafting authentic, cinematic stories with natural light and high-end cine optics.',
+    title: 'The SR Pictures | Weddings, Car delivery shoot & Resort Films',
+    description: 'The SR Pictures is Bengaluru premier cinematography and photography studio, specializing in luxury Indian weddings, showroom car delivery shoots, resort promotional films, and 4K aerial drone coverage.',
+    keywords: 'The SR Pictures, wedding cinematography Bengaluru, car delivery shoot Bangalore, resort films Karnataka, drone cinematography Bengaluru, pre-wedding shoot Bangalore, luxury wedding photographer, automotive delivery video',
+    canonicalPath: '/',
+    exactTitle: true,
   });
 
   const headerRef = useRef<HTMLElement | null>(null);

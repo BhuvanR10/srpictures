@@ -112,24 +112,28 @@ export const testimonials: TestimonialItem[] = [
 ];
 export const faqItems = [
   {
-    "q": "1. What photography and cinematography services do you provide?",
-    "a": "We specialize in cinematic wedding films, pre-wedding couple shoots, fashion & portrait portfolios, real estate & architectural aerial cinematography, automotive shoots, and milestone ceremonies."
+    "q": "1. What photography and cinematography services does The SR Pictures provide?",
+    "a": "We specialize in luxury Indian wedding films, showroom car delivery shoots, resort and luxury hospitality promotional films, pre-wedding couple shoots, and 4K aerial drone cinematography."
   },
   {
-    "q": "2. Where are you based and do you travel for destination shoots?",
-    "a": "We are based in Bengaluru (Bangalore), Karnataka, and we frequently travel across India and worldwide for destination weddings, fashion campaigns, and commercial assignments."
+    "q": "2. Where are you based and what geographic locations do you cover?",
+    "a": "The SR Pictures is based in Bengaluru, Karnataka, India. We regularly film across Bengaluru, Mysore, Coorg, Chikmagalur, Kabini, Ooty, Goa, Kerala, and travel across India and internationally for destination shoots."
   },
   {
-    "q": "3. How far in advance should we reserve our wedding or shoot date?",
-    "a": "We suggest reaching out 2 to 6 months in advance for wedding dates to ensure availability and allow time for customized concept planning."
+    "q": "3. What is included in a Car Delivery Shoot with The SR Pictures?",
+    "a": "Our car delivery packages start at ₹14,999 (Classic) and ₹24,999 (Signature Cine). Coverage includes showroom unveiling, key handover ceremony, family celebrations, rolling vehicle tracking, 4K Instagram reels, and an optional ₹8,000 4K drone upgrade."
   },
   {
-    "q": "4. What is the delivery timeline for edited photos and cinematic films?",
-    "a": "Teaser reels and select highlight photos are typically shared within 3 to 7 days. Complete 4K cinematic wedding films and fully retouched photo galleries are delivered within 3 to 4 weeks."
+    "q": "4. How do you produce Resort and Hospitality promotional films?",
+    "a": "We produce 4K cinematic showcases combining interior and exterior architectural tours, villa lifestyle storytelling, fine dining and amenity highlights, and sweeping aerial drone vistas designed for high-conversion social campaigns and websites."
   },
   {
-    "q": "5. What cinema equipment and technology do you use?",
-    "a": "We shoot with professional cinema camera systems, high-speed prime lenses, gimbal stabilizers, professional audio equipment, and licensed 4K aerial drones."
+    "q": "5. What is the delivery timeline for edited photos and cinematic films?",
+    "a": "Next-day teaser reels are delivered within 24 to 48 hours for instant social sharing. Full retouched photo galleries are delivered within 2 to 3 weeks, and master 4K cinematic films within 3 to 4 weeks."
+  },
+  {
+    "q": "6. How can I reserve a wedding date or book a shoot with The SR Pictures?",
+    "a": "You can reach us directly via WhatsApp at +91 96322 08050, email thesrpictures17@gmail.com, or submit our online contact form to check date availability and receive a custom proposal."
   }
 ];
 export const testimonialIds = {

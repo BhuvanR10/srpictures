@@ -3,8 +3,9 @@ import { usePageSeo } from '../lib/usePageSeo';
 
 export default function PrivacyPolicy() {
   usePageSeo({
-    title: 'Privacy Policy (DPDP Act) | The SR Pictures',
-    description: 'Privacy Policy and Digital Personal Data Protection compliance notice of The SR Pictures, Bengaluru.',
+    title: 'Privacy Policy (DPDP Act, 2023) | The SR Pictures Bengaluru',
+    description: 'Privacy Policy and Digital Personal Data Protection compliance notice of The SR Pictures studio, Bengaluru, Karnataka.',
+    canonicalPath: '/legal/privacy-policy',
   });
   return (
     <>

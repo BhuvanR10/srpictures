@@ -2,8 +2,24 @@ import { Link } from 'react-router-dom';
 import NewsletterForm from '../components/NewsletterForm';
 import Subtitle from '../components/Subtitle';
 import { blogPosts } from '../data/blog';
+import { usePageSeo } from '../lib/usePageSeo';
 
 export default function Blog() {
+  usePageSeo({
+    title: 'Creative Insights & Cinematography Journal | The SR Pictures Bengaluru',
+    description: 'Expert cinematography insights, wedding filming guides, pre-wedding location ideas in Bengaluru, drone techniques, and visual craft essays.',
+    keywords: 'wedding videography blog Bengaluru, drone aerial tips, pre-wedding shoot locations Bangalore, cinematography insights',
+    canonicalPath: '/blog',
+    schemaJson: {
+      '@type': 'Blog',
+      name: 'The SR Pictures Cinematography Journal',
+      description: 'Educational and behind-the-scenes cinematography articles from The SR Pictures studio.',
+      publisher: {
+        '@type': 'PhotographyStudio',
+        name: 'The SR Pictures',
+      },
+    },
+  });
   return (
     <>
     <div id="top" className="top"></div>

@@ -56,9 +56,44 @@ export default function CategoryView() {
   const category = CATEGORIES_DATA.find((c) => c.slug === slug || c.id === slug);
   const imageSources = useMemo(() => category?.images.map((img) => img.src) || [], [category?.images]);
 
+  const categoryTitle = useMemo(() => {
+    if (!category) return 'Visual Gallery | The SR Pictures';
+    if (category.slug === 'car-delivery') return 'Car Delivery Shoots & Automotive Visuals | The SR Pictures Bengaluru';
+    if (category.slug === 'wedding') return 'Luxury Wedding Cinematography & Photography | The SR Pictures Bengaluru';
+    if (category.slug === 'resort') return 'Resort & Luxury Hospitality Films | The SR Pictures Karnataka';
+    if (category.slug === 'pre-wedding') return 'Pre-Wedding & Couple Story Shoots | The SR Pictures Bengaluru';
+    return `${category.name} Photography & Cinematography | The SR Pictures Bengaluru`;
+  }, [category]);
+
+  const categoryDesc = useMemo(() => {
+    if (!category) return 'Visual gallery by The SR Pictures.';
+    if (category.slug === 'car-delivery') {
+      return 'Cinematic showroom car delivery moments in Bengaluru. Unveiling celebrations, key handover ceremonies, family portraits, and 4K reels.';
+    }
+    if (category.slug === 'wedding') {
+      return 'Grand Indian wedding films and candid photography by The SR Pictures. Preserving sacred muhurtham rituals, sangeet energy, and intimate vows.';
+    }
+    if (category.slug === 'resort') {
+      return 'Luxury resort, boutique hotel, and private villa promotional films in Coorg, Chikmagalur, Kabini, Ooty, and Goa by The SR Pictures.';
+    }
+    return `Discover authentic ${category.name} visual moments captured with natural aesthetics and high-end cinema lenses by The SR Pictures studio.`;
+  }, [category]);
+
   usePageSeo({
-    title: category ? `${category.name} | The SR Pictures` : 'Category',
-    description: category ? `${category.name} portfolio by The SR Pictures.` : 'Visual gallery.',
+    title: categoryTitle,
+    description: categoryDesc,
+    keywords: category ? `${category.name} photography, ${category.name} cinematography Bengaluru, The SR Pictures ${category.slug}, Bangalore photoshoot` : 'The SR Pictures',
+    canonicalPath: category ? `/categories/${category.slug}` : '/categories',
+    image: category?.thumbnail,
+    schemaJson: category ? {
+      '@type': 'ImageGallery',
+      name: `${category.name} Portfolio - The SR Pictures`,
+      description: categoryDesc,
+      provider: {
+        '@type': 'PhotographyStudio',
+        name: 'The SR Pictures',
+      },
+    } : undefined,
   });
 
   if (!category) {

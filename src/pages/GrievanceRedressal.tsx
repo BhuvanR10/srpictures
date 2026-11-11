@@ -3,8 +3,9 @@ import { usePageSeo } from '../lib/usePageSeo';
 
 export default function GrievanceRedressal() {
   usePageSeo({
-    title: 'Grievance Redressal Portal | The SR Pictures',
-    description: 'Designated Grievance Officer and Data Protection Redressal mechanism for The SR Pictures.',
+    title: 'Grievance Redressal Officer & Support | The SR Pictures Bengaluru',
+    description: 'Designated Grievance Officer and Data Protection Redressal mechanism for The SR Pictures under the DPDP Act 2023 and IT Rules, India.',
+    canonicalPath: '/legal/grievance-redressal',
   });
   return (
     <>

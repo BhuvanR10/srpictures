@@ -3,8 +3,9 @@ import { usePageSeo } from '../lib/usePageSeo';
 
 export default function TermsOfService() {
   usePageSeo({
-    title: 'Terms of Service | The SR Pictures',
-    description: 'Terms of Service and production contract terms for photography and cinematography by The SR Pictures.',
+    title: 'Terms of Service & Booking Agreement | The SR Pictures Bengaluru',
+    description: 'Terms of Service and production contract terms for photography and cinematography by The SR Pictures, Bengaluru, India.',
+    canonicalPath: '/legal/terms-of-service',
   });
   return (
     <>

@@ -3,8 +3,9 @@ import { usePageSeo } from '../lib/usePageSeo';
 
 export default function CancellationRefund() {
   usePageSeo({
-    title: 'Cancellation & Refund Policy | The SR Pictures',
-    description: 'Transparent cancellation, rescheduling and refund matrix for photography bookings with The SR Pictures.',
+    title: 'Cancellation & Refund Policy | The SR Pictures Bengaluru',
+    description: 'Transparent cancellation, rescheduling and refund matrix for photography and cinematography bookings with The SR Pictures.',
+    canonicalPath: '/legal/cancellation-refund',
   });
   return (
     <>

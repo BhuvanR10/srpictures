@@ -6,8 +6,15 @@ import { usePageSeo } from '../lib/usePageSeo';
 
 export default function CaseStudies() {
   usePageSeo({
-    title: 'Featured Films & Stories',
-    description: 'Explore cinematic case studies, luxury destination wedding films, and editorial stories crafted by The SR Pictures.',
+    title: 'Featured Films & Real Stories | The SR Pictures Bengaluru',
+    description: 'Explore cinematic films, wedding highlights, and celebration visual stories crafted by The SR Pictures in Bengaluru and Karnataka.',
+    keywords: 'wedding films Bengaluru, real wedding videos Bangalore, cinematic films Karnataka, The SR Pictures case studies',
+    canonicalPath: '/case-studies',
+    schemaJson: {
+      '@type': 'CollectionPage',
+      name: 'The SR Pictures Featured Films & Case Studies',
+      description: 'Documentary wedding cinema, family milestone ceremonies, and couple stories across Karnataka.',
+    },
   });
   return (
     <>

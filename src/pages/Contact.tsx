@@ -7,8 +7,28 @@ import { usePageSeo } from '../lib/usePageSeo';
 
 export default function Contact() {
   usePageSeo({
-    title: 'Book Your Date | Contact',
-    description: 'Get in touch with The SR Pictures studio. Check dates availability, request custom quotes, and book your wedding or commercial production.',
+    title: 'Book Your Date & Inquire | The SR Pictures Bengaluru',
+    description: 'Contact The SR Pictures in Bengaluru. Book dates for Weddings, Car Delivery shoots, Resort films, and 4K Drone coverage across Karnataka and India. Phone/WhatsApp: +91 96322 08050.',
+    keywords: 'book wedding photographer Bangalore, car delivery shoot inquiry, hire videographer Bengaluru, The SR Pictures contact number, shoot booking',
+    canonicalPath: '/contact',
+    schemaJson: {
+      '@type': 'ContactPage',
+      name: 'Contact The SR Pictures',
+      description: 'Book date availability and inquire for weddings, car delivery shoots, resort films, and drone coverage.',
+      mainEntity: {
+        '@type': 'PhotographyStudio',
+        name: 'The SR Pictures',
+        telephone: '+91-9632208050',
+        email: 'thesrpictures17@gmail.com',
+        address: {
+          '@type': 'PostalAddress',
+          addressLocality: 'Bengaluru',
+          addressRegion: 'Karnataka',
+          postalCode: '560001',
+          addressCountry: 'IN',
+        },
+      },
+    },
   });
   return (
     <>

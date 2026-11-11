@@ -27,7 +27,13 @@ function Item({ q, a, index }: { q: string; a: string; index: number }) {
   const toggle = () => setOpen((v) => !v);
 
   return (
-    <div className="accordion-content-item" data-open={open || undefined}>
+    <div
+      className="accordion-content-item"
+      data-open={open || undefined}
+      itemScope
+      itemProp="mainEntity"
+      itemType="https://schema.org/Question"
+    >
       <div
         className="accordion-top-wrap"
         role="button"
@@ -44,7 +50,7 @@ function Item({ q, a, index }: { q: string; a: string; index: number }) {
         }}
       >
         <div className="accordion-title-item">
-          <h2 className="accordion-heading">{q}</h2>
+          <h2 className="accordion-heading" itemProp="name">{q}</h2>
         </div>
         <div className="plus-block" aria-hidden="true">
           <div className="plus-line"></div>
@@ -61,8 +67,13 @@ function Item({ q, a, index }: { q: string; a: string; index: number }) {
         style={{ height: 0 }}
         onClick={toggle}
       >
-        <div className="accordion-content-block">
-          <p className="accordion-answer-text">{a}</p>
+        <div
+          className="accordion-content-block"
+          itemScope
+          itemProp="acceptedAnswer"
+          itemType="https://schema.org/Answer"
+        >
+          <p className="accordion-answer-text" itemProp="text">{a}</p>
         </div>
       </div>
       <span hidden>{index}</span>
@@ -73,7 +84,7 @@ function Item({ q, a, index }: { q: string; a: string; index: number }) {
 /** Accordion FAQ (open/close timings from the reference: 800ms / 600ms inOutQuart). */
 export default function Faq() {
   return (
-    <section className="faq">
+    <section className="faq" itemScope itemType="https://schema.org/FAQPage">
       <div className="faq-container">
         {faqItems.map((item, i) => (
           <Item key={item.q} q={item.q} a={item.a} index={i} />
