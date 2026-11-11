@@ -78,9 +78,6 @@ export function ContactForm() {
     }
 
     const er: Errors = {};
-    const email = String(d.get('email') ?? '').trim();
-    if (!email) er.email = 'Please enter your email address.';
-    else if (!emailOk(email)) er.email = 'Please enter a valid email address.';
     if (!String(d.get('Subject') ?? '').trim()) er.Subject = 'Please add a subject or event type.';
     if (!String(d.get('Message') ?? '').trim()) er.Message = 'Please describe your dates or requirements.';
 
@@ -94,7 +91,6 @@ export function ContactForm() {
       const waText = [
         `*New Studio Enquiry — The SR Pictures*`,
         `👤 *Name:* ${name || 'Client'}`,
-        `📧 *Email:* ${email}`,
         `📌 *Event / Service:* ${subject}`,
         `💬 *Requirements & Dates:* ${message}`,
         `\n_Sent via SR Pictures Web Portfolio_`
@@ -171,11 +167,11 @@ export function ContactForm() {
           aria-hidden="true"
         />
 
-        <label htmlFor="name" className="form-label">
+        <label htmlFor="name" className="form-label text-white">
           Name
         </label>
         <input
-          className="form-input w-input"
+          className="form-input w-input !text-white placeholder:!text-white/45 !bg-white/[0.06] border !border-white/15 focus:!border-white/50 focus:!bg-white/[0.09]"
           maxLength={256}
           name="name"
           type="text"
@@ -185,30 +181,12 @@ export function ContactForm() {
         />
         <div className="spacer-small"></div>
 
-        <label htmlFor="email" className="form-label">
-          Email Address
-        </label>
-        <Field id="email" error={errors.email}>
-          <input
-            className="form-input w-input"
-            maxLength={256}
-            name="email"
-            type="email"
-            id="email"
-            autoComplete="email"
-            required
-            placeholder="name@domain.com"
-            {...p('email')}
-          />
-        </Field>
-        <div className="spacer-small"></div>
-
-        <label htmlFor="Subject" className="form-label">
+        <label htmlFor="Subject" className="form-label text-white">
           Subject / Event Type
         </label>
         <Field id="Subject" error={errors.Subject}>
           <input
-            className="form-input w-input"
+            className="form-input w-input !text-white placeholder:!text-white/45 !bg-white/[0.06] border !border-white/15 focus:!border-white/50 focus:!bg-white/[0.09]"
             maxLength={256}
             name="Subject"
             type="text"
@@ -220,12 +198,12 @@ export function ContactForm() {
         </Field>
         <div className="spacer-small"></div>
 
-        <label htmlFor="Message" className="form-label">
+        <label htmlFor="Message" className="form-label text-white">
           Message &amp; Event Dates
         </label>
         <Field id="Message" error={errors.Message}>
           <textarea
-            className="form-input is-text-area w-input"
+            className="form-input is-text-area w-input !text-white placeholder:!text-white/45 !bg-white/[0.06] border !border-white/15 focus:!border-white/50 focus:!bg-white/[0.09]"
             maxLength={5000}
             name="Message"
             id="Message"

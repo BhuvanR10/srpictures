@@ -1276,3 +1276,76 @@ button[data-active-pill="true"] * {
   -ms-overflow-style: none !important;
   scrollbar-width: none !important;
 }
+
+/* ==========================================================================
+   Form Input & Textarea Styling — High-Contrast Dark Mode Visibility
+   ========================================================================== */
+.form-input,
+.form-input.w-input,
+.form-input.is-text-area,
+.w-input,
+.w-select,
+textarea.form-input,
+textarea.w-input,
+input.form-input,
+input.w-input {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  background-color: rgba(255, 255, 255, 0.06) !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  caret-color: #ffffff !important;
+  font-family: inherit !important;
+  font-size: 14px !important;
+}
+
+.form-input:focus,
+.form-input.w-input:focus,
+.w-input:focus,
+.w-select:focus,
+textarea.form-input:focus,
+input.form-input:focus {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.55) !important;
+  background-color: rgba(255, 255, 255, 0.09) !important;
+  outline: none !important;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.25) !important;
+}
+
+/* High-contrast readable placeholders across all browsers */
+.form-input::placeholder,
+.form-input.w-input::placeholder,
+.w-input::placeholder,
+.w-select::placeholder,
+textarea.form-input::placeholder,
+textarea.w-input::placeholder,
+input.form-input::placeholder,
+input.w-input::placeholder,
+input::placeholder,
+textarea::placeholder {
+  color: rgba(255, 255, 255, 0.48) !important;
+  -webkit-text-fill-color: rgba(255, 255, 255, 0.48) !important;
+  opacity: 1 !important;
+}
+
+/* WebKit autofill styling fix */
+input.form-input:-webkit-autofill,
+input.form-input:-webkit-autofill:hover,
+input.form-input:-webkit-autofill:focus,
+input.w-input:-webkit-autofill,
+input.w-input:-webkit-autofill:hover,
+input.w-input:-webkit-autofill:focus,
+textarea.form-input:-webkit-autofill,
+textarea.form-input:-webkit-autofill:hover,
+textarea.form-input:-webkit-autofill:focus {
+  -webkit-text-fill-color: #ffffff !important;
+  -webkit-box-shadow: 0 0 0 1000px #1a1a1e inset !important;
+  box-shadow: 0 0 0 1000px #1a1a1e inset !important;
+  border-color: rgba(255, 255, 255, 0.35) !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+.form-label {
+  color: #ffffff !important;
+  letter-spacing: 0.02em !important;
+}

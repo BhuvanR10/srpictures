@@ -538,10 +538,10 @@ label {
 }
 
 .w-input, .w-select {
-  color: #333;
+  color: #ffffff;
   vertical-align: middle;
-  background-color: #fff;
-  border: 1px solid #ccc;
+  background-color: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.16);
   width: 100%;
   height: 38px;
   margin-bottom: 10px;
@@ -552,11 +552,11 @@ label {
 }
 
 .w-input::placeholder, .w-select::placeholder {
-  color: #999;
+  color: rgba(255, 255, 255, 0.45);
 }
 
 .w-input:focus, .w-select:focus {
-  border-color: #3898ec;
+  border-color: rgba(255, 255, 255, 0.5);
   outline: 0;
 }
 
@@ -3499,7 +3499,7 @@ blockquote {
 }
 
 .form-input::placeholder {
-  color: #222;
+  color: rgba(255, 255, 255, 0.45);
 }
 
 .form-input.is-text-area {
@@ -3509,7 +3509,7 @@ blockquote {
 }
 
 .form-input.is-select-input {
-  color: #222;
+  color: #ffffff;
 }
 
 .margin-xsmall {
