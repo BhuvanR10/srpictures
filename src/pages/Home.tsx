@@ -208,18 +208,19 @@ export default function Home() {
           </div>
         </div>
 
-        <div id="w-node-a6327672-a489-8e8e-89e9-2601a1ceeff9-805165a1" className="padding-global">
+        <div id="w-node-a6327672-a489-8e8e-89e9-2601a1ceeff9-805165a1" className="padding-global hero-bottom-bar">
           <div className="container-large">
             <div className="w-layout-grid header-content-grid">
               <a
                 href="#gallery"
                 onClick={handleScrollToGallery}
                 id="w-node-a6327672-a489-8e8e-89e9-2601a1cef006-805165a1"
-                className="scroll-down-wrap group cursor-pointer select-none text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 rounded-2xl p-1 -m-1 transition-all"
+                className="scroll-down-wrap group cursor-pointer select-none text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 rounded-xl p-0 transition-all"
                 aria-label="View portfolio - scroll down to gallery"
+                style={{ marginLeft: 0 }}
               >
-                <div className="scroll-down-block transition-all duration-300 group-hover:scale-105 group-hover:shadow-[0_0_30px_rgba(255,255,255,0.18)] group-active:scale-95">
-                  <div className="arrow-down w-embed transition-transform duration-300 group-hover:translate-y-1">
+                <div className="scroll-down-block transition-all duration-300 group-hover:scale-105 group-hover:shadow-[0_0_24px_rgba(255,255,255,0.22)] group-active:scale-95">
+                  <div className="arrow-down w-embed transition-transform duration-300 group-hover:translate-y-0.5">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                       <path d="M13.0001 16.1716L18.3641 10.8076L19.7783 12.2218L12.0001 20L4.22192 12.2218L5.63614 10.8076L11.0001 16.1716V4H13.0001V16.1716Z"></path>
                     </svg>
@@ -231,7 +232,7 @@ export default function Home() {
                   <div className="scroll-down-background"></div>
                   <div className="scroll-down-background _02"></div>
                 </div>
-                <div className="header-text font-mono text-[11px] tracking-[0.24em] uppercase text-neutral-400 group-hover:text-white transition-colors duration-200">
+                <div className="header-text font-mono text-[9px] sm:text-[10px] tracking-[0.2em] uppercase text-neutral-300 group-hover:text-white transition-colors duration-200">
                   VIEW PORTFOLIO
                 </div>
               </a>

@@ -122,8 +122,18 @@ textarea:focus-visible, select:focus-visible, summary:focus-visible {
   -webkit-backdrop-filter: blur(16px) !important;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
   transition: background-color 0.3s ease, border-color 0.3s ease !important;
+  padding-top: 0.85rem !important;
+  padding-bottom: 0.85rem !important;
 }
 
+@media screen and (max-width: 991px) {
+  .navbar {
+    padding-top: 0.65rem !important;
+    padding-bottom: 0.65rem !important;
+  }
+}
+
+.nav-row,
 .nav-grid {
   display: flex !important;
   justify-content: space-between !important;
@@ -208,71 +218,85 @@ textarea:focus-visible, select:focus-visible, summary:focus-visible {
 
 @media screen and (max-width: 991px) {
   .nav-component-wrapper {
-    background: transparent !important;
-    border: none !important;
-    padding: 0 !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-  }
-
-  .nav-button-wrapper {
     display: none !important;
   }
+}
 
-  .menu-button {
-    display: flex !important;
-    z-index: 1000 !important;
-    align-items: center !important;
-    justify-content: center !important;
-    width: 3rem !important;
-    height: 3rem !important;
-    border-radius: 0.75rem !important;
-    background: rgba(255, 255, 255, 0.08) !important;
-    border: 1px solid rgba(255, 255, 255, 0.15) !important;
-    cursor: pointer !important;
+/* ========================================================= */
+/* Hero "View Portfolio" Button Scaling & Left Positioning   */
+/* ========================================================= */
+.section-home-header .hero-bottom-bar {
+  padding-left: 2rem !important;
+  padding-right: 2rem !important;
+  padding-bottom: 1.75rem !important;
+}
+
+@media screen and (max-width: 767px) {
+  .section-home-header .hero-bottom-bar {
+    padding-left: 1.25rem !important;
+    padding-right: 1.25rem !important;
+    padding-bottom: 2rem !important;
+  }
+}
+
+.section-home-header .header-content-grid {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: flex-end !important;
+  width: 100% !important;
+  bottom: 0 !important;
+}
+
+.section-home-header .scroll-down-wrap {
+  align-items: flex-start !important;
+  text-align: left !important;
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+  gap: 0.35rem !important;
+}
+
+/* Compact, sleek button on desktop/laptop */
+.section-home-header .scroll-down-block {
+  width: 2.85rem !important;
+  height: 2.85rem !important;
+  border-radius: 0.75rem !important;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.6) !important;
+}
+
+.section-home-header .arrow-down {
+  width: 0.9rem !important;
+  height: 0.9rem !important;
+}
+
+.section-home-header .header-text {
+  font-size: 0.65rem !important;
+  letter-spacing: 0.22em !important;
+  margin-top: 0.25rem !important;
+  color: rgba(255, 255, 255, 0.75) !important;
+}
+
+/* Ultra-refined on mobile (< 992px) */
+@media screen and (max-width: 991px) {
+  .section-home-header .header-content-grid {
+    bottom: 0.85rem !important;
   }
 
-  .navbar:not(.menu-is-open) .navigation {
-    display: none !important;
+  .section-home-header .scroll-down-block {
+    width: 2.35rem !important;
+    height: 2.35rem !important;
+    border-radius: 0.6rem !important;
   }
 
-  .navbar.menu-is-open .navigation {
-    display: flex !important;
-    position: fixed !important;
-    inset: 0 !important;
-    width: 100vw !important;
-    height: 100vh !important;
-    background: rgba(10, 10, 10, 0.96) !important;
-    backdrop-filter: blur(25px) !important;
-    -webkit-backdrop-filter: blur(25px) !important;
-    z-index: 950 !important;
-    justify-content: center !important;
-    align-items: center !important;
-    flex-direction: column !important;
+  .section-home-header .arrow-down {
+    width: 0.75rem !important;
+    height: 0.75rem !important;
   }
 
-  .navbar.menu-is-open .nav-content {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    gap: 2rem !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-  }
-
-  .navbar.menu-is-open .nav-link {
-    font-size: 1.5rem !important;
-    padding: 0.5rem 1rem !important;
-  }
-
-  .navbar.menu-is-open .nav-wrap {
-    height: 2rem !important;
-  }
-
-  .navbar.menu-is-open .nav-text {
-    font-size: 1.5rem !important;
-    line-height: 2rem !important;
-    font-weight: 700 !important;
+  .section-home-header .header-text {
+    font-size: 0.58rem !important;
+    letter-spacing: 0.18em !important;
+    margin-top: 0.15rem !important;
+    color: rgba(255, 255, 255, 0.75) !important;
   }
 }
 
