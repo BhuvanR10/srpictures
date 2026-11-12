@@ -1,9 +1,8 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { EASE, gsap } from '../lib/gsap';
-import MainButton from './MainButton';
 import { WHATSAPP_GET_IN_TOUCH_URL } from '../lib/whatsapp';
-import { Menu, X, ArrowUpRight, MessageCircle } from 'lucide-react';
+import { Menu, X, ArrowUpRight, MessageCircle, ChevronDown } from 'lucide-react';
 
 const MOBILE_NAV_LINKS = [
   { to: '/', label: 'Home', num: '01' },
@@ -127,7 +126,7 @@ export default function Navbar() {
               className="brand-link flex !flex-row items-center gap-3 sm:gap-3.5 no-underline group"
               aria-label="The SR Pictures home"
             >
-              <div className="logo-wrap h-11 w-11 sm:h-12 sm:w-12 flex-shrink-0 relative overflow-hidden rounded-full border border-white/20 shadow-md bg-black/40">
+              <div className="logo-wrap h-11 w-11 sm:h-12 sm:w-12 flex-shrink-0 relative overflow-hidden rounded-full border border-white/20 shadow-md bg-transparent">
                 <img
                   src="/assets/sr-pictures-emblem.png"
                   alt="The SR Pictures"
@@ -169,14 +168,11 @@ export default function Navbar() {
                           }}
                         >
                           <div className="nav-overflow">
-                            <span className="nav-link w-inline-block">
-                              <div className="nav-wrap">
-                                <div className="nav-text">More</div>
-                                <div className="nav-text hover" aria-hidden="true">More</div>
-                              </div>
+                            <span className="nav-link w-inline-block flex items-center gap-1 cursor-pointer">
+                              <span className="nav-text">More</span>
+                              <ChevronDown className={`w-3 h-3 stroke-[2.5] transition-transform duration-200 ${dropOpen ? 'rotate-180 text-white' : 'text-neutral-400'}`} />
                             </span>
                           </div>
-                          <div ref={icon} className="dropdown-icon w-icon-dropdown-toggle" aria-hidden="true"></div>
                         </div>
                         <nav ref={list} aria-label="More Pages" className="dropdown-list w-dropdown-list" style={{ display: 'none' }}>
                           <div className="dropdown-content">
@@ -194,9 +190,14 @@ export default function Navbar() {
                 <div className="nav-background"></div>
               </nav>
               <div className="nav-button-wrapper">
-                <div className="nav-button-block">
-                  <MainButton to={WHATSAPP_GET_IN_TOUCH_URL}>Get in touch</MainButton>
-                </div>
+                <a
+                  href={WHATSAPP_GET_IN_TOUCH_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="nav-cta-pill"
+                >
+                  GET IN TOUCH
+                </a>
               </div>
             </div>
 
@@ -226,7 +227,7 @@ export default function Navbar() {
         style={{ touchAction: 'pan-y' }}
       >
         {/* Drawer Header with Logo & Clear Close Button */}
-        <div className="flex items-center justify-between px-5 sm:px-6 py-4 border-b border-white/10 bg-black/40">
+        <div className="flex items-center justify-between px-5 sm:px-6 py-4 border-b border-white/10 bg-transparent">
           <Link
             to="/"
             onClick={() => setMenuOpen(false)}

@@ -120,7 +120,7 @@ export const FILTER_PILLS = [
   { id: 'wedding', num: '02', category: 'Weddings', price: '₹79,999' },
   { id: 'couple', num: '03', category: 'Couples', price: '₹24,999' },
   { id: 'resort', num: '04', category: 'Resorts', price: '₹29,999' },
-  { id: 'drone', num: '05', category: 'Drone', price: '+₹8,000' },
+  { id: 'drone', num: '05', category: 'Drone', price: '₹8,000' },
 ];
 
 export default function HomePackagesSection() {
@@ -368,7 +368,7 @@ export default function HomePackagesSection() {
                           className="star-icon inline-block w-4 h-4"
                         />
                         <span className="text-xs font-mono tracking-widest uppercase text-neutral-400">
-                          05. AERIAL PERSPECTIVE · 1 DGCA CERTIFIED DRONE SPECIALIST
+                          05. AERIAL PERSPECTIVE · 3–4 HOURS DURATION
                         </span>
                       </div>
                       <h3 className="heading-style-h3 text-white m-0">
@@ -382,7 +382,9 @@ export default function HomePackagesSection() {
                       <div className="dark-line my-4"></div>
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm font-mono text-neutral-300">
+                        <div><span className="text-neutral-500 mr-2">{"◉"}</span>Duration: 3–4 Hours on-site flight coverage</div>
                         <div><span className="text-neutral-500 mr-2">{"◉"}</span>4K 60fps high dynamic range capture</div>
+                        <div><span className="text-neutral-500 mr-2">{"◉"}</span>Sweeping reveals, rolling shots &amp; overheads</div>
                         <div><span className="text-neutral-500 mr-2">{"◉"}</span>Included in Luxury Wedding &amp; Grand Resort</div>
                       </div>
 
@@ -395,10 +397,10 @@ export default function HomePackagesSection() {
                     <div className="shrink-0 flex flex-col sm:flex-row lg:flex-col items-start lg:items-end justify-between lg:justify-center gap-4 pt-4 lg:pt-0 border-t lg:border-t-0 border-white/10">
                       <div className="text-left lg:text-right">
                         <div className="text-xs font-mono uppercase tracking-widest text-neutral-400 mb-1">
-                          Standalone Add-On
+                          Coverage Package · 3–4 Hours
                         </div>
                         <div className="text-3xl sm:text-4xl font-mono font-bold text-white mb-2">
-                          +₹8,000
+                          ₹8,000
                         </div>
                       </div>
                       
@@ -411,7 +413,7 @@ export default function HomePackagesSection() {
                           <ArrowUpRight className="w-4 h-4 stroke-[2.5]" />
                         </Link>
                         <a
-                          href={`https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent('Hello The SR Pictures! 📸 I would like to inquire about Drone Cinematography add-on coverage (+₹8,000).')}`}
+                          href={`https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent('Hello The SR Pictures! 📸 I would like to inquire about Drone Cinematography coverage (₹8,000 · 3–4 Hours).')}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="px-5 py-3 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-white text-xs font-mono uppercase tracking-wider font-semibold flex items-center justify-center gap-2 transition-all active:scale-[0.98]"

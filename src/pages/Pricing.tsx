@@ -155,7 +155,7 @@ const PRICING_CATEGORIES: PricingCategory[] = [
     ],
     droneUpgrade: {
       title: 'Drone Cinematography Upgrade',
-      price: '+₹8,000',
+      price: '+₹5,000',
       description: 'Sweeping 4K aerials capturing the showroom reveal, overhead tracking, and exit drive.',
       features: [
         'Aerial vehicle tracking and overhead reveal shots',
@@ -163,7 +163,7 @@ const PRICING_CATEGORIES: PricingCategory[] = [
         'Cinematic overhead and dynamic rolling footage',
         'Professionally edited 4K drone sequences',
       ],
-      note: 'Drone add-on: +₹8,000 to any package. Drone operations subject to local airspace clearances and weather.',
+      note: 'Drone add-on: +₹5,000 to any package. Drone operations subject to local airspace clearances and weather.',
     },
   },
   {
@@ -472,7 +472,7 @@ export default function Pricing() {
   usePageSeo({
     title: 'Transparent Packages & Pricing | The SR Pictures Bengaluru',
     description:
-      'Clear, transparent cinematography and photography pricing for Car Delivery shoots (from ₹14,999), Luxury Weddings, Resort Films, and 4K Drone upgrades (+₹8,000) in Bengaluru.',
+      'Clear, transparent cinematography and photography pricing for Car Delivery shoots (from ₹8,000), Luxury Weddings, Resort Films, and 4K Drone coverage (₹8,000 · 3–4 Hours) in Bengaluru.',
     keywords:
       'car delivery shoot price Bangalore, wedding photography packages Bengaluru, resort video production pricing Karnataka, drone shoot price India',
     canonicalPath: '/pricing',
@@ -942,8 +942,8 @@ export default function Pricing() {
                               </div>
 
                               <div className="shrink-0">
-                                <MainButton to={getWhatsAppBookingUrl('Car Delivery with Drone Upgrade', 'Car Delivery', '₹32,999')}>
-                                  Add Drone (+₹8,000)
+                                <MainButton to={getWhatsAppBookingUrl('Car Delivery with Drone Upgrade', 'Car Delivery', '₹29,999')}>
+                                  Add Drone (+₹5,000)
                                 </MainButton>
                               </div>
                             </div>
@@ -981,7 +981,7 @@ export default function Pricing() {
                         <div className="flex items-center gap-2 mb-2">
                           <img src="/assets/695c47e4e7da0bba805165b3_star-icon.svg" alt="SR Pictures emblem" className="star-icon inline-block w-4 h-4" />
                           <span className="text-xs font-mono tracking-widest uppercase text-neutral-400">
-                            AERIAL PERSPECTIVE
+                            05. AERIAL PERSPECTIVE · 3–4 HOURS DURATION
                           </span>
                         </div>
                         <h3 className="heading-style-h3 text-white m-0">
@@ -993,7 +993,9 @@ export default function Pricing() {
                         </p>
                         <div className="dark-line my-4"></div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs font-mono text-neutral-300">
+                          <div><span className="text-neutral-500 mr-2">{"◉"}</span>Duration: 3–4 Hours of on-site flight coverage</div>
                           <div><span className="text-neutral-500 mr-2">{"◉"}</span>4K 60fps high dynamic range capture</div>
+                          <div><span className="text-neutral-500 mr-2">{"◉"}</span>Sweeping reveals, rolling shots &amp; overheads</div>
                           <div><span className="text-neutral-500 mr-2">{"◉"}</span>Included in Luxury Wedding &amp; Grand Resort</div>
                         </div>
                         <div className="spacer-small"></div>
@@ -1004,12 +1006,12 @@ export default function Pricing() {
 
                       <div className="shrink-0 text-left lg:text-right pt-4 lg:pt-0 border-t lg:border-t-0 border-white/10">
                         <div className="text-xs font-mono uppercase tracking-widest text-neutral-400 mb-1">
-                          Standalone Add-On
+                          Coverage Package · 3–4 Hours
                         </div>
                         <div className="text-3xl font-mono font-bold text-white mb-4">
-                          +₹8,000
+                          ₹8,000
                         </div>
-                        <MainButton to={`https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent('Hello The SR Pictures! 📸 I would like to inquire about Drone Cinematography add-on coverage (+₹8,000).')}`}>
+                        <MainButton to={`https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent('Hello The SR Pictures! 📸 I would like to inquire about Drone Cinematography coverage (₹8,000 · 3–4 Hours).')}`}>
                           Inquire Drone
                         </MainButton>
                       </div>
