@@ -54,7 +54,23 @@ export default function CategoryView() {
   const [domeLoaded, setDomeLoaded] = useState(false);
 
   const category = CATEGORIES_DATA.find((c) => c.slug === slug || c.id === slug);
-  const imageSources = useMemo(() => category?.images.map((img) => img.src) || [], [category?.images]);
+
+  // Jumble & distribute images so identical shoots/bursts are never side-by-side
+  const jumbledImages = useMemo(() => {
+    if (!category?.images) return [];
+    const arr = [...category.images];
+    // Deterministic pseudo-random shuffle using category slug as seed
+    const seed = category.slug.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    let s = seed || 42;
+    for (let i = arr.length - 1; i > 0; i--) {
+      s = (s * 9301 + 49297) % 233280;
+      const j = Math.floor((s / 233280) * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }, [category]);
+
+  const imageSources = useMemo(() => jumbledImages.map((img) => img.src), [jumbledImages]);
 
   const categoryTitle = useMemo(() => {
     if (!category) return 'Visual Gallery | The SR Pictures';
@@ -105,16 +121,16 @@ export default function CategoryView() {
   )}`;
 
   const currentImage: CategoryImage | undefined =
-    lightboxIndex !== null ? category.images[lightboxIndex] : undefined;
+    lightboxIndex !== null ? jumbledImages[lightboxIndex] : undefined;
 
   const handleNext = () => {
-    if (lightboxIndex === null || category.images.length === 0) return;
-    setLightboxIndex((prev) => ((prev ?? 0) + 1) % category.images.length);
+    if (lightboxIndex === null || jumbledImages.length === 0) return;
+    setLightboxIndex((prev) => ((prev ?? 0) + 1) % jumbledImages.length);
   };
 
   const handlePrev = () => {
-    if (lightboxIndex === null || category.images.length === 0) return;
-    setLightboxIndex((prev) => ((prev ?? 0) - 1 + category.images.length) % category.images.length);
+    if (lightboxIndex === null || jumbledImages.length === 0) return;
+    setLightboxIndex((prev) => ((prev ?? 0) - 1 + jumbledImages.length) % jumbledImages.length);
   };
 
   return (

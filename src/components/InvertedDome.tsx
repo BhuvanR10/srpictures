@@ -41,10 +41,22 @@ varying vec2 vUv;
 varying vec2 vLocal;
 varying float vEdge;
 
-float hashCell(vec2 cell) {
-  vec2 c = mod(cell, 1024.0);
-  float h = mod(c.x * 7919.0 + c.y * 7307.0 + uSeed * 613.0, 1021.0);
-  return mod(h * h + c.x * 3.0 + c.y * 17.0, 1009.0);
+float safeMod(float x, float m) {
+  return x - m * floor(x / m);
+}
+
+float getTileIndex(vec2 cell, float N, float seed) {
+  if (N <= 1.0) return 0.0;
+  float cx = safeMod(cell.x, N);
+  float cy = safeMod(cell.y, N);
+  float p1 = safeMod(N, 7.0) != 0.0 ? 7.0 : (safeMod(N, 11.0) != 0.0 ? 11.0 : 13.0);
+  float p2 = safeMod(N, 13.0) != 0.0 ? 13.0 : (safeMod(N, 17.0) != 0.0 ? 17.0 : 5.0);
+  if (safeMod(p2, N) == safeMod(p1, N)) {
+    p2 = safeMod(N, 5.0) != 0.0 ? 5.0 : 3.0;
+  }
+  float k = safeMod(cx * p1 + cy * p2 + seed * 3.0, N);
+  float p3 = safeMod(N, 17.0) != 0.0 ? 17.0 : 19.0;
+  return floor(safeMod(k * p3 + 7.0, N));
 }
 
 vec2 lens(vec2 screen) {
@@ -77,11 +89,13 @@ void main() {
   n.x *= uResolution.x / uResolution.y;
   vEdge = length(n);
 
-  float index = mod(hashCell(cell), uImageCount);
-  vec2 slot = vec2(mod(index, uAtlasGrid.x), floor(index / uAtlasGrid.x));
+  float index = clamp(floor(getTileIndex(cell, uImageCount, uSeed)), 0.0, max(uImageCount - 1.0, 0.0));
+  float col = safeMod(index, uAtlasGrid.x);
+  float row = floor(index / uAtlasGrid.x);
+  vec2 slot = vec2(clamp(col, 0.0, uAtlasGrid.x - 1.0), clamp(row, 0.0, uAtlasGrid.y - 1.0));
 
-  vec2 padded = mix(uInset, 1.0 - uInset, vec2(uv.x, 1.0 - uv.y));
-  vUv = (slot + padded) / uAtlasGrid;
+  vec2 padded = clamp(mix(uInset, 1.0 - uInset, vec2(uv.x, 1.0 - uv.y)), uInset, 1.0 - uInset);
+  vUv = clamp((slot + padded) / uAtlasGrid, vec2(0.0001, 0.0001), vec2(0.9999, 0.9999));
   vLocal = local;
 
   vec2 clip = screen / uResolution * 2.0 - 1.0;
@@ -142,13 +156,20 @@ void main() {
 
 const clamp = (v: number, min: number, max: number) =>
   Math.min(max, Math.max(min, v));
-const mod = (n: number, m: number) => ((n % m) + m) % m;
+const safeMod = (x: number, m: number) => x - m * Math.floor(x / m);
 
-const hashCell = (x: number, y: number, seed: number) => {
-  const n = mod(x, 1024);
-  const i = mod(y, 1024);
-  const l = mod(7919 * n + 7307 * i + 613 * seed, 1021);
-  return mod(l * l + 3 * n + 17 * i, 1009);
+const getTileIndex = (cellX: number, cellY: number, N: number, seed = 0): number => {
+  if (N <= 1) return 0;
+  const cx = safeMod(cellX, N);
+  const cy = safeMod(cellY, N);
+  const p1 = safeMod(N, 7) !== 0 ? 7 : safeMod(N, 11) !== 0 ? 11 : 13;
+  let p2 = safeMod(N, 13) !== 0 ? 13 : safeMod(N, 17) !== 0 ? 17 : 5;
+  if (safeMod(p2, N) === safeMod(p1, N)) {
+    p2 = safeMod(N, 5) !== 0 ? 5 : 3;
+  }
+  const k = safeMod(cx * p1 + cy * p2 + seed * 3, N);
+  const p3 = safeMod(N, 17) !== 0 ? 17 : 19;
+  return Math.floor(safeMod(k * p3 + 7, N));
 };
 
 const loadImage = (src: string): Promise<HTMLImageElement | null> =>
@@ -158,11 +179,16 @@ const loadImage = (src: string): Promise<HTMLImageElement | null> =>
       img.crossOrigin = "anonymous";
     }
     img.decoding = "async";
-    img.onload = () => resolve(img);
+    img.onload = () => {
+      if ("decode" in img && typeof img.decode === "function") {
+        img.decode().then(() => resolve(img)).catch(() => resolve(img));
+      } else {
+        resolve(img);
+      }
+    };
     img.onerror = () => {
       if (img.crossOrigin) {
         const fallback = new Image();
-        fallback.decoding = "async";
         fallback.onload = () => resolve(fallback);
         fallback.onerror = () => resolve(null);
         fallback.src = src;
@@ -208,10 +234,17 @@ function buildTextureAtlas(
   const ctx = canvas.getContext("2d", { alpha: false });
   if (!ctx) return null;
 
+  // Solid dark background ensures zero unpainted artifacts
+  ctx.fillStyle = "#000000";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
   ctx.imageSmoothingEnabled = true;
   ctx.imageSmoothingQuality = "high";
 
-  images.forEach((img, idx) => {
+  // Fill all slots in the grid (wrapping around if needed) so there are zero empty slots
+  const totalSlots = cols * rows;
+  for (let idx = 0; idx < totalSlots; idx++) {
+    const img = images[idx % count];
     const col = idx % cols;
     const row = Math.floor(idx / cols);
     const x = col * slotWidth;
@@ -228,7 +261,7 @@ function buildTextureAtlas(
     ctx.clip();
     ctx.drawImage(img, x + (slotWidth - w) / 2, y + (slotHeight - h) / 2, w, h);
     ctx.restore();
-  });
+  }
 
   const texture = new THREE.CanvasTexture(canvas);
   texture.flipY = false;
@@ -246,7 +279,7 @@ function buildTextureAtlas(
     columns: cols,
     rows,
     count,
-    inset: { x: slotWidth > 0 ? 1.5 / slotWidth : 0, y: slotHeight > 0 ? 1.5 / slotHeight : 0 },
+    inset: { x: slotWidth > 0 ? 2.0 / slotWidth : 0, y: slotHeight > 0 ? 2.0 / slotHeight : 0 },
   };
 }
 
@@ -861,7 +894,7 @@ const Interactive2DDome: React.FC<Interactive2DDomeProps> = ({
               }
               if (!gridValid) continue;
 
-              const metaIdx = mod(hashCell(cellX, cellY, seed), metas.length);
+              const metaIdx = getTileIndex(cellX, cellY, metas.length, seed);
               const meta = metas[metaIdx];
               if (!meta) continue;
 
@@ -1143,9 +1176,11 @@ export const InvertedDome: React.FC<InvertedDomeProps> = ({
             Math.abs(rotX) <= 0.5 * tileWidth &&
             Math.abs(rotY) <= 0.5 * tileHeight
           ) {
-            return (
-              hashCell(col, row, Math.round(clamp(seed, 0, 1000))) %
-              validImages.length
+            return getTileIndex(
+              col,
+              row,
+              validImages.length,
+              Math.round(clamp(seed, 0, 1000))
             );
           }
         }
