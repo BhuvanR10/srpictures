@@ -7,7 +7,7 @@ import { Menu, X, ArrowUpRight, MessageCircle, ChevronDown } from 'lucide-react'
 const MOBILE_NAV_LINKS = [
   { to: '/', label: 'Home', num: '01' },
   { to: '/about', label: 'About Studio', num: '02' },
-  { to: '/services', label: 'Services', num: '03' },
+  { to: '/reels', label: 'Reels & Films', num: '03' },
   { to: '/categories', label: 'Visual Gallery', num: '04' },
   { to: '/pricing', label: 'Pricing & Packages', num: '05' },
   { to: '/blog', label: 'Journal & Stories', num: '06' },
@@ -21,7 +21,9 @@ function NavLinkItem({ to, label, dropdown }: { to: string; label: string; dropd
     (pathname === '/case-studies' ||
       pathname.startsWith('/categories') ||
       pathname.startsWith('/category'));
-  const current = to === pathname || isGalleryActive;
+  const isReelsActive =
+    to === '/reels' && (pathname === '/reels' || pathname === '/services');
+  const current = to === pathname || isGalleryActive || isReelsActive;
 
   return (
     <div className="nav-overflow">
@@ -134,8 +136,11 @@ export default function Navbar() {
                 />
               </div>
               <div className="flex flex-col justify-center">
-                <span className="font-cinema-logo font-medium text-[14px] sm:text-[16px] tracking-[0.18em] leading-none text-white uppercase whitespace-nowrap">
+                <span className="font-cinema-logo font-medium text-[14px] sm:text-[16px] tracking-[0.16em] leading-tight text-white uppercase whitespace-nowrap">
                   The SR Pictures
+                </span>
+                <span className="text-[9px] sm:text-[10px] font-mono tracking-[0.22em] text-neutral-400 uppercase mt-0.5 whitespace-nowrap">
+                  Photography &amp; Cinema
                 </span>
               </div>
             </Link>
@@ -146,7 +151,7 @@ export default function Navbar() {
                 <div className="nav-content">
                   <NavLinkItem to="/" label="Home" />
                   <NavLinkItem to="/about" label="About" />
-                  <NavLinkItem to="/services" label="Services" />
+                  <NavLinkItem to="/reels" label="Reels" />
                   <NavLinkItem to="/categories" label="Gallery" />
                   <NavLinkItem to="/pricing" label="Pricing" />
                   <div className="nav-dropdown-wrap">
@@ -239,9 +244,14 @@ export default function Navbar() {
               alt="The SR Pictures"
               className="h-11 w-11 object-contain rounded-full border border-white/20 shadow-md"
             />
-            <span className="font-cinema-logo font-medium text-[15px] tracking-[0.18em] leading-none text-white uppercase">
-              The SR Pictures
-            </span>
+            <div className="flex flex-col justify-center">
+              <span className="font-cinema-logo font-medium text-[15px] tracking-[0.16em] leading-tight text-white uppercase">
+                The SR Pictures
+              </span>
+              <span className="text-[9px] sm:text-[10px] font-mono tracking-[0.22em] text-neutral-400 uppercase mt-0.5">
+                Photography &amp; Cinema
+              </span>
+            </div>
           </Link>
           <button
             type="button"
@@ -258,6 +268,7 @@ export default function Navbar() {
           {MOBILE_NAV_LINKS.map((item) => {
             const isActive =
               item.to === pathname ||
+              (item.to === '/reels' && (pathname === '/reels' || pathname === '/services')) ||
               (item.to === '/categories' &&
                 (pathname === '/case-studies' ||
                   pathname.startsWith('/categories') ||

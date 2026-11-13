@@ -56,7 +56,7 @@ export const servicesData: ServiceItem[] = [
   },
   {
     num: '06',
-    title: 'Portraits & Family',
+    title: 'Portraits',
     slug: 'portraits',
     tagline: '▶︎ Timeless milestones & legacies',
     description: 'Vibrant, candid coverage of family milestones, birthdays, anniversaries, and executive editorial portraits.',
@@ -88,7 +88,7 @@ export default function VideoServicesSection() {
                 </div>
               </div>
               <div id="w-node-_41c40c61-fc21-de03-d653-91a5d71e76a4-805165a1" className="content-item">
-                <MainButton to="/services">All Services</MainButton>
+                <MainButton to="/reels">Watch All Reels</MainButton>
               </div>
             </div>
             <div className="spacer-medium"></div>

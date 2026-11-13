@@ -9,6 +9,7 @@ import CinematicIntro from './components/CinematicIntro';
 // Route-based code splitting for production grade performance
 const Home = lazy(() => import('./pages/Home'));
 const About = lazy(() => import('./pages/About'));
+const Reels = lazy(() => import('./pages/Reels'));
 const Services = lazy(() => import('./pages/Services'));
 const CaseStudies = lazy(() => import('./pages/CaseStudies'));
 const Categories = lazy(() => import('./pages/Categories'));
@@ -50,7 +51,8 @@ export default function App() {
             <Route element={<SiteLayout />}>
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />
-              <Route path="/services" element={<Services />} />
+              <Route path="/reels" element={<Reels />} />
+              <Route path="/services" element={<Reels />} />
               <Route path="/case-studies" element={<CaseStudies />} />
               <Route path="/categories" element={<Categories />} />
               <Route path="/category/:slug" element={<CategoryView />} />
