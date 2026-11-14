@@ -47,7 +47,7 @@ export const blogPosts: BlogPost[] = [
     "title": "Documenting South Indian Traditions: Sacred Muhurtham",
     "summary": "Understanding the deep cultural significance of Oonjal, Kanyadaana, and Mangalyadharana to capture every sacred second.",
     "readTime": "8 min read",
-    "image": "/assets/RSD_8625.jpg",
+    "image": "/assets/RSD_5879.jpg",
     "author": {
       "name": "Traditional Specialist",
       "role": "Culture & Ritual Specialist",
@@ -65,7 +65,7 @@ export const blogPosts: BlogPost[] = [
     "title": "Capturing Vibrant Colors: Haldi, Mehendi & Sangeet",
     "summary": "How slow-motion 120fps captures and vibrant color science bring cheerful family celebrations alive.",
     "readTime": "7 min read",
-    "image": "/assets/RSD_1969.jpg",
+    "image": "/assets/RSD_5132-rotated.jpg",
     "author": {
       "name": "Event Cinematographer",
       "role": "Visual Director",
@@ -83,7 +83,7 @@ export const blogPosts: BlogPost[] = [
     "title": "Why 4K Drone Aerials are Essential for Modern Weddings",
     "summary": "Elevating wedding films with grand overhead sweeps of magnificent mandaps, processions, and venue architecture.",
     "readTime": "6 min read",
-    "image": "/assets/SRP_7885.jpg",
+    "image": "/assets/drone-wedding-aerials.webp",
     "author": {
       "name": "Drone Pilot",
       "role": "Licensed Drone Pilot",

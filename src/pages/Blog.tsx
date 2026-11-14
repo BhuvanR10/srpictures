@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import NewsletterForm from '../components/NewsletterForm';
 import Subtitle from '../components/Subtitle';
 import { blogPosts } from '../data/blog';
 import { usePageSeo } from '../lib/usePageSeo';
@@ -84,31 +83,6 @@ export default function Blog() {
             <div className="spacer-large"></div>
           </div>
           <div className="dividing-line"></div>
-        </div>
-      </div>
-    </section>
-    <section className="section-blog-newsletter">
-      <div className="padding-global">
-        <div className="container-large">
-          <div className="padding-section-large">
-            <div className="heading-wrap is-center">
-              <Subtitle>Join Newsletter</Subtitle>
-              <div className="title-wrapper">
-                <div className="top-title">
-                  <h2 className="heading-style-h2">Stay</h2>
-                </div>
-              </div>
-              <div className="title-wrapper">
-                <div className="bottom-title">
-                  <h2 className="heading-style-h2">Updated</h2>
-                </div>
-              </div>
-            </div>
-            <div className="spacer-xlarge"></div>
-            <div id="w-node-_97474925-048e-aa7b-8f11-4d51b21eee20-805165ac" className="max-width-large align-center">
-              <NewsletterForm id="w-node-e4edcf7f-0f07-f5fe-fe69-595c9122d8a2-805165ac" />
-            </div>
-          </div>
         </div>
       </div>
     </section>

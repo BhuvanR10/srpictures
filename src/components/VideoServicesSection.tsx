@@ -44,7 +44,7 @@ export const servicesData: ServiceItem[] = [
     slug: 'maternity',
     tagline: '▶︎ Celebrating new beginnings',
     description: 'Graceful, intimate maternity and baby shower photography preserving the precious anticipation of parenthood.',
-    image: '/assets/RSD_8625.jpg',
+    image: '/assets/SRP_9062.jpg',
   },
   {
     num: '05',
@@ -60,7 +60,7 @@ export const servicesData: ServiceItem[] = [
     slug: 'portraits',
     tagline: '▶︎ Timeless milestones & legacies',
     description: 'Vibrant, candid coverage of family milestones, birthdays, anniversaries, and executive editorial portraits.',
-    image: '/assets/RSD_1969.jpg',
+    image: '/assets/1Y9A3585.jpg',
   },
 ];
 
@@ -78,7 +78,7 @@ export default function VideoServicesSection() {
                 <Subtitle>Our Solutions</Subtitle>
                 <div className="title-wrapper">
                   <div className="top-title">
-                    <h2 className="heading-style-h2">Video</h2>
+                    <h2 className="heading-style-h2">Our</h2>
                   </div>
                 </div>
                 <div className="title-wrapper">

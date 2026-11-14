@@ -507,6 +507,25 @@ textarea:focus-visible, select:focus-visible, summary:focus-visible {
   to { transform: translateX(-50%); }
 }
 
+@keyframes marqueeRightToLeft {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.beyond-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marqueeRightToLeft 45s linear infinite;
+}
+
+.beyond-marquee-track:hover {
+  animation-play-state: paused;
+}
+
 .gallery-marquee-card {
   width: 220px;
   height: 145px;
