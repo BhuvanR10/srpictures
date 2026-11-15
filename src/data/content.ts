@@ -121,7 +121,7 @@ export const faqItems = [
   },
   {
     "q": "3. What is included in a Car Delivery Shoot with The SR Pictures?",
-    "a": "Our car delivery packages start at ₹14,999 (Classic) and ₹24,999 (Signature Cine). Coverage includes showroom unveiling, key handover ceremony, family celebrations, rolling vehicle tracking, 4K Instagram reels, and an optional ₹8,000 4K drone upgrade."
+    "a": "Our car delivery packages start from ₹8,000 (Delivery Reel), ₹15,000 (Cinematic Delivery), up to ₹24,999 (Signature Delivery). Inclusions feature on-site showroom coverage, silk reveal & key handover ceremonies, dynamic exterior and interior detail angles, family celebration portraits, curated background scores, and high-impact 4K Instagram reels (with optional dual videographer/photographer coverage, 4K master films, and a ₹5,000 4K drone upgrade)."
   },
   {
     "q": "4. How do you produce Resort and Hospitality promotional films?",
@@ -133,7 +133,7 @@ export const faqItems = [
   },
   {
     "q": "6. How can I reserve a wedding date or book a shoot with The SR Pictures?",
-    "a": "You can reach us directly via WhatsApp at +91 96322 08050, email thesrpictures17@gmail.com, or submit our online contact form to check date availability and receive a custom proposal."
+    "a": "You can reach us directly via WhatsApp or call at +91 99861 55516, email thesrpictures@gmail.com, or submit our online contact form to check date availability and receive a custom proposal."
   }
 ];
 export const testimonialIds = {

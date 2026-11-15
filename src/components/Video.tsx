@@ -245,9 +245,7 @@ export default function Video({
           zIndex: 1,
         }}
         tabIndex={-1}
-      >
-        {activeSrc && <source src={activeSrc} type="video/mp4" />}
-      </video>
+      />
     </div>
   );
 }

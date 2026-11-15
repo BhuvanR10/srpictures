@@ -136,12 +136,6 @@ void main() {
   if (uGrayscale > 0.01) {
     float luma = dot(tex.rgb, vec3(0.299, 0.587, 0.114));
     color = mix(tex.rgb, vec3(luma), uGrayscale);
-    if (uGrayscale > 0.5) {
-      color = clamp((color - 0.5) * 1.15 + 0.52, 0.0, 1.0);
-    }
-  } else {
-    // Subtle luxury vibrance enhancement
-    color = clamp((color - 0.5) * 1.04 + 0.51, 0.0, 1.0);
   }
 
   if (uVignette > 0.001) {
@@ -172,24 +166,47 @@ const getTileIndex = (cellX: number, cellY: number, N: number, seed = 0): number
   return Math.floor(safeMod(k * p3 + 7, N));
 };
 
-const loadImage = (src: string): Promise<HTMLImageElement | null> =>
-  new Promise((resolve) => {
+// Global in-memory cache to prevent redundant fetches & decoding across routes
+const imageCache = new Map<string, HTMLImageElement>();
+
+export const preloadDomeImages = (urls: string[]) => {
+  urls.forEach((u) => {
+    if (!imageCache.has(u)) {
+      const img = new Image();
+      if (u.startsWith("http://") || u.startsWith("https://")) {
+        img.crossOrigin = "anonymous";
+      }
+      img.decoding = "async";
+      img.onload = () => imageCache.set(u, img);
+      img.src = u;
+    }
+  });
+};
+
+const loadImage = (src: string): Promise<HTMLImageElement | null> => {
+  if (!src) return Promise.resolve(null);
+  const cached = imageCache.get(src);
+  if (cached && (cached.complete || (cached.naturalWidth && cached.naturalWidth > 0))) {
+    return Promise.resolve(cached);
+  }
+
+  return new Promise((resolve) => {
     const img = new Image();
     if (src.startsWith("http://") || src.startsWith("https://")) {
       img.crossOrigin = "anonymous";
     }
     img.decoding = "async";
     img.onload = () => {
-      if ("decode" in img && typeof img.decode === "function") {
-        img.decode().then(() => resolve(img)).catch(() => resolve(img));
-      } else {
-        resolve(img);
-      }
+      imageCache.set(src, img);
+      resolve(img);
     };
     img.onerror = () => {
       if (img.crossOrigin) {
         const fallback = new Image();
-        fallback.onload = () => resolve(fallback);
+        fallback.onload = () => {
+          imageCache.set(src, fallback);
+          resolve(fallback);
+        };
         fallback.onerror = () => resolve(null);
         fallback.src = src;
       } else {
@@ -198,6 +215,7 @@ const loadImage = (src: string): Promise<HTMLImageElement | null> =>
     };
     img.src = src;
   });
+};
 
 interface AtlasData {
   texture: THREE.CanvasTexture;
@@ -210,7 +228,8 @@ interface AtlasData {
 function buildTextureAtlas(
   images: HTMLImageElement[],
   aspect: number,
-  maxAnisotropy: number
+  maxAnisotropy: number,
+  smoothingQuality: ImageSmoothingQuality = 'high'
 ): AtlasData | null {
   const count = images.length;
   if (!count) return null;
@@ -218,12 +237,14 @@ function buildTextureAtlas(
   const cols = Math.max(Math.ceil(Math.sqrt(count)), 1);
   const rows = Math.max(Math.ceil(count / cols), 1);
   const safeAspect = Math.max(aspect, 0.1);
-  let slotWidth = 512;
-  let slotHeight = Math.round(512 / safeAspect);
+  let slotWidth = 400;
+  let slotHeight = Math.round(400 / safeAspect);
 
   const maxDimension = Math.max(slotWidth * cols, slotHeight * rows);
-  if (maxDimension > 2048) {
-    const scale = 2048 / maxDimension;
+  const isMobile = typeof window !== "undefined" && window.innerWidth <= 768;
+  const maxLimit = isMobile ? 1536 : 2048;
+  if (maxDimension > maxLimit) {
+    const scale = maxLimit / maxDimension;
     slotWidth = Math.max(Math.floor(slotWidth * scale), 16);
     slotHeight = Math.max(Math.floor(slotHeight * scale), 16);
   }
@@ -239,7 +260,7 @@ function buildTextureAtlas(
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   ctx.imageSmoothingEnabled = true;
-  ctx.imageSmoothingQuality = "high";
+  ctx.imageSmoothingQuality = smoothingQuality;
 
   // Fill all slots in the grid (wrapping around if needed) so there are zero empty slots
   const totalSlots = cols * rows;
@@ -265,7 +286,7 @@ function buildTextureAtlas(
 
   const texture = new THREE.CanvasTexture(canvas);
   texture.flipY = false;
-  texture.colorSpace = THREE.SRGBColorSpace;
+  texture.colorSpace = THREE.NoColorSpace;
   texture.wrapS = THREE.ClampToEdgeWrapping;
   texture.wrapT = THREE.ClampToEdgeWrapping;
   texture.minFilter = THREE.LinearMipmapLinearFilter;
@@ -340,17 +361,50 @@ const DomeScene: React.FC<SceneProps> = ({
 
   useEffect(() => {
     let canceled = false;
-    const maxAnisotropy = gl?.capabilities?.getMaxAnisotropy?.() ?? 16;
+    const maxAnisotropy = gl?.capabilities?.getMaxAnisotropy?.() ?? 8;
+    const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
+    // Ultra-fast progressive priority batch: 4 images on mobile, 6 on desktop for near-instantaneous dome unveiling
+    const initialBatchSize = isMobile ? 4 : 6;
+    const initialSources = sources.slice(0, Math.min(initialBatchSize, sources.length));
 
-    Promise.all(sources.map(loadImage)).then((loaded) => {
+    // Phase 1: Fast Start - Load priority batch first to unveil dome immediately
+    Promise.all(initialSources.map(loadImage)).then((initialLoaded) => {
       if (canceled) return;
-      const validImages = loaded.filter(
+      const validInitial = initialLoaded.filter(
         (img): img is HTMLImageElement => img !== null
       );
-      const builtAtlas = buildTextureAtlas(validImages, aspect, maxAnisotropy);
-      setAtlas(builtAtlas);
-      if (builtAtlas) onReady();
-      invalidate();
+      if (validInitial.length > 0) {
+        const fastAtlas = buildTextureAtlas(validInitial, aspect, maxAnisotropy, "medium");
+        if (fastAtlas) {
+          setAtlas(fastAtlas);
+          onReady();
+          invalidate();
+        }
+      }
+
+      // Phase 2: Background Stream - Load remaining images smoothly without UI lag
+      if (sources.length > initialBatchSize) {
+        const remainingSources = sources.slice(initialBatchSize);
+        Promise.all(remainingSources.map(loadImage)).then((restLoaded) => {
+          if (canceled) return;
+          const allLoaded = [
+            ...validInitial,
+            ...restLoaded.filter((img): img is HTMLImageElement => img !== null),
+          ];
+          if (allLoaded.length > validInitial.length) {
+            const fullAtlas = buildTextureAtlas(allLoaded, aspect, maxAnisotropy);
+            if (fullAtlas) {
+              setAtlas((prev) => {
+                if (prev) {
+                  try { prev.texture.dispose(); } catch {}
+                }
+                return fullAtlas;
+              });
+              invalidate();
+            }
+          }
+        });
+      }
     });
 
     return () => {
@@ -643,14 +697,17 @@ const Interactive2DDome: React.FC<Interactive2DDomeProps> = ({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const loadedMetaRef = useRef<ImageMeta[]>([]);
 
-  // Pre-load images & pre-compute crop rectangles
+  // Pre-load images & pre-compute crop rectangles (2-stage progressive fast-start)
   useEffect(() => {
     let canceled = false;
-    Promise.all(images.map(loadImage)).then((imgs) => {
-      if (canceled) return;
+    const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
+    const initialBatchSize = isMobile ? 8 : 12;
+    const initialImages = images.slice(0, Math.min(initialBatchSize, images.length));
+
+    const computeMetas = (imgs: (HTMLImageElement | null)[]) => {
       const valid = imgs.filter((img): img is HTMLImageElement => img !== null);
       const cardAspect = tileWidth / Math.max(tileHeight, 1);
-      const metas: ImageMeta[] = valid.map((img) => {
+      return valid.map((img) => {
         const nw = img.naturalWidth || img.width || 1;
         const nh = img.naturalHeight || img.height || 1;
         const imgAspect = nw / nh;
@@ -664,9 +721,27 @@ const Interactive2DDome: React.FC<Interactive2DDomeProps> = ({
         }
         return { img, sx, sy, sw, sh };
       });
-      loadedMetaRef.current = metas;
-      if (metas.length > 0) onReady();
+    };
+
+    Promise.all(initialImages.map(loadImage)).then((firstLoaded) => {
+      if (canceled) return;
+      const initialMetas = computeMetas(firstLoaded);
+      if (initialMetas.length > 0) {
+        loadedMetaRef.current = initialMetas;
+        onReady();
+      }
+
+      if (images.length > initialBatchSize) {
+        Promise.all(images.slice(initialBatchSize).map(loadImage)).then((restLoaded) => {
+          if (canceled) return;
+          const fullMetas = computeMetas([...firstLoaded, ...restLoaded]);
+          if (fullMetas.length > initialMetas.length) {
+            loadedMetaRef.current = fullMetas;
+          }
+        });
+      }
     });
+
     return () => {
       canceled = true;
     };
@@ -843,11 +918,11 @@ const Interactive2DDome: React.FC<Interactive2DDomeProps> = ({
 
           const { contourLx, contourLy, gridLx, gridLy, count } = localGeometry;
 
-          // Color & contrast setup
+          // Color & contrast setup: 100% natural colors (no contrast/saturation filter)
           if (grayscale > 0.05) {
-            ctx.filter = `grayscale(${Math.round(grayscale * 100)}%) contrast(115%) brightness(105%)`;
+            ctx.filter = `grayscale(${Math.round(grayscale * 100)}%)`;
           } else {
-            ctx.filter = "contrast(104%) saturate(106%)";
+            ctx.filter = "none";
           }
           ctx.imageSmoothingEnabled = true;
           ctx.imageSmoothingQuality = "high";
@@ -1386,6 +1461,7 @@ export const InvertedDome: React.FC<InvertedDomeProps> = ({
         {useWebGL ? (
           <CanvasErrorBoundary onError={() => setUseWebGL(false)}>
             <Canvas
+              flat
               orthographic
               dpr={effectiveDpr}
               frameloop={isInView ? "always" : "never"}

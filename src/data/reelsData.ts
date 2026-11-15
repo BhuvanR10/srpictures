@@ -17,6 +17,4 @@ export const REELS_DATA: ReelVideo[] = [
   { id: 'reel-haldi-3', videoSrc: '/assets/drive_videos/Reel_3.mp4' },
   { id: 'reel-festive-4', videoSrc: '/assets/drive_videos/Reel_4.mp4' },
   { id: 'reel-sww-resort', videoSrc: '/assets/drive_videos/SWW.mp4' },
-  { id: 'reel-fashion-1', videoSrc: '/assets/about/about-reel-01.mp4' },
-  { id: 'reel-fashion-2', videoSrc: '/assets/about/about-reel-02.mp4' },
 ];

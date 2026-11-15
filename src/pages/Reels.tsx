@@ -20,14 +20,38 @@ function PureReelCard({
   video: ReelVideo;
   onOpenModal: (v: ReelVideo) => void;
 }) {
+  const cardRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isMuted, setIsMuted] = useState(true);
+  const [inView, setInView] = useState(false);
 
-  // Auto-play muted video smoothly in a loop
+  // High-performance Viewport Intersection Observer:
+  // Plays only while visible in viewport, instantly pausing off-screen cards to conserve GPU & bandwidth
   useEffect(() => {
-    const vid = videoRef.current;
-    if (!vid) return;
-    vid.play().catch(() => {});
+    const el = cardRef.current;
+    if (!el || typeof IntersectionObserver === 'undefined') {
+      setInView(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const visible = entry.isIntersecting;
+        setInView(visible);
+        const vid = videoRef.current;
+        if (!vid) return;
+
+        if (visible) {
+          vid.play().catch(() => {});
+        } else {
+          vid.pause();
+        }
+      },
+      { rootMargin: '100px 0px', threshold: 0.15 }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
   }, []);
 
   const toggleMute = (e: React.MouseEvent) => {
@@ -38,20 +62,28 @@ function PureReelCard({
     setIsMuted(vid.muted);
   };
 
+  const handleMouseEnter = () => {
+    const vid = videoRef.current;
+    if (vid && vid.paused) {
+      vid.play().catch(() => {});
+    }
+  };
+
   return (
     <div
+      ref={cardRef}
       onClick={() => onOpenModal(video)}
-      className="group relative rounded-2xl bg-neutral-950 border border-white/10 hover:border-white/30 transition-all duration-300 overflow-hidden shadow-xl hover:shadow-2xl hover:-translate-y-1 cursor-pointer aspect-[9/16]"
+      onMouseEnter={handleMouseEnter}
+      className="group relative rounded-2xl bg-neutral-950 border border-white/10 hover:border-white/30 transition-all duration-300 overflow-hidden shadow-xl hover:shadow-2xl hover:-translate-y-1 cursor-pointer aspect-[9/16] will-change-transform"
     >
-      {/* Pure Video Element */}
+      {/* Hardware-Decoded Responsive Video Stream */}
       <video
         ref={videoRef}
         src={video.videoSrc}
         loop
         muted={isMuted}
         playsInline
-        autoPlay
-        preload="auto"
+        preload="metadata"
         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
       />
 

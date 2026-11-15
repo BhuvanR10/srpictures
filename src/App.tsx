@@ -25,6 +25,21 @@ const StyleGuide = lazy(() => import('./pages/StyleGuide'));
 const Protected = lazy(() => import('./pages/Protected'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
+// Pre-warm high-frequency routes during browser idle time to eliminate transition delays
+if (typeof window !== 'undefined') {
+  const idleWarmup = () => {
+    import('./pages/Categories');
+    import('./pages/Pricing');
+    import('./pages/Reels');
+    import('./pages/About');
+  };
+  if ('requestIdleCallback' in window) {
+    (window as any).requestIdleCallback(idleWarmup, { timeout: 2500 });
+  } else {
+    setTimeout(idleWarmup, 1200);
+  }
+}
+
 // Indian Digital Law Compliance Pages (DPDP Act 2023, IT Rules, Consumer Protection)
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService';
@@ -52,7 +67,7 @@ export default function App() {
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />
               <Route path="/reels" element={<Reels />} />
-              <Route path="/services" element={<Reels />} />
+              <Route path="/services" element={<Services />} />
               <Route path="/case-studies" element={<CaseStudies />} />
               <Route path="/categories" element={<Categories />} />
               <Route path="/category/:slug" element={<CategoryView />} />

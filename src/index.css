@@ -1238,6 +1238,23 @@ textarea:focus-visible, select:focus-visible, summary:focus-visible {
   box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.8) !important;
 }
 
+/* Pricing Page Navbar background override */
+.navbar.is-pricing-nav {
+  background-color: #000000 !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Pricing Page Scroll-Spy Package Highlighting */
+.pricing-pkg-title.is-highlighted {
+  color: #fbbf24 !important;
+  text-shadow: 0 0 16px rgba(251, 191, 36, 0.6), 0 0 32px rgba(245, 158, 11, 0.35) !important;
+  letter-spacing: 0.03em !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+
+
+
 
 /* Home Starting Packages Section Card Styles */
 .section-home-pricing .package-card-title {
@@ -1463,4 +1480,158 @@ textarea.form-input:-webkit-autofill:focus {
 .form-label {
   color: #ffffff !important;
   letter-spacing: 0.02em !important;
+}
+
+
+/* Responsive Fix for Pricing Page Hero Heading on Mobile */
+.section-service-header .heading-style-h2 {
+  font-size: clamp(2rem, 9.2vw, 6.5rem) !important;
+  line-height: 1.05 !important;
+  letter-spacing: -0.02em !important;
+  max-width: 100% !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+}
+
+@media (max-width: 480px) {
+  .section-service-header .heading-style-h2 {
+    font-size: clamp(1.75rem, 8.5vw, 2.45rem) !important;
+    letter-spacing: -0.025em !important;
+  }
+  .section-service-header .padding-top-header {
+    padding-top: 6.5rem !important;
+  }
+}
+
+/* Responsive Fix for Blog Page Hero Heading on Mobile */
+.section-blog-header .heading-style-h2,
+.blog-hero-heading {
+  font-size: clamp(2rem, 9.2vw, 6.5rem) !important;
+  line-height: 1.05 !important;
+  letter-spacing: -0.02em !important;
+  max-width: 100% !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+}
+
+@media (max-width: 480px) {
+  .section-blog-header .heading-style-h2,
+  .blog-hero-heading {
+    font-size: clamp(1.75rem, 8.5vw, 2.45rem) !important;
+    letter-spacing: -0.025em !important;
+  }
+  .section-blog-header .padding-top-header {
+    padding-top: 6.5rem !important;
+  }
+}
+
+
+
+/* ==========================================================================
+   RollNumber Animated Counters (About Page) - Bulletproof Responsive Architecture
+   ========================================================================== */
+.roll-number-wrapper {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 1.15em !important;
+  min-height: unset !important;
+  overflow: hidden !important;
+  position: relative !important;
+  isolation: isolate !important;
+  contain: paint !important;
+  vertical-align: middle !important;
+  -webkit-mask-image: -webkit-radial-gradient(white, black);
+  mask-image: radial-gradient(white, black);
+  letter-spacing: -0.02em !important;
+  line-height: 1.15 !important;
+}
+
+.roll-digit-reel {
+  display: inline-flex !important;
+  flex-direction: column !important;
+  height: 1.15em !important;
+  line-height: 1.15 !important;
+  overflow: hidden !important;
+  position: relative !important;
+  isolation: isolate !important;
+  contain: paint !important;
+  vertical-align: top !important;
+  -webkit-mask-image: -webkit-radial-gradient(white, black);
+  mask-image: radial-gradient(white, black);
+}
+
+.roll-digit-strip {
+  display: flex !important;
+  flex-direction: column !important;
+  will-change: transform !important;
+}
+
+.roll-digit-reel .section-number {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 1.15em !important;
+  line-height: 1.15 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+  text-align: center !important;
+  font-family: 'Overused Grotesk', -apple-system, BlinkMacSystemFont, sans-serif !important;
+  font-weight: 700 !important;
+}
+
+.section-number.alternate {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 1.15em !important;
+  line-height: 1.15 !important;
+  color: #707070 !important;
+  -webkit-text-fill-color: #707070 !important;
+  background-image: none !important;
+  background-clip: border-box !important;
+  -webkit-background-clip: border-box !important;
+  font-family: 'Overused Grotesk', -apple-system, BlinkMacSystemFont, sans-serif !important;
+  font-weight: 600 !important;
+  margin: 0 0.05em !important;
+}
+
+/* Fluid responsive typography for counters across devices */
+@media screen and (min-width: 992px) {
+  .roll-number-wrapper,
+  .roll-digit-reel,
+  .section-number {
+    font-size: 6rem !important;
+  }
+}
+
+@media screen and (max-width: 991px) and (min-width: 481px) {
+  .roll-number-wrapper,
+  .roll-digit-reel,
+  .section-number {
+    font-size: 4.5rem !important;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .roll-number-wrapper,
+  .roll-digit-reel,
+  .section-number {
+    font-size: clamp(2.75rem, 13vw, 3.75rem) !important;
+  }
+  .number-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 2.25rem !important;
+    width: 100% !important;
+    align-items: center !important;
+  }
+  .number-block {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    width: 100% !important;
+  }
 }

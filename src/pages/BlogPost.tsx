@@ -1,5 +1,6 @@
 import { Link, useParams } from 'react-router-dom';
 import MainButton from '../components/MainButton';
+import { ArrowUpRight } from 'lucide-react';
 import Subtitle from '../components/Subtitle';
 import SocialLinks from '../components/SocialLinks';
 import { authorSocials } from '../data/icons';
@@ -11,29 +12,56 @@ export function PostCard({ slug }: { slug: string }) {
   const p = blogPosts.find((x) => x.slug === slug);
   if (!p) return null;
   return (
-    <div className="w-dyn-item" role="listitem">
-      <div className="blog-content-wrapper">
-        <div className="post-container">
-          <div className="blog-inner-grid">
-            <Link to={`/blog-post/${p.slug}`} className="blog-image-wrap w-inline-block" aria-label={p.title}>
-              <img className="cover-image" src={p.image} alt={p.title} loading="lazy" />
-            </Link>
-            <div className="blog-content">
-              <div className="w-layout-grid blog-grid">
-                <div className="blog-content-item">
-                  <Subtitle>{p.category}</Subtitle>
-                  <h2 className="blog-title">{p.title}</h2>
-                </div>
-                <div className="dividing-line"></div>
-                <div className="blog-content-item">
-                  <Link to={`/blog-post/${p.slug}`} className="button w-button">Read More</Link>
-                </div>
-              </div>
-            </div>
+    <article className="blog-card group flex flex-col justify-between rounded-2xl sm:rounded-3xl border border-white/10 bg-[#0d0d10] hover:border-white/25 transition-all duration-300 overflow-hidden shadow-xl">
+      <div>
+        <Link
+          to={`/blog-post/${p.slug}`}
+          className="block relative aspect-[16/10] sm:aspect-[16/9] w-full overflow-hidden bg-neutral-900"
+          aria-label={p.title}
+        >
+          <img
+            src={p.image}
+            alt={p.title}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+            loading="lazy"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0d0d10] via-transparent to-transparent opacity-60" />
+          <span className="absolute top-3 left-3 text-[10px] sm:text-xs font-mono font-semibold tracking-wider uppercase px-3 py-1 rounded-full bg-black/80 text-amber-300 border border-amber-400/30 backdrop-blur-md">
+            {p.category}
+          </span>
+        </Link>
+        <div className="p-5 sm:p-6 flex flex-col">
+          <div className="flex items-center justify-between gap-2 text-xs font-mono text-neutral-400 mb-2">
+            <span>{p.readTime}</span>
           </div>
+          <h3 className="text-base sm:text-xl font-bold text-white group-hover:text-amber-300 transition-colors duration-200 leading-snug tracking-tight m-0 mb-2">
+            <Link to={`/blog-post/${p.slug}`} className="hover:underline">
+              {p.title}
+            </Link>
+          </h3>
+          <p className="text-xs text-neutral-300 leading-relaxed font-light m-0 line-clamp-2">
+            {p.summary}
+          </p>
         </div>
       </div>
-    </div>
+      <div className="px-5 pb-5 sm:px-6 sm:pb-6 pt-0 flex items-center justify-between gap-4 border-t border-white/5 mt-2">
+        <div className="flex items-center gap-2 min-w-0">
+          <img
+            src={p.author.image}
+            alt={p.author.name}
+            className="w-7 h-7 rounded-full object-cover border border-white/20 shrink-0"
+          />
+          <span className="text-xs font-medium text-white truncate">{p.author.name}</span>
+        </div>
+        <Link
+          to={`/blog-post/${p.slug}`}
+          className="inline-flex items-center gap-1.5 text-xs font-mono font-semibold tracking-wider uppercase text-white bg-white/10 hover:bg-white/20 px-3.5 py-1.5 rounded-full border border-white/15 transition-all duration-200 group-hover:border-amber-400/40 group-hover:text-amber-300 shrink-0"
+        >
+          <span>Read</span>
+          <ArrowUpRight className="w-3.5 h-3.5" />
+        </Link>
+      </div>
+    </article>
   );
 }
 
@@ -119,10 +147,8 @@ export default function BlogPost() {
             <div className="content-item"><MainButton to="/blog">All Posts</MainButton></div>
           </div>
           <div className="spacer-xlarge"></div>
-          <div className="w-dyn-list">
-            <div className="w-layout-grid other-posts-grid" role="list">
-              {post.related.map((s) => <PostCard key={s} slug={s} />)}
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+            {post.related.map((s) => <PostCard key={s} slug={s} />)}
           </div>
         </div></div></div>
       </section>

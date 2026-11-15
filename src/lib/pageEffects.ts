@@ -176,22 +176,7 @@ export function setupPage(): () => void {
     });
 
     /* ---------- Rolling counters (about) ---------- */
-    qa('.roll-number-wrapper').forEach((wrapper) => {
-      const block = wrapper.closest('.number-block');
-      const second = block?.classList.contains('_02');
-      // _01 is single digit '+8' -> roll to 8 (-800%), _02 is '99%' -> roll to 9, 9 (-900%, -900%)
-      const targets = second ? [-900, -900] : [-800];
-      const cols = qa('.roll-number', wrapper);
-      gsap.set(cols, { yPercent: 0 });
-      const run = () =>
-        cols.forEach((col, i) => gsap.to(col, { yPercent: targets[i] ?? -800, duration: 2, ease: EASE.outQuint }));
-      if (reduce) {
-        cols.forEach((col, i) => gsap.set(col, { yPercent: targets[i] ?? -800 }));
-        return;
-      }
-      ScrollTrigger.create({ trigger: wrapper, start: 'top 90%', once: true, onEnter: run });
-    });
-
+    // Note: Rolling counters are now managed reactively and responsively within RollNumber.tsx
     /* ---------- CTA rotating video ring + marquee button ---------- */
     qa('.cta-wrapper').forEach((wrap) => {
       const ring = wrap.querySelector<HTMLElement>('.cta-component');

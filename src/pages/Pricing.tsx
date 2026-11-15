@@ -273,8 +273,8 @@ const PRICING_CATEGORIES: PricingCategory[] = [
   {
     id: 'couple',
     num: '03',
-    title: 'Couple Photoshoots',
-    shortTitle: 'Couples',
+    title: 'Pre-Wedding',
+    shortTitle: 'Pre-Wedding',
     slug: 'couple',
     priceRange: 'Starting from ₹24,999',
     tagline: 'Pre-wedding narratives, scenic romantic getaways & concept portraits.',
@@ -283,7 +283,7 @@ const PRICING_CATEGORIES: PricingCategory[] = [
     packages: [
       {
         id: 'couple-memories',
-        name: 'Couple Memories',
+        name: 'Pre-Wedding',
         price: '₹24,999',
         duration: '3–4 hours · Single Location',
         badge: 'ENTRY LEVEL',
@@ -488,6 +488,8 @@ export default function Pricing() {
 
   // Default: View All
   const [activeTab, setActiveTab] = useState<string>('all');
+  const [visiblePackageIds, setVisiblePackageIds] = useState<string[]>([]);
+  const [primaryPackageId, setPrimaryPackageId] = useState<string>('');
   const [expandedPackage, setExpandedPackage] = useState<string | null>(null);
   const location = useLocation();
 
@@ -504,13 +506,86 @@ export default function Pricing() {
     const timer = setTimeout(() => {
       const el = document.getElementById(rawHash);
       if (el) {
-        const topOffset = el.getBoundingClientRect().top + window.scrollY - 110;
+        const topOffset = el.getBoundingClientRect().top + window.scrollY - 130;
         window.scrollTo({ top: Math.max(0, topOffset), behavior: 'smooth' });
       }
     }, 150);
 
     return () => clearTimeout(timer);
   }, [location.hash]);
+
+  // Real-time Scroll-Spy: Highlights visible packages and current category when scrolling
+  useEffect(() => {
+    let rafId: number;
+
+    const handleScroll = () => {
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => {
+        const vh = window.innerHeight;
+        const topThreshold = 140; // Below fixed navbar & sticky bar
+        const bottomThreshold = vh * 0.82;
+        const focusLine = vh * 0.42;
+
+        // 1. Detect active category for sticky category pills
+        const categoryIds = ['car-delivery', 'wedding', 'couple', 'resort', 'drone'];
+        let detectedCat = 'all';
+
+        const firstCat = document.getElementById('car-delivery');
+        if (firstCat && firstCat.getBoundingClientRect().top > focusLine) {
+          detectedCat = 'all';
+        } else {
+          for (const catId of categoryIds) {
+            const el = document.getElementById(catId);
+            if (el) {
+              const rect = el.getBoundingClientRect();
+              if (rect.top <= focusLine && rect.bottom >= topThreshold) {
+                detectedCat = catId;
+              }
+            }
+          }
+        }
+        setActiveTab((prev) => (prev !== detectedCat ? detectedCat : prev));
+
+        // 2. Detect visible packages to highlight their titles (Zero redundant re-renders)
+        const packageElements = document.querySelectorAll<HTMLElement>('[data-package-id]');
+        const visible: string[] = [];
+        let closestId = '';
+        let minDistance = Infinity;
+
+        packageElements.forEach((el) => {
+          const id = el.getAttribute('data-package-id');
+          if (!id) return;
+          const rect = el.getBoundingClientRect();
+
+          if (rect.top < bottomThreshold && rect.bottom > topThreshold) {
+            visible.push(id);
+            const elCenter = (rect.top + rect.bottom) / 2;
+            const dist = Math.abs(elCenter - focusLine);
+            if (dist < minDistance) {
+              minDistance = dist;
+              closestId = id;
+            }
+          }
+        });
+
+        setPrimaryPackageId((prev) => (prev !== closestId ? closestId : prev));
+        setVisiblePackageIds((prev) => {
+          if (prev.length === visible.length && prev.every((v, i) => v === visible[i])) {
+            return prev;
+          }
+          return visible;
+        });
+      });
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      cancelAnimationFrame(rafId);
+    };
+  }, []);
 
   const togglePackage = (pkgId: string) => {
     setExpandedPackage((prev) => (prev === pkgId ? null : pkgId));
@@ -538,20 +613,18 @@ export default function Pricing() {
 
   const handleTabClick = (tabId: string) => {
     setActiveTab(tabId);
-    if (tabId === 'drone') {
-      setTimeout(() => {
-        const droneEl = document.getElementById('drone');
-        if (droneEl) {
-          const topOffset = droneEl.getBoundingClientRect().top + window.scrollY - 110;
-          window.scrollTo({ top: Math.max(0, topOffset), behavior: 'smooth' });
-        }
-      }, 50);
+    if (tabId === 'all') {
+      const el = document.getElementById('pricing-categories-root');
+      if (el) {
+        const topOffset = el.getBoundingClientRect().top + window.scrollY - 90;
+        window.scrollTo({ top: Math.max(0, topOffset), behavior: 'smooth' });
+      }
       return;
     }
-    const el = document.getElementById('pricing-categories-root');
+    const el = document.getElementById(tabId);
     if (el) {
-      const topOffset = el.getBoundingClientRect().top + window.scrollY - 90;
-      window.scrollTo({ top: topOffset, behavior: 'smooth' });
+      const topOffset = el.getBoundingClientRect().top + window.scrollY - 130;
+      window.scrollTo({ top: Math.max(0, topOffset), behavior: 'smooth' });
     }
   };
 
@@ -566,12 +639,12 @@ export default function Pricing() {
         <div className="padding-global">
           <div className="container-large">
             <div className="padding-top-header">
-              <div className="heading-wrap is-center">
+              <div className="heading-wrap is-center max-w-full overflow-visible">
                 <Subtitle>Studio Investments</Subtitle>
-                <div className="title-wrapper">
+                <div className="title-wrapper !overflow-visible max-w-full">
                   <h1 className="heading-style-h2 text-white m-0">Transparent</h1>
                 </div>
-                <div className="title-wrapper">
+                <div className="title-wrapper !overflow-visible max-w-full">
                   <h1 className="heading-style-h2 text-white m-0">Pricing</h1>
                 </div>
               </div>
@@ -693,9 +766,9 @@ export default function Pricing() {
             <div className="space-y-16 sm:space-y-24">
               
               {/* CATEGORIES LIST */}
-              {PRICING_CATEGORIES
-                .filter((cat) => activeTab === 'all' || activeTab === cat.id)
-                .map((category) => (
+              {PRICING_CATEGORIES.map((category) => {
+                const isCatActive = activeTab === category.id;
+                return (
                     <div
                       key={category.id}
                       id={category.id}
@@ -762,10 +835,15 @@ export default function Pricing() {
                           {category.packages.map((pkg, pkgIndex) => {
                             const isExpanded = expandedPackage === pkg.id;
                             const isContactPricing = HIDE_PRICE_CATEGORIES.includes(category.id) && pkgIndex > 0;
+                            const isVisible = visiblePackageIds.includes(pkg.id);
+                            const isPrimary = primaryPackageId === pkg.id;
 
                             return (
                               <div
                                 key={pkg.id}
+                                id={pkg.id}
+                                data-package-id={pkg.id}
+                                data-category-id={category.id}
                                 className={`pricing-pkg-card relative overflow-hidden group flex flex-col justify-between ${
                                   pkg.isPopular ? 'is-popular ring-1 ring-white/20' : ''
                                 }`}
@@ -804,7 +882,11 @@ export default function Pricing() {
                                     </div>
 
                                     {/* Title & Price */}
-                                    <h4 className="pricing-pkg-title text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+                                    <h4
+                                      className={`pricing-pkg-title text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] transition-colors duration-300 ${
+                                        isVisible ? 'is-highlighted' : ''
+                                      }`}
+                                    >
                                       {pkg.name}
                                     </h4>
 
@@ -951,20 +1033,20 @@ export default function Pricing() {
                         )}
                       </div>
                     </div>
-                  ))}
+                );
+              })}
 
               {/* Standalone Drone Cinematography Card placed directly after Resort & Hospitality Films */}
-              {(activeTab === 'all' || activeTab === 'resort' || activeTab === 'drone') && (
-                <div id="drone" className="scroll-mt-36">
-                  <div
-                    className="package-content-block relative overflow-hidden group"
-                    style={{
-                      padding: '2.5rem',
-                      borderRadius: '1.25rem',
-                      border: '1px solid rgba(255,255,255,0.12)',
-                      background: '#141416',
-                    }}
-                  >
+              <div id="drone" data-package-id="drone" className="scroll-mt-36">
+                <div
+                  className="package-content-block relative overflow-hidden group"
+                  style={{
+                    padding: '2.5rem',
+                    borderRadius: '1.25rem',
+                    border: '1px solid rgba(255,255,255,0.12)',
+                    background: '#141416',
+                  }}
+                >
                     {/* Aerial Drone Background Image */}
                     <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
                       <img
@@ -984,7 +1066,9 @@ export default function Pricing() {
                             05. AERIAL PERSPECTIVE · 3–4 HOURS DURATION
                           </span>
                         </div>
-                        <h3 className="heading-style-h3 text-white m-0">
+                        <h3 className={`heading-style-h3 text-white m-0 transition-colors duration-300 ${
+                          visiblePackageIds.includes('drone') ? '!text-amber-400 [text-shadow:0_0_20px_rgba(251,191,36,0.6)]' : ''
+                        }`}>
                           Drone Cinematography
                         </h3>
                         <div className="spacer-tiny"></div>
@@ -1018,7 +1102,6 @@ export default function Pricing() {
                     </div>
                   </div>
                 </div>
-              )}
 
             </div>
           </div>
@@ -1133,8 +1216,8 @@ export default function Pricing() {
                 <div id="w-node-_7b6f59d4-613e-4d1d-1c00-f836bb437724-6a229097" className="faq-content-item">
                   <div className="faq-image-wrap">
                     <img
-                      src="/assets/1Y9A5246-1024x683.jpg"
-                      alt="The SR Pictures Wedding Photography"
+                      src="/assets/faq-couple-rain.jpg"
+                      alt="The SR Pictures Pre-Wedding Shoot Under Rain Umbrella"
                       className="faq-image"
                       style={{ objectFit: 'cover', width: '100%', height: '100%' }}
                     />

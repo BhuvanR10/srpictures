@@ -72,8 +72,8 @@ export const CORE_STARTING_PACKAGES: StartingPackageItem[] = [
   {
     id: 'couple',
     num: '03',
-    category: 'Couples',
-    packageName: 'Couple Memories',
+    category: 'Pre-Wedding',
+    packageName: 'Pre-Wedding',
     startingPrice: '₹24,999',
     priceNote: 'Starting Package',
     fullRange: 'Starting from ₹24,999 · Inquire for High-End Packages',

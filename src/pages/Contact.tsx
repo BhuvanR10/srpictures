@@ -8,7 +8,7 @@ import { usePageSeo } from '../lib/usePageSeo';
 export default function Contact() {
   usePageSeo({
     title: 'Book Your Date & Inquire | The SR Pictures Bengaluru',
-    description: 'Contact The SR Pictures in Bengaluru. Book dates for Weddings, Car Delivery shoots, Resort films, and 4K Drone coverage across Karnataka and India. Phone/WhatsApp: +91 96322 08050.',
+    description: 'Contact The SR Pictures in Bengaluru. Book dates for Weddings, Car Delivery shoots, Resort films, and 4K Drone coverage across Karnataka and India. Phone/WhatsApp: +91 99861 55516.',
     keywords: 'book wedding photographer Bangalore, car delivery shoot inquiry, hire videographer Bengaluru, The SR Pictures contact number, shoot booking',
     canonicalPath: '/contact',
     schemaJson: {
@@ -18,8 +18,8 @@ export default function Contact() {
       mainEntity: {
         '@type': 'PhotographyStudio',
         name: 'The SR Pictures',
-        telephone: '+91-9632208050',
-        email: 'thesrpictures17@gmail.com',
+        telephone: '+91 99861 55516',
+        email: 'thesrpictures@gmail.com',
         address: {
           '@type': 'PostalAddress',
           addressLocality: 'Bengaluru',
@@ -60,13 +60,13 @@ export default function Contact() {
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-emerald-600/90 hover:bg-emerald-500 text-white text-xs font-semibold tracking-wide transition-all shadow-lg shadow-emerald-950/50"
               >
-                <span>💬 WhatsApp: +91 99861 55516</span>
+                <span>WhatsApp: +91 99861 55516</span>
               </a>
               <a
                 href="tel:+919986155516"
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-white text-xs font-medium tracking-wide transition-all"
               >
-                <span>📞 Call Studio</span>
+                <span>Call Studio</span>
               </a>
             </div>
             <div className="spacer-small"></div>

@@ -4,6 +4,23 @@ import { EASE, gsap } from '../lib/gsap';
 import { WHATSAPP_GET_IN_TOUCH_URL } from '../lib/whatsapp';
 import { Menu, X, ArrowUpRight, MessageCircle, ChevronDown } from 'lucide-react';
 
+const routePreloaders: Record<string, () => Promise<unknown>> = {
+  '/': () => import('../pages/Home'),
+  '/about': () => import('../pages/About'),
+  '/reels': () => import('../pages/Reels'),
+  '/categories': () => import('../pages/Categories'),
+  '/pricing': () => import('../pages/Pricing'),
+  '/blog': () => import('../pages/Blog'),
+  '/contact': () => import('../pages/Contact'),
+  '/services': () => import('../pages/Services'),
+};
+
+const prefetchRoute = (to: string) => {
+  try {
+    routePreloaders[to]?.();
+  } catch {}
+};
+
 const MOBILE_NAV_LINKS = [
   { to: '/', label: 'Home', num: '01' },
   { to: '/about', label: 'About Studio', num: '02' },
@@ -22,13 +39,18 @@ function NavLinkItem({ to, label, dropdown }: { to: string; label: string; dropd
       pathname.startsWith('/categories') ||
       pathname.startsWith('/category'));
   const isReelsActive =
-    to === '/reels' && (pathname === '/reels' || pathname === '/services');
-  const current = to === pathname || isGalleryActive || isReelsActive;
+    to === '/reels' && pathname === '/reels';
+  const isServicesActive =
+    to === '/services' && pathname === '/services';
+  const current = to === pathname || isGalleryActive || isReelsActive || isServicesActive;
 
   return (
     <div className="nav-overflow">
       <Link
         to={to}
+        onMouseEnter={() => prefetchRoute(to)}
+        onTouchStart={() => prefetchRoute(to)}
+        onFocus={() => prefetchRoute(to)}
         className={`nav-link w-inline-block transition-all duration-200 ${
           current ? 'w--current bg-white/10 text-white rounded-full px-3 py-1 shadow-inner' : ''
         }`}
@@ -45,6 +67,7 @@ function NavLinkItem({ to, label, dropdown }: { to: string; label: string; dropd
 
 export default function Navbar() {
   const { pathname } = useLocation();
+  const isPricingPage = pathname === '/pricing';
   const [menuOpen, setMenuOpen] = useState(false);
   const [dropOpen, setDropOpen] = useState(false);
   const root = useRef<HTMLDivElement>(null);
@@ -117,7 +140,15 @@ export default function Navbar() {
 
   return (
     <>
-      <div ref={root} data-collapse="medium" role="banner" className={`navbar w-nav ${menuOpen ? 'menu-is-open' : ''}`}>
+      <div
+        ref={root}
+        data-collapse="medium"
+        role="banner"
+        className={`navbar w-nav ${menuOpen ? 'menu-is-open' : ''} ${
+          isPricingPage ? 'is-pricing-nav !bg-black border-b border-white/10 shadow-lg' : ''
+        }`}
+        style={isPricingPage ? { backgroundColor: '#000000' } : undefined}
+      >
         <div className="padding-global">
           <div className="container-large">
             <div className="nav-row flex items-center justify-between w-full">
@@ -181,7 +212,7 @@ export default function Navbar() {
                         </div>
                         <nav ref={list} aria-label="More Pages" className="dropdown-list w-dropdown-list" style={{ display: 'none' }}>
                           <div className="dropdown-content">
-                            {[['/categories', 'Categories'], ['/blog', 'Blog'], ['/contact', 'Contact']].map(([to, label]) => (
+                            {[['/services', 'Services'], ['/blog', 'Blog'], ['/contact', 'Contact']].map(([to, label]) => (
                               <div className="dropdown-link-wrap" key={to}>
                                 <NavLinkItem to={to} label={label} dropdown />
                               </div>
@@ -268,7 +299,7 @@ export default function Navbar() {
           {MOBILE_NAV_LINKS.map((item) => {
             const isActive =
               item.to === pathname ||
-              (item.to === '/reels' && (pathname === '/reels' || pathname === '/services')) ||
+              (item.to === '/reels' && pathname === '/reels') ||
               (item.to === '/categories' &&
                 (pathname === '/case-studies' ||
                   pathname.startsWith('/categories') ||
@@ -278,6 +309,8 @@ export default function Navbar() {
               <Link
                 key={item.to}
                 to={item.to}
+                onMouseEnter={() => prefetchRoute(item.to)}
+                onTouchStart={() => prefetchRoute(item.to)}
                 onClick={() => setMenuOpen(false)}
                 className={`flex items-center justify-between py-3 px-4 rounded-xl transition-all duration-200 group no-underline ${
                   isActive

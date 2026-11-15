@@ -116,14 +116,6 @@ export default function Footer() {
             <div className="footer-content-block">
               <div className="footer-block">
                 <div className="footer-text">© The SR Pictures</div>
-                <div className="footer-text hide-mobile" aria-hidden="true">│</div>
-              </div>
-              <div className="footer-block">
-                <div className="footer-text">Bengaluru, India</div>
-                <div className="footer-text hide-mobile" aria-hidden="true">│</div>
-              </div>
-              <div className="footer-block">
-                <div className="footer-text text-neutral-400 font-mono text-[11px]">DPDP Act, 2023 Compliant</div>
               </div>
             </div>
             <div className="footer-content-block large-gap">

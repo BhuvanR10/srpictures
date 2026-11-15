@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { ArrowUpRight } from 'lucide-react';
 import { usePageSeo } from '../lib/usePageSeo';
 import { CATEGORIES_DATA } from '../data/categoriesData';
+import { preloadDomeImages } from '../components/InvertedDome';
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
@@ -41,10 +42,31 @@ export default function Categories() {
     },
   });
 
+  // Warms up InvertedDome global imageCache on hover or touch so gallery dome displays with zero delay
+  const preloadCategory = (images: { src: string }[]) => {
+    preloadDomeImages(images.slice(0, 12).map((img) => img.src));
+  };
+
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
     document.documentElement.scrollTop = 0;
     document.body.scrollTop = 0;
+
+    // 1. Immediately warm up CategoryView and Three.js chunk in memory
+    import('./CategoryView');
+
+    // 2. Pre-cache initial images of popular categories during idle time for instantaneous dome unveiling
+    const idleTimer = setTimeout(() => {
+      const popularSlugs = ['car-delivery', 'wedding', 'resort', 'pre-wedding'];
+      popularSlugs.forEach((slug) => {
+        const cat = CATEGORIES_DATA.find((c) => c.slug === slug);
+        if (cat) {
+          preloadDomeImages(cat.images.slice(0, 6).map((img) => img.src));
+        }
+      });
+    }, 100);
+
+    return () => clearTimeout(idleTimer);
   }, []);
 
   return (
@@ -101,23 +123,25 @@ export default function Categories() {
                 >
                   <Link
                     to={`/category/${cat.slug}`}
+                    onMouseEnter={() => preloadCategory(cat.images)}
+                    onTouchStart={() => preloadCategory(cat.images)}
                     className="group relative flex flex-col justify-between p-5 sm:p-6 rounded-2xl bg-neutral-900 border border-white/10 hover:border-white/40 transition-all duration-500 shadow-xl hover:shadow-[0_20px_50px_rgba(0,0,0,0.85)] overflow-hidden min-h-[260px] sm:min-h-[290px] select-none"
                     aria-label={`Open ${cat.name} category`}
                   >
                     {/* Subtle Top-Edge Highlight Line */}
                     <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent opacity-50 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-10" />
 
-                    {/* Eye-Catching Full-Bleed Photography Thumbnail */}
+                    {/* Eye-Catching Full-Bleed Photography Thumbnail: 100% Natural, Unfiltered */}
                     {cat.thumbnail && (
                       <div className="absolute inset-0 pointer-events-none overflow-hidden bg-neutral-950">
                         <img
                           src={cat.thumbnail}
                           alt=""
                           aria-hidden="true"
-                          className="w-full h-full object-cover opacity-90 group-hover:opacity-100 scale-100 group-hover:scale-108 transition-all duration-700 ease-out"
+                          className="w-full h-full object-cover opacity-100 scale-100 group-hover:scale-105 transition-all duration-700 ease-out"
                         />
-                        {/* Bottom-focused scrim: Top 60% is 100% clear & bright, base has gradient for text contrast */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 via-45% to-transparent pointer-events-none" />
+                        {/* Gentle bottom-only gradient strictly behind text so photo stays 100% natural and bright */}
+                        <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-black/80 via-black/30 to-transparent pointer-events-none" />
                       </div>
                     )}
 

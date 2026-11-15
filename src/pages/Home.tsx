@@ -433,7 +433,7 @@ export default function Home() {
                 </div>
                 <div id="w-node-f5a565df-c147-ec12-4eaf-8f97c7c9d0ab-805165a1" className="faq-content-item">
                   <div className="faq-image-wrap">
-                    <img src="/assets/1Y9A5246-1024x683.jpg" alt="The SR Pictures Wedding Photography" className="faq-image" style={{ objectFit: 'cover', width: '100%', height: '100%' }} />
+                    <img src="/assets/faq-couple-rain.jpg" alt="The SR Pictures Pre-Wedding Shoot Under Rain Umbrella" className="faq-image" style={{ objectFit: 'cover', width: '100%', height: '100%' }} />
                   </div>
                 </div>
               </div>
