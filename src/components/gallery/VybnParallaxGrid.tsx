@@ -1,12 +1,8 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform, useSpring, AnimatePresence } from 'framer-motion';
-import { ExternalLink, X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import GridCard, { type GridCardData } from './GridCard';
 import { ALL_DRIVE_VIDEOS } from './driveVideos';
-import ApertureLoader from '../ApertureLoader';
-
-const DRIVE_FOLDER_URL =
-  'https://drive.google.com/drive/folders/1hYNyWCCkXjLcJmaMT8-mHCOU9c68-jaI';
 
 export default function VybnParallaxGrid() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -100,7 +96,7 @@ export default function VybnParallaxGrid() {
         </motion.div>
       </div>
 
-      {/* ── FULLSCREEN CINEMATIC LIGHTBOX MODAL ── */}
+      {/* ── FULLSCREEN CINEMATIC LIGHTBOX MODAL (ONLY VIDEO) ── */}
       <AnimatePresence>
         {lightboxData && (
           <motion.div
@@ -109,23 +105,13 @@ export default function VybnParallaxGrid() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
             onClick={() => setLightboxData(null)}
-            className="fixed inset-0 z-[9999] bg-black/95 backdrop-blur-2xl flex flex-col justify-between p-4 md:p-8"
+            className="fixed inset-0 z-[9999] bg-black/95 backdrop-blur-2xl flex flex-col justify-between p-4 md:p-6"
           >
-            {/* Lightbox Header */}
+            {/* Lightbox Header - Minimal Close Button */}
             <div
-              className="flex items-center justify-between z-10"
+              className="flex items-center justify-end z-10 w-full"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="flex items-center gap-3">
-                <span className="px-3.5 py-1 rounded-full bg-white/10 text-amber-300 font-mono text-xs uppercase tracking-wider">
-                  {lightboxData.category || 'Reel'}
-                </span>
-                <span className="text-neutral-400 font-mono text-xs hidden sm:inline">
-                  Google Drive 4K Master
-                </span>
-              </div>
-
-              {/* Close Button */}
               <button
                 type="button"
                 onClick={() => setLightboxData(null)}
@@ -138,25 +124,20 @@ export default function VybnParallaxGrid() {
 
             {/* Center Video Viewport with Framer Motion Spring Zoom */}
             <div
-              className="relative flex-1 flex items-center justify-center my-auto w-full max-h-[78vh] px-2 sm:px-12"
+              className="relative flex-1 flex items-center justify-center my-auto w-full max-h-[88vh] px-2 sm:px-12"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Previous Video Button */}
               <button
                 type="button"
                 onClick={handlePrevVideo}
-                className="absolute left-2 sm:left-4 z-20 w-11 h-11 rounded-full bg-black/60 hover:bg-white text-white hover:text-black border border-white/20 flex items-center justify-center transition-all shadow-xl backdrop-blur-md"
+                className="absolute left-2 sm:left-4 z-20 w-11 h-11 rounded-full bg-black/60 hover:bg-white text-white hover:text-black border border-white/20 flex items-center justify-center transition-all shadow-xl backdrop-blur-md cursor-pointer"
                 aria-label="Previous video"
               >
                 <ChevronLeft size={22} />
               </button>
 
-              {/* Video Buffering Placeholder Loader */}
-              <div className="absolute inset-0 flex items-center justify-center -z-10 pointer-events-none">
-                <ApertureLoader label="Buffering 4K Master..." size="md" />
-              </div>
-
-              {/* Instant Native HD Video Player */}
+              {/* Instant Native HD Video Player — Pure Video Only */}
               <motion.video
                 key={lightboxData.id}
                 src={lightboxData.src}
@@ -169,49 +150,18 @@ export default function VybnParallaxGrid() {
                 initial={{ scale: 0.94, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ type: 'spring', stiffness: 350, damping: 28 }}
-                className="max-h-[75vh] max-w-[85vw] rounded-2xl border border-white/20 shadow-[0_0_80px_rgba(0,0,0,0.95)] object-contain bg-black"
+                className="max-h-[85vh] max-w-[92vw] rounded-2xl border border-white/20 shadow-[0_0_80px_rgba(0,0,0,0.95)] object-contain bg-black"
               />
 
               {/* Next Video Button */}
               <button
                 type="button"
                 onClick={handleNextVideo}
-                className="absolute right-2 sm:right-4 z-20 w-11 h-11 rounded-full bg-black/60 hover:bg-white text-white hover:text-black border border-white/20 flex items-center justify-center transition-all shadow-xl backdrop-blur-md"
+                className="absolute right-2 sm:right-4 z-20 w-11 h-11 rounded-full bg-black/60 hover:bg-white text-white hover:text-black border border-white/20 flex items-center justify-center transition-all shadow-xl backdrop-blur-md cursor-pointer"
                 aria-label="Next video"
               >
                 <ChevronRight size={22} />
               </button>
-            </div>
-
-            {/* Bottom Info Bar with Direct Google Drive Master Video Link */}
-            <div
-              className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-t border-white/10 pt-4 z-10"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div>
-                <h2 className="text-base md:text-lg font-bold text-white tracking-tight">
-                  {lightboxData.title}
-                </h2>
-                <p className="text-xs text-neutral-400 font-mono">
-                  {lightboxData.specs || 'Original 4K Master Video'}
-                </p>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <a
-                  href={
-                    lightboxData.driveId
-                      ? `https://drive.google.com/file/d/${lightboxData.driveId}/view`
-                      : DRIVE_FOLDER_URL
-                  }
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-4 py-2 rounded-full bg-amber-400 hover:bg-amber-300 text-black font-bold text-xs flex items-center gap-1.5 transition-all shadow-lg font-mono"
-                >
-                  <span>Open in Drive</span>
-                  <ExternalLink size={12} />
-                </a>
-              </div>
             </div>
           </motion.div>
         )}

@@ -79,10 +79,7 @@ export default function GridCard({ data, onOpenLightbox, onClick }: GridCardProp
         )}
       </div>
 
-      {/* 2. Dark Gradient Overlay — fades in on hover */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none" />
-
-      {/* 3. Play Button — visible at rest, hides on hover when video is playing */}
+      {/* Play Button — visible at rest, hides on hover when video is playing */}
       <motion.div
         initial={false}
         animate={{ opacity: isHovered ? 0 : 1, scale: isHovered ? 0.8 : 1 }}
@@ -93,16 +90,6 @@ export default function GridCard({ data, onOpenLightbox, onClick }: GridCardProp
           <Play size={18} className="ml-0.5 fill-white" />
         </div>
       </motion.div>
-
-      {/* 4. Bottom Info Pill — appears on hover */}
-      <div className="absolute bottom-3 inset-x-3 flex items-center justify-between pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
-        <span className="text-[11px] font-mono text-neutral-200 bg-neutral-900/90 px-2.5 py-1 rounded-full border border-white/15 truncate max-w-[75%]">
-          {data.category || 'Reel'}
-        </span>
-        <span className="text-[10px] font-mono text-amber-400 bg-neutral-900/90 px-2 py-1 rounded-full border border-white/15">
-          4K
-        </span>
-      </div>
     </motion.div>
   );
 }
