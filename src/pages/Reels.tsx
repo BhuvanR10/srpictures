@@ -41,7 +41,7 @@ function PureReelCard({
         const vid = videoRef.current;
         if (!vid) return;
 
-        if (visible) {
+        if (visible && !document.hidden) {
           vid.play().catch(() => {});
         } else {
           vid.pause();
@@ -51,8 +51,23 @@ function PureReelCard({
     );
 
     observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
+
+    const handleVisibility = () => {
+      const vid = videoRef.current;
+      if (!vid) return;
+      if (document.hidden) {
+        vid.pause();
+      } else if (inView) {
+        vid.play().catch(() => {});
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibility);
+
+    return () => {
+      observer.disconnect();
+      document.removeEventListener('visibilitychange', handleVisibility);
+    };
+  }, [inView]);
 
   const toggleMute = (e: React.MouseEvent) => {
     e.stopPropagation();

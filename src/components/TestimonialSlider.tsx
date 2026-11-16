@@ -153,7 +153,8 @@ export default function TestimonialSlider({
         !isDraggingRef.current &&
         !isManualInteracting &&
         !paused &&
-        !fullscreenItem
+        !fullscreenItem &&
+        !document.hidden
       ) {
         const half = container.scrollWidth / 2;
 

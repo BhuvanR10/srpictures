@@ -468,6 +468,8 @@ const PRICING_CATEGORIES: PricingCategory[] = [
   },
 ];
 
+const HIDE_PRICE_CATEGORIES = ['car-delivery', 'wedding', 'couple', 'resort'];
+
 export default function Pricing() {
   usePageSeo({
     title: 'Transparent Packages & Pricing | The SR Pictures Bengaluru',
@@ -591,7 +593,7 @@ export default function Pricing() {
     setExpandedPackage((prev) => (prev === pkgId ? null : pkgId));
   };
 
-  const HIDE_PRICE_CATEGORIES = ['car-delivery', 'wedding', 'couple', 'resort'];
+
 
   const getWhatsAppBookingUrl = (pkgName: string, categoryTitle: string, price: string) => {
     const text = [

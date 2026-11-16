@@ -21,6 +21,10 @@ export default defineConfig(async ({ mode }): Promise<UserConfig> => {
     plugins,
     envPrefix: ['VITE_', 'NEXT_PUBLIC_'],
     define: processEnvDefines,
+    esbuild: {
+      drop: mode === 'production' ? ['console', 'debugger'] : [],
+      legalComments: 'none',
+    },
     build: {
       target: 'es2020',
       minify: 'esbuild',
