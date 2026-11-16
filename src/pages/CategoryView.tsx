@@ -1,5 +1,5 @@
-import { useState, useMemo, Component, type ReactNode } from 'react';
-import InvertedDome from '../components/InvertedDome';
+import { useState, useMemo, useEffect, Component, type ReactNode } from 'react';
+import InvertedDome, { preloadDomeImages } from '../components/InvertedDome';
 import { useParams, Link, Navigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -7,6 +7,8 @@ import {
   ChevronLeft,
   ChevronRight,
   Image as ImageIcon,
+  Maximize2,
+  Minimize2,
 } from 'lucide-react';
 import Subtitle from '../components/Subtitle';
 import { usePageSeo } from '../lib/usePageSeo';
@@ -51,6 +53,21 @@ export default function CategoryView() {
   const { slug } = useParams<{ slug: string }>();
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [domeLoaded, setDomeLoaded] = useState(false);
+  const [isMobileFullscreen, setIsMobileFullscreen] = useState(false);
+  const isMobileScreen = typeof window !== 'undefined' && window.innerWidth < 768;
+
+  // Prevent background scrolling when mobile fullscreen dome is active
+  useEffect(() => {
+    if (isMobileFullscreen) {
+      const origOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = origOverflow;
+        document.documentElement.style.overflow = '';
+      };
+    }
+  }, [isMobileFullscreen]);
 
   const category = CATEGORIES_DATA.find((c) => c.slug === slug || c.id === slug);
 
@@ -70,6 +87,25 @@ export default function CategoryView() {
   }, [category]);
 
   const imageSources = useMemo(() => jumbledImages.map((img) => img.src), [jumbledImages]);
+
+  // Instantly warm up image cache for the current category on mount
+  useEffect(() => {
+    if (imageSources.length > 0) {
+      preloadDomeImages(imageSources.slice(0, 8));
+    }
+  }, [imageSources]);
+
+  // Pre-cache adjacent images in lightbox for 0ms arrow clicks
+  useEffect(() => {
+    if (lightboxIndex !== null && jumbledImages.length > 0) {
+      const nextIdx = (lightboxIndex + 1) % jumbledImages.length;
+      const prevIdx = (lightboxIndex - 1 + jumbledImages.length) % jumbledImages.length;
+      const p1 = new Image();
+      p1.src = jumbledImages[nextIdx].src;
+      const p2 = new Image();
+      p2.src = jumbledImages[prevIdx].src;
+    }
+  }, [lightboxIndex, jumbledImages]);
 
   const categoryTitle = useMemo(() => {
     if (!category) return 'Visual Gallery | The SR Pictures';
@@ -176,6 +212,16 @@ export default function CategoryView() {
                     <span>→</span>
                   </a>
 
+                  {/* Mobile Only: Fit to Full Screen Button */}
+                  <button
+                    type="button"
+                    onClick={() => setIsMobileFullscreen(true)}
+                    className="md:hidden inline-flex items-center gap-1.5 px-4 py-2.5 rounded-full bg-white/10 hover:bg-white/20 active:bg-white/30 text-white font-mono text-xs border border-white/20 shadow-lg backdrop-blur-md transition-all active:scale-95 cursor-pointer"
+                  >
+                    <Maximize2 size={13} className="text-amber-400" />
+                    <span>Fit to Full Screen</span>
+                  </button>
+
                   <span className="text-xs font-mono text-neutral-400 px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/10">
                     {category.images.length} Photographs
                   </span>
@@ -189,28 +235,72 @@ export default function CategoryView() {
       {/* Gallery Content — Full-bleed inverted dome, no padding container */}
       <section className="pb-0">
         {category.images.length > 0 ? (
-          /* Full-viewport interactive dome — edge-to-edge */
-          <div className="relative w-full" style={{ height: 'calc(100vh - 220px)', minHeight: 560, maxHeight: 960 }}>
+          /* Full-viewport interactive dome — with Mobile Fullscreen Fit */
+          <div
+            className={`w-full transition-all duration-300 ${
+              isMobileFullscreen
+                ? 'fixed inset-0 z-[1000] w-screen h-[100dvh] bg-black m-0 p-0'
+                : 'relative'
+            }`}
+            style={
+              isMobileFullscreen
+                ? { height: '100dvh', width: '100vw', minHeight: '100dvh', maxHeight: '100dvh' }
+                : { height: 'calc(100vh - 220px)', minHeight: 560, maxHeight: 960 }
+            }
+          >
+            {/* Mobile Only: Floating 'Fit Screen' button when in standard view */}
+            {!isMobileFullscreen && domeLoaded && (
+              <button
+                type="button"
+                onClick={() => setIsMobileFullscreen(true)}
+                className="md:hidden absolute top-4 right-4 z-30 inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-black/75 hover:bg-black/90 active:bg-white active:text-black text-white font-mono text-[11px] uppercase tracking-wider border border-white/25 shadow-2xl backdrop-blur-md transition-all active:scale-95 cursor-pointer"
+                aria-label="Fit dome to full screen"
+              >
+                <Maximize2 size={13} className="text-amber-400" />
+                <span>Fit Screen</span>
+              </button>
+            )}
+
+            {/* Mobile Only: Top Bar in Fullscreen Mode */}
+            {isMobileFullscreen && (
+              <div className="md:hidden absolute top-4 inset-x-4 z-30 flex items-center justify-between pointer-events-none">
+                <div className="px-3.5 py-1.5 rounded-full bg-black/70 backdrop-blur-md border border-white/15 text-[11px] font-mono uppercase tracking-wider text-white">
+                  {category.name}
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setIsMobileFullscreen(false)}
+                  className="pointer-events-auto inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-black/85 hover:bg-black text-white font-mono text-xs uppercase tracking-wider border border-white/30 shadow-2xl backdrop-blur-md transition-all active:scale-95 cursor-pointer"
+                  aria-label="Exit full screen"
+                >
+                  <Minimize2 size={14} className="text-amber-400" />
+                  <span>Exit Full Screen</span>
+                </button>
+              </div>
+            )}
+
             <DomeErrorBoundary>
               <InvertedDome
-                  images={imageSources}
-                  tileWidth={260}
-                  tileHeight={195}
-                  gap={14}
-                  borderRadius={18}
-                  curve={0.38}
-                  curveRadius={1.4}
-                  zoom={0.09}
-                  grayscale={0}
-                  vignette={0.0}
-                  autoScrollX={10}
-                  backgroundColor="#000000"
-                  enableDrag={true}
-                  enableWheel={true}
-                  openOnClick={false}
-                  onLoad={() => setDomeLoaded(true)}
-                  onTileClick={(idx) => setLightboxIndex(idx)}
-                />
+                images={imageSources}
+                tileWidth={isMobileScreen ? 190 : 260}
+                tileHeight={isMobileScreen ? 142 : 195}
+                gap={isMobileScreen ? 10 : 14}
+                borderRadius={isMobileScreen ? 14 : 18}
+                curve={0.38}
+                curveRadius={1.4}
+                zoom={0.09}
+                grayscale={0}
+                vignette={0.0}
+                autoScrollX={10}
+                segments={isMobileScreen ? 8 : 12}
+                dpr={isMobileScreen ? 1.5 : 1.75}
+                backgroundColor="#000000"
+                enableDrag={true}
+                enableWheel={true}
+                openOnClick={false}
+                onLoad={() => setDomeLoaded(true)}
+                onTileClick={(idx) => setLightboxIndex(idx)}
+              />
             </DomeErrorBoundary>
 
             {/* Subtle editorial hint — fades in only after dome is loaded */}

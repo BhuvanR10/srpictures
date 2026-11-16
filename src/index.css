@@ -117,23 +117,38 @@ textarea:focus-visible, select:focus-visible, summary:focus-visible {
 /* Navbar Layout & Brand Overrides */
 .navbar {
   z-index: 99 !important;
-  background-color: transparent !important;
-  background: transparent !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-  border-bottom: none !important;
-  transition: background-color 0.3s ease, border-color 0.3s ease !important;
+  transition: background-color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              backdrop-filter 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              -webkit-backdrop-filter 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
   padding-top: 0.85rem !important;
   padding-bottom: 0.85rem !important;
 }
 
+/* 1. Transparent only at Landing Page top (Hero Section) */
+.navbar.is-transparent-nav {
+  background-color: transparent !important;
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border-bottom: 1px solid transparent !important;
+  box-shadow: none !important;
+}
+
+/* 2. Light Black Background when Scrolled to next section and on All Other Pages */
+.navbar.has-nav-bg,
+.navbar.is-pricing-nav {
+  background-color: rgba(14, 14, 17, 0.85) !important;
+  background: rgba(14, 14, 17, 0.85) !important;
+  backdrop-filter: blur(20px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 4px 28px -2px rgba(0, 0, 0, 0.6) !important;
+}
+
 @media screen and (max-width: 991px) {
   .navbar {
-    background-color: transparent !important;
-    background: transparent !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-    border-bottom: none !important;
     padding-top: 0.65rem !important;
     padding-bottom: 0.65rem !important;
   }

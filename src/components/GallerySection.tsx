@@ -46,6 +46,7 @@ export default function GallerySection() {
         className="gallery-bottom-cta mt-12 sm:mt-16 text-center"
       >
         <div className="flex flex-wrap items-center justify-center gap-4">
+          <MainButton to="/reels">More Reels</MainButton>
           <MainButton
             to="/categories"
             onClick={() => {

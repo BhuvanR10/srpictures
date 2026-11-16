@@ -21,14 +21,18 @@ const prefetchRoute = (to: string) => {
   } catch {}
 };
 
-const MOBILE_NAV_LINKS = [
+const PRIMARY_MOBILE_LINKS = [
   { to: '/', label: 'Home', num: '01' },
   { to: '/about', label: 'About Studio', num: '02' },
   { to: '/reels', label: 'Reels & Films', num: '03' },
   { to: '/categories', label: 'Visual Gallery', num: '04' },
   { to: '/pricing', label: 'Pricing & Packages', num: '05' },
-  { to: '/blog', label: 'Journal & Stories', num: '06' },
-  { to: '/contact', label: 'Contact Us', num: '07' },
+];
+
+const MORE_MOBILE_LINKS = [
+  { to: '/blog', label: 'Stories' },
+  { to: '/services', label: 'Services' },
+  { to: '/contact', label: 'Contact' },
 ];
 
 function NavLinkItem({ to, label, dropdown }: { to: string; label: string; dropdown?: boolean }) {
@@ -67,13 +71,58 @@ function NavLinkItem({ to, label, dropdown }: { to: string; label: string; dropd
 
 export default function Navbar() {
   const { pathname } = useLocation();
-  const isPricingPage = pathname === '/pricing';
+  const isHomePage = pathname === '/' || pathname === '';
+  const [isScrolled, setIsScrolled] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return window.scrollY > 40;
+  });
   const [menuOpen, setMenuOpen] = useState(false);
   const [dropOpen, setDropOpen] = useState(false);
+  const isMoreActive =
+    pathname === '/blog' ||
+    pathname.startsWith('/blog-post') ||
+    pathname === '/services' ||
+    pathname === '/contact';
+  const [mobileMoreOpen, setMobileMoreOpen] = useState(isMoreActive);
+
+  // Keep mobileMoreOpen expanded if user is visiting one of the More sub-pages
+  useEffect(() => {
+    if (isMoreActive) {
+      setMobileMoreOpen(true);
+    }
+  }, [isMoreActive]);
   const root = useRef<HTMLDivElement>(null);
   const list = useRef<HTMLElement>(null);
   const icon = useRef<HTMLDivElement>(null);
   const firstDrop = useRef(true);
+
+  // Track scroll position on landing page:
+  // Background is transparent at top of landing page; active when scrolled to next section or on all other pages
+  useEffect(() => {
+    if (!isHomePage) {
+      setIsScrolled(true);
+      return;
+    }
+
+    let rafId: number;
+    const handleScroll = () => {
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => {
+        const scrolled = window.scrollY > 40;
+        setIsScrolled((prev) => (prev !== scrolled ? scrolled : prev));
+      });
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      cancelAnimationFrame(rafId);
+    };
+  }, [isHomePage]);
+
+  const hasNavBg = !isHomePage || isScrolled;
 
   // Desktop Dropdown
   useLayoutEffect(() => {
@@ -145,9 +194,8 @@ export default function Navbar() {
         data-collapse="medium"
         role="banner"
         className={`navbar w-nav ${menuOpen ? 'menu-is-open' : ''} ${
-          isPricingPage ? 'is-pricing-nav !bg-black border-b border-white/10 shadow-lg' : ''
+          hasNavBg ? 'has-nav-bg' : 'is-transparent-nav'
         }`}
-        style={isPricingPage ? { backgroundColor: '#000000' } : undefined}
       >
         <div className="padding-global">
           <div className="container-large">
@@ -294,9 +342,10 @@ export default function Navbar() {
           </button>
         </div>
 
-        {/* Drawer Navigation Links */}
+        {/* Drawer Navigation Links: 6 Items Total */}
         <div className="flex-1 overflow-y-auto px-5 sm:px-6 py-6 flex flex-col justify-center gap-2">
-          {MOBILE_NAV_LINKS.map((item) => {
+          {/* 01 through 05: Primary Links */}
+          {PRIMARY_MOBILE_LINKS.map((item) => {
             const isActive =
               item.to === pathname ||
               (item.to === '/reels' && pathname === '/reels') ||
@@ -334,9 +383,81 @@ export default function Navbar() {
               </Link>
             );
           })}
+
+          {/* 06. More Button & Accordion (Stories, Services, Contact) */}
+          <div className="flex flex-col">
+            <button
+              type="button"
+              onClick={() => setMobileMoreOpen((prev) => !prev)}
+              aria-expanded={mobileMoreOpen}
+              className={`w-full flex items-center justify-between py-3 px-4 rounded-xl transition-all duration-200 group cursor-pointer ${
+                isMoreActive
+                  ? 'bg-white/15 text-white font-bold border border-white/25 shadow-lg'
+                  : 'text-neutral-300 hover:text-white hover:bg-white/5 border border-transparent'
+              }`}
+            >
+              <div className="flex items-center gap-3">
+                <span className={`text-xs font-mono ${isMoreActive ? 'text-amber-400 font-bold' : 'text-neutral-500'}`}>
+                  06.
+                </span>
+                <span className="text-lg sm:text-xl font-mono tracking-wider uppercase font-semibold">
+                  More
+                </span>
+              </div>
+              <ChevronDown
+                className={`w-4 h-4 transition-transform duration-300 ${
+                  mobileMoreOpen ? 'rotate-180 text-amber-400' : 'text-neutral-500 group-hover:text-white'
+                }`}
+              />
+            </button>
+
+            {/* Expandable Sub-items: Stories, Services, Contact */}
+            <div
+              className={`overflow-hidden transition-all duration-300 flex flex-col gap-1 pl-5 pr-2 ${
+                mobileMoreOpen ? 'max-h-48 opacity-100 mt-1.5 pb-1' : 'max-h-0 opacity-0 pointer-events-none'
+              }`}
+            >
+              {MORE_MOBILE_LINKS.map((sub) => {
+                const isSubActive =
+                  pathname === sub.to ||
+                  (sub.to === '/blog' && pathname.startsWith('/blog-post'));
+
+                return (
+                  <Link
+                    key={sub.to}
+                    to={sub.to}
+                    onMouseEnter={() => prefetchRoute(sub.to)}
+                    onTouchStart={() => prefetchRoute(sub.to)}
+                    onClick={() => setMenuOpen(false)}
+                    className={`flex items-center justify-between py-2.5 px-3.5 rounded-lg transition-all duration-200 group no-underline ${
+                      isSubActive
+                        ? 'bg-white/10 text-amber-400 font-semibold border border-white/15'
+                        : 'text-neutral-400 hover:text-white hover:bg-white/5'
+                    }`}
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <span
+                        className={`w-1.5 h-1.5 rounded-full transition-colors ${
+                          isSubActive ? 'bg-amber-400 scale-125' : 'bg-neutral-600 group-hover:bg-neutral-300'
+                        }`}
+                      />
+                      <span className="text-sm sm:text-base font-mono tracking-wide uppercase font-medium">
+                        {sub.label}
+                      </span>
+                    </div>
+                    <ArrowUpRight
+                      className={`w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 ${
+                        isSubActive ? 'text-amber-400 opacity-100' : 'text-neutral-600 group-hover:text-neutral-300'
+                      }`}
+                    />
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
         </div>
 
-        {/* Drawer Bottom Action Block */}
+        {/* Drawer Bottom Action Block - Clean & Minimal */}
         <div className="px-5 sm:px-6 py-5 border-t border-white/10 bg-black/60 flex flex-col gap-3">
           <a
             href={WHATSAPP_GET_IN_TOUCH_URL}
@@ -348,10 +469,6 @@ export default function Navbar() {
             <MessageCircle className="w-4 h-4 fill-black" />
             <span>Inquire on WhatsApp</span>
           </a>
-          <div className="flex items-center justify-between text-[11px] font-mono text-neutral-400 px-1 pt-1">
-            <span>Bengaluru, India</span>
-            <span>DPDP Act, 2023 Compliant</span>
-          </div>
         </div>
       </div>
     </>

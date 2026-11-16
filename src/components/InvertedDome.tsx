@@ -262,26 +262,48 @@ function buildTextureAtlas(
   ctx.imageSmoothingEnabled = true;
   ctx.imageSmoothingQuality = smoothingQuality;
 
-  // Fill all slots in the grid (wrapping around if needed) so there are zero empty slots
+  // High-throughput hardware slot drawing:
+  // 1. Draw unique images once using direct 9-argument drawImage (hardware center-crop)
+  // 2. Clone wrap-around slots directly from canvas via GPU blit, avoiding redundant decodes
   const totalSlots = cols * rows;
   for (let idx = 0; idx < totalSlots; idx++) {
-    const img = images[idx % count];
     const col = idx % cols;
     const row = Math.floor(idx / cols);
     const x = col * slotWidth;
     const y = row * slotHeight;
-    const nw = img.naturalWidth || img.width || slotWidth;
-    const nh = img.naturalHeight || img.height || slotHeight;
-    const scale = Math.max(slotWidth / Math.max(nw, 1), slotHeight / Math.max(nh, 1));
-    const w = nw * scale;
-    const h = nh * scale;
 
-    ctx.save();
-    ctx.beginPath();
-    ctx.rect(x, y, slotWidth, slotHeight);
-    ctx.clip();
-    ctx.drawImage(img, x + (slotWidth - w) / 2, y + (slotHeight - h) / 2, w, h);
-    ctx.restore();
+    if (idx < count) {
+      const img = images[idx];
+      const nw = img.naturalWidth || img.width || slotWidth;
+      const nh = img.naturalHeight || img.height || slotHeight;
+      const imgAspect = nw / Math.max(nh, 1);
+
+      let sx = 0, sy = 0, sw = nw, sh = nh;
+      if (imgAspect > safeAspect) {
+        sw = Math.round(nh * safeAspect);
+        sx = Math.round((nw - sw) / 2);
+      } else {
+        sh = Math.round(nw / safeAspect);
+        sy = Math.round((nh - sh) / 2);
+      }
+
+      ctx.drawImage(img, sx, sy, sw, sh, x, y, slotWidth, slotHeight);
+    } else {
+      const origIdx = idx % count;
+      const origCol = origIdx % cols;
+      const origRow = Math.floor(origIdx / cols);
+      ctx.drawImage(
+        canvas,
+        origCol * slotWidth,
+        origRow * slotHeight,
+        slotWidth,
+        slotHeight,
+        x,
+        y,
+        slotWidth,
+        slotHeight
+      );
+    }
   }
 
   const texture = new THREE.CanvasTexture(canvas);
@@ -292,7 +314,7 @@ function buildTextureAtlas(
   texture.minFilter = THREE.LinearMipmapLinearFilter;
   texture.magFilter = THREE.LinearFilter;
   texture.generateMipmaps = true;
-  texture.anisotropy = maxAnisotropy;
+  texture.anisotropy = isMobile ? Math.min(maxAnisotropy, 4) : maxAnisotropy;
   texture.needsUpdate = true;
 
   return {
@@ -382,28 +404,37 @@ const DomeScene: React.FC<SceneProps> = ({
         }
       }
 
-      // Phase 2: Background Stream - Load remaining images smoothly without UI lag
+      // Phase 2: Background Stream - Load remaining images during idle time to prevent frame hitches
       if (sources.length > initialBatchSize) {
         const remainingSources = sources.slice(initialBatchSize);
-        Promise.all(remainingSources.map(loadImage)).then((restLoaded) => {
+        const loadRemaining = () => {
           if (canceled) return;
-          const allLoaded = [
-            ...validInitial,
-            ...restLoaded.filter((img): img is HTMLImageElement => img !== null),
-          ];
-          if (allLoaded.length > validInitial.length) {
-            const fullAtlas = buildTextureAtlas(allLoaded, aspect, maxAnisotropy);
-            if (fullAtlas) {
-              setAtlas((prev) => {
-                if (prev) {
-                  try { prev.texture.dispose(); } catch {}
-                }
-                return fullAtlas;
-              });
-              invalidate();
+          Promise.all(remainingSources.map(loadImage)).then((restLoaded) => {
+            if (canceled) return;
+            const allLoaded = [
+              ...validInitial,
+              ...restLoaded.filter((img): img is HTMLImageElement => img !== null),
+            ];
+            if (allLoaded.length > validInitial.length) {
+              const fullAtlas = buildTextureAtlas(allLoaded, aspect, maxAnisotropy);
+              if (fullAtlas && !canceled) {
+                setAtlas((prev) => {
+                  if (prev) {
+                    try { prev.texture.dispose(); } catch {}
+                  }
+                  return fullAtlas;
+                });
+                invalidate();
+              }
             }
-          }
-        });
+          });
+        };
+
+        if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
+          (window as any).requestIdleCallback(loadRemaining, { timeout: 1500 });
+        } else {
+          setTimeout(loadRemaining, 500);
+        }
       }
     });
 
@@ -510,10 +541,11 @@ const DomeScene: React.FC<SceneProps> = ({
       if (Math.abs(motion.velocity.y) < 0.001) motion.velocity.y = 0;
       motion.offset.x += motion.velocity.x * dt * 60;
       motion.offset.y += motion.velocity.y * dt * 60;
-    }
 
-    if (axis !== "y") motion.offset.x += autoScrollX * dt;
-    if (axis !== "x") motion.offset.y -= autoScrollY * dt;
+      // Auto-scroll applies smoothly only when user is not actively dragging
+      if (axis !== "y") motion.offset.x += autoScrollX * dt;
+      if (axis !== "x") motion.offset.y -= autoScrollY * dt;
+    }
 
     const minDim = Math.max(Math.min(size.width, size.height), 1);
     const diagRatio = Math.hypot(size.width / minDim, size.height / minDim);
@@ -1138,7 +1170,9 @@ export const InvertedDome: React.FC<InvertedDomeProps> = ({
     () => window.devicePixelRatio || 1,
     () => 1
   );
-  const effectiveDpr = Math.min(screenDpr, Math.max(dpr, 0.5));
+  const isMobileDevice = typeof window !== "undefined" && window.innerWidth <= 768;
+  const maxAllowedDpr = isMobileDevice ? 1.5 : 1.75;
+  const effectiveDpr = Math.min(screenDpr, Math.min(Math.max(dpr, 0.5), maxAllowedDpr));
   const validImages = useMemo(() => images.filter(Boolean), [images]);
 
   const handleReady = useCallback(() => {
@@ -1146,15 +1180,26 @@ export const InvertedDome: React.FC<InvertedDomeProps> = ({
     onLoad?.();
   }, [onLoad]);
 
-  // Pause rendering when scrolled out of view
+  // Pause rendering when scrolled out of view or tab is hidden to save GPU & battery
   useEffect(() => {
     const el = containerRef.current;
     if (!el || typeof IntersectionObserver === "undefined") return;
+    let isIntersecting = true;
     const observer = new IntersectionObserver(([entry]) => {
-      setIsInView(entry.isIntersecting);
+      isIntersecting = entry.isIntersecting;
+      setIsInView(isIntersecting && !document.hidden);
     });
     observer.observe(el);
-    return () => observer.disconnect();
+
+    const handleVisibilityChange = () => {
+      setIsInView(isIntersecting && !document.hidden);
+    };
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
   }, []);
 
   // Raycasting / Inverse Lens Hit-Testing

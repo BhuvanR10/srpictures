@@ -353,7 +353,7 @@ export default function Home() {
                   </div>
                 </div>
                 <div id="w-node-_43f5e317-c160-f6d4-e9e7-62114ae2cf9a-805165a1" className="content-item">
-                  <MainButton to="/contact">Book a Shoot</MainButton>
+                  <MainButton to="/reels">More Reels</MainButton>
                 </div>
               </div>
               <div className="spacer-huge"></div>

@@ -29,6 +29,7 @@ const NotFound = lazy(() => import('./pages/NotFound'));
 if (typeof window !== 'undefined') {
   const idleWarmup = () => {
     import('./pages/Categories');
+    import('./pages/CategoryView');
     import('./pages/Pricing');
     import('./pages/Reels');
     import('./pages/About');
@@ -40,11 +41,11 @@ if (typeof window !== 'undefined') {
   }
 }
 
-// Indian Digital Law Compliance Pages (DPDP Act 2023, IT Rules, Consumer Protection)
-import PrivacyPolicy from './pages/PrivacyPolicy';
-import TermsOfService from './pages/TermsOfService';
-import CancellationRefund from './pages/CancellationRefund';
-import GrievanceRedressal from './pages/GrievanceRedressal';
+// Indian Digital Law Compliance Pages (DPDP Act 2023, IT Rules, Consumer Protection) - Lazy loaded
+const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'));
+const TermsOfService = lazy(() => import('./pages/TermsOfService'));
+const CancellationRefund = lazy(() => import('./pages/CancellationRefund'));
+const GrievanceRedressal = lazy(() => import('./pages/GrievanceRedressal'));
 
 export default function App() {
   return (
