@@ -42,6 +42,9 @@ function PureReelCard({
         if (!vid) return;
 
         if (visible && !document.hidden) {
+          if (vid.preload !== 'auto') {
+            vid.preload = 'auto';
+          }
           vid.play().catch(() => {});
         } else {
           vid.pause();
@@ -98,7 +101,7 @@ function PureReelCard({
         loop
         muted={isMuted}
         playsInline
-        preload="metadata"
+        preload="none"
         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
       />
 

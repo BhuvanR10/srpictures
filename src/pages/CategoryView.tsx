@@ -1,5 +1,9 @@
 import { useState, useMemo, useEffect, Component, type ReactNode } from 'react';
-import InvertedDome, { preloadDomeImages } from '../components/InvertedDome';
+import { lazy, Suspense } from 'react';
+import { preloadDomeImages } from '../lib/domeImageCache';
+import ApertureLoader from '../components/ApertureLoader';
+
+const InvertedDome = lazy(() => import('../components/InvertedDome'));
 import { useParams, Link, Navigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -280,7 +284,14 @@ export default function CategoryView() {
             )}
 
             <DomeErrorBoundary>
-              <InvertedDome
+              <Suspense
+                fallback={
+                  <div className="flex flex-col items-center justify-center w-full h-[600px] min-h-[60vh] bg-black">
+                    <ApertureLoader size="lg" label="Initializing 3D Visual Dome..." />
+                  </div>
+                }
+              >
+                <InvertedDome
                 images={imageSources}
                 tileWidth={isMobileScreen ? 190 : 260}
                 tileHeight={isMobileScreen ? 142 : 195}
@@ -301,6 +312,7 @@ export default function CategoryView() {
                 onLoad={() => setDomeLoaded(true)}
                 onTileClick={(idx) => setLightboxIndex(idx)}
               />
+              </Suspense>
             </DomeErrorBoundary>
 
             {/* Subtle editorial hint — fades in only after dome is loaded */}

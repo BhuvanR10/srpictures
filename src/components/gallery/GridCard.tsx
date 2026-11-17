@@ -28,6 +28,9 @@ export default function GridCard({ data, onOpenLightbox, onClick }: GridCardProp
   const handleMouseEnter = () => {
     setIsHovered(true);
     if (videoRef.current) {
+      if (videoRef.current.preload !== 'auto') {
+        videoRef.current.preload = 'auto';
+      }
       videoRef.current.currentTime = 0;
       videoRef.current.play().catch(() => {});
     }
@@ -65,7 +68,7 @@ export default function GridCard({ data, onOpenLightbox, onClick }: GridCardProp
             loop
             muted
             playsInline
-            preload="metadata"
+            preload="none"
             className="w-full h-full object-cover"
           />
         ) : (

@@ -7,27 +7,28 @@ interface PartnerCardItemProps {
 
 function PartnerCardItem({ partner }: PartnerCardItemProps) {
   const cardRef = useRef<HTMLDivElement>(null);
-  const [tilt, setTilt] = useState({ rx: 0, ry: 0, glowX: 50, glowY: 50 });
+  const containerRef = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
+    const el = containerRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
 
-    // Smooth subtle 3D tilt towards mouse cursor
+    // Smooth subtle 3D tilt towards mouse cursor via CSS variables (0 React re-renders)
     const tiltX = -((y - centerY) / centerY) * 12;
     const tiltY = ((x - centerX) / centerX) * 14;
+    const gx = (x / rect.width) * 100;
+    const gy = (y / rect.height) * 100;
 
-    setTilt({
-      rx: tiltX,
-      ry: tiltY,
-      glowX: (x / rect.width) * 100,
-      glowY: (y / rect.height) * 100,
-    });
+    el.style.setProperty('--rx', `${tiltX.toFixed(2)}deg`);
+    el.style.setProperty('--ry', `${tiltY.toFixed(2)}deg`);
+    el.style.setProperty('--gx', `${gx.toFixed(1)}%`);
+    el.style.setProperty('--gy', `${gy.toFixed(1)}%`);
   };
 
   const handleMouseEnter = () => {
@@ -36,7 +37,13 @@ function PartnerCardItem({ partner }: PartnerCardItemProps) {
 
   const handleMouseLeave = () => {
     setIsHovered(false);
-    setTilt({ rx: 0, ry: 0, glowX: 50, glowY: 50 });
+    const el = containerRef.current;
+    if (el) {
+      el.style.setProperty('--rx', '0deg');
+      el.style.setProperty('--ry', '0deg');
+      el.style.setProperty('--gx', '50%');
+      el.style.setProperty('--gy', '50%');
+    }
   };
 
   return (
@@ -52,10 +59,11 @@ function PartnerCardItem({ partner }: PartnerCardItemProps) {
       }}
     >
       <div
+        ref={containerRef}
         className="card-container relative w-full h-full transition-transform duration-200 ease-out will-change-transform"
         style={{
           transform: isHovered
-            ? `rotateX(${tilt.rx}deg) rotateY(${tilt.ry}deg) scale3d(1.05, 1.05, 1.05)`
+            ? 'rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) scale3d(1.05, 1.05, 1.05)'
             : 'rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)',
           transformStyle: 'preserve-3d',
         }}
@@ -77,7 +85,7 @@ function PartnerCardItem({ partner }: PartnerCardItemProps) {
                 <div
                   className="pointer-events-none absolute inset-0 transition-opacity duration-300"
                   style={{
-                    background: `radial-gradient(circle at ${tilt.glowX}% ${tilt.glowY}%, rgba(255, 255, 255, 0.12) 0%, transparent 65%)`,
+                    background: 'radial-gradient(circle at var(--gx, 50%) var(--gy, 50%), rgba(255, 255, 255, 0.12) 0%, transparent 65%)',
                   }}
                 />
               )}
@@ -108,7 +116,7 @@ function PartnerCardItem({ partner }: PartnerCardItemProps) {
                 <div
                   className="pointer-events-none absolute inset-0 transition-opacity duration-300"
                   style={{
-                    background: `radial-gradient(circle at ${tilt.glowX}% ${tilt.glowY}%, rgba(255, 255, 255, 0.12) 0%, transparent 65%)`,
+                    background: 'radial-gradient(circle at var(--gx, 50%) var(--gy, 50%), rgba(255, 255, 255, 0.12) 0%, transparent 65%)',
                   }}
                 />
               )}

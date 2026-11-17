@@ -166,56 +166,8 @@ const getTileIndex = (cellX: number, cellY: number, N: number, seed = 0): number
   return Math.floor(safeMod(k * p3 + 7, N));
 };
 
-// Global in-memory cache to prevent redundant fetches & decoding across routes
-const imageCache = new Map<string, HTMLImageElement>();
-
-export const preloadDomeImages = (urls: string[]) => {
-  urls.forEach((u) => {
-    if (!imageCache.has(u)) {
-      const img = new Image();
-      if (u.startsWith("http://") || u.startsWith("https://")) {
-        img.crossOrigin = "anonymous";
-      }
-      img.decoding = "async";
-      img.onload = () => imageCache.set(u, img);
-      img.src = u;
-    }
-  });
-};
-
-const loadImage = (src: string): Promise<HTMLImageElement | null> => {
-  if (!src) return Promise.resolve(null);
-  const cached = imageCache.get(src);
-  if (cached && (cached.complete || (cached.naturalWidth && cached.naturalWidth > 0))) {
-    return Promise.resolve(cached);
-  }
-
-  return new Promise((resolve) => {
-    const img = new Image();
-    if (src.startsWith("http://") || src.startsWith("https://")) {
-      img.crossOrigin = "anonymous";
-    }
-    img.decoding = "async";
-    img.onload = () => {
-      imageCache.set(src, img);
-      resolve(img);
-    };
-    img.onerror = () => {
-      if (img.crossOrigin) {
-        const fallback = new Image();
-        fallback.onload = () => {
-          imageCache.set(src, fallback);
-          resolve(fallback);
-        };
-        fallback.onerror = () => resolve(null);
-        fallback.src = src;
-      } else {
-        resolve(null);
-      }
-    };
-    img.src = src;
-  });
-};
+import { imageCache, preloadDomeImages, loadImage } from '../lib/domeImageCache';
+export { preloadDomeImages, imageCache };
 
 interface AtlasData {
   texture: THREE.CanvasTexture;

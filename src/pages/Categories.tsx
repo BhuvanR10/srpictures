@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { ArrowUpRight } from 'lucide-react';
 import { usePageSeo } from '../lib/usePageSeo';
 import { CATEGORIES_DATA } from '../data/categoriesData';
-import { preloadDomeImages } from '../components/InvertedDome';
+import { preloadDomeImages } from '../lib/domeImageCache';
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
