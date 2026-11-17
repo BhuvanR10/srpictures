@@ -15,6 +15,7 @@ export default function About() {
     description: 'Meet The SR Pictures team in Bengaluru. Discover our philosophy in cinematic wedding films, car delivery shoots, resort production, and DGCA drone operations across Karnataka and South India.',
     keywords: 'About The SR Pictures, Bengaluru wedding photographers, automotive cinematography Bangalore, resort filmmakers Karnataka, professional drone pilot Bengaluru',
     canonicalPath: '/about',
+    image: '/assets/hero-cinematic-poster-v3.jpg',
     schemaJson: {
       '@type': 'AboutPage',
       name: 'About The SR Pictures',

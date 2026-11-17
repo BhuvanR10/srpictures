@@ -4,28 +4,31 @@
 ## Studio Overview
 - **Name**: The SR Pictures
 - **Location**: Bengaluru, Karnataka, India (560001)
-- **Primary Specializations**: Weddings, Car Delivery Shoots, Resort Films, Drone Cinematography
+- **Primary Specializations**: Luxury Weddings, Car Delivery Shoots, Resort & Hospitality Films, 4K Drone Cinematography
 - **Primary Website**: https://photoportfolio-lake.vercel.app/
-- **Phone / WhatsApp**: +91 96322 08050
-- **Email**: thesrpictures17@gmail.com
+- **Phone / WhatsApp**: +91 99861 55516
+- **Email**: thesrpictures@gmail.com
 - **Operating Hours**: Monday – Sunday, 09:00 AM – 09:00 PM IST
-- **Geographic Coverage**: Bengaluru, Karnataka, Mysore, Coorg, Chikmagalur, Kabini, Ooty, Goa, Kerala, and Worldwide Destination Weddings.
+- **Geographic Coverage**: Bengaluru, Karnataka, Mysore, Coorg, Chikmagalur, Kabini, Ooty, Goa, Kerala, pan-India, and Worldwide Destination Weddings.
 
 ## Core Services & Offerings
-- **Wedding Cinematography & Candid Photography**: Multi-angle Sony FX cinema rigs, natural aesthetic color grading, 4K highlights, master wedding films, and archival flush-mount lay-flat albums.
-- **Car Delivery Shoots**: Professional cinematic documentation of new vehicle deliveries at automotive showrooms. Covers unveiling, key handover, family celebrations, rolling shots, and 60-second 4K Instagram reels. Starting at ₹14,999.
-- **Resort & Hospitality Films**: Luxury architectural walkthroughs, guest experience storytelling, aesthetic interior showcases, and dramatic drone landscape perspectives for resorts and villas.
-- **4K Drone Cinematography**: High dynamic range 4K 60fps aerial capture adhering to DGCA regulations. Available as a +₹8,000 upgrade or included in premium collections.
+- **Wedding Cinematography & Candid Photography**: Multi-angle Sony FX cinema rigs, natural aesthetic color grading, 4K highlights, master wedding films, and handcrafted lay-flat heirloom albums.
+- **Car Delivery Shoots (Automotive Cinematography)**: Professional cinematic documentation of new vehicle deliveries at automotive showrooms. Covers unveiling, key handover, family celebrations, rolling highway tracking, and 60-second 4K Instagram reels. Starting at ₹14,999.
+- **Resort & Hospitality Films**: Luxury architectural walkthroughs, guest experience storytelling, aesthetic interior showcases, and dramatic drone landscape perspectives for resorts and private villas.
+- **4K Drone Cinematography**: High dynamic range 4K 60fps aerial capture adhering to DGCA regulations. Available as a ₹8,000 upgrade or included in premium collections.
 
 ## Key Links & Pages
 - Home: https://photoportfolio-lake.vercel.app/
 - About Us: https://photoportfolio-lake.vercel.app/about
 - Services: https://photoportfolio-lake.vercel.app/services
 - Pricing & Packages: https://photoportfolio-lake.vercel.app/pricing
+- Cinematic Reels: https://photoportfolio-lake.vercel.app/reels
 - Portfolio Categories: https://photoportfolio-lake.vercel.app/categories
-- Car Delivery Portfolio: https://photoportfolio-lake.vercel.app/categories/car-delivery
-- Wedding Portfolio: https://photoportfolio-lake.vercel.app/categories/wedding
-- Resort Films: https://photoportfolio-lake.vercel.app/categories/resort
+- Car Delivery Portfolio: https://photoportfolio-lake.vercel.app/category/car-delivery
+- Wedding Portfolio: https://photoportfolio-lake.vercel.app/category/wedding
+- Resort Films: https://photoportfolio-lake.vercel.app/category/resort
+- Pre-Wedding Portfolio: https://photoportfolio-lake.vercel.app/category/pre-wedding
 - Featured Films: https://photoportfolio-lake.vercel.app/case-studies
+- Journal & Stories: https://photoportfolio-lake.vercel.app/blog
 - Contact & Booking: https://photoportfolio-lake.vercel.app/contact
-- Legal & DPDP Compliance: https://photoportfolio-lake.vercel.app/legal/privacy-policy
+- Privacy Policy (DPDP Act, 2023): https://photoportfolio-lake.vercel.app/privacy-policy

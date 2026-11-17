@@ -144,12 +144,28 @@ export default function Reels() {
   const modalVideoRef = useRef<HTMLVideoElement>(null);
 
   usePageSeo({
-    title: 'Reels | The SR Pictures Bengaluru',
+    title: '4K Cinematic Reels & Films | The SR Pictures Bengaluru',
     description:
-      'Watch exclusive 4K vertical cinematic reels by The SR Pictures Bengaluru. Luxury wedding cinema, car delivery films, fashion portraits, and resort visuals.',
+      'Watch exclusive 4K vertical cinematic reels by The SR Pictures Bengaluru. Luxury wedding cinema, showroom car delivery films, high fashion, resort walkthroughs, and celebration teasers.',
     keywords:
-      'The SR Pictures reels, wedding reels Bangalore, car delivery reels, cinematic vertical reels',
+      'The SR Pictures reels, wedding reels Bangalore, car delivery reels Bangalore, cinematic vertical reels, automotive cinematography Instagram reels, wedding highlights 4K',
     canonicalPath: '/reels',
+    image: '/assets/hero-cinematic-poster-v3.jpg',
+    schemaJson: {
+      '@type': 'ItemList',
+      name: 'The SR Pictures Cinematic Reels & Highlights',
+      description: 'Curated 4K vertical cinema reels across luxury Indian weddings, car deliveries, resort tours, and fashion.',
+      itemListElement: REELS_DATA.slice(0, 10).map((v, idx) => ({
+        '@type': 'VideoObject',
+        position: idx + 1,
+        name: `The SR Pictures Film Reel ${idx + 1}`,
+        description: 'Cinematic 4K color-graded vertical visual production by The SR Pictures in Bengaluru, India.',
+        thumbnailUrl: 'https://photoportfolio-lake.vercel.app/assets/hero-cinematic-poster-v3.jpg',
+        uploadDate: '2026-01-01T10:00:00+05:30',
+        contentUrl: `https://photoportfolio-lake.vercel.app${v.videoSrc}`,
+        embedUrl: 'https://photoportfolio-lake.vercel.app/reels',
+      })),
+    },
   });
 
   const currentIndex = activeModalVideo

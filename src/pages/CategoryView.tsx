@@ -138,7 +138,7 @@ export default function CategoryView() {
     title: categoryTitle,
     description: categoryDesc,
     keywords: category ? `${category.name} photography, ${category.name} cinematography Bengaluru, The SR Pictures ${category.slug}, Bangalore photoshoot` : 'The SR Pictures',
-    canonicalPath: category ? `/categories/${category.slug}` : '/categories',
+    canonicalPath: category ? `/category/${category.slug}` : '/categories',
     image: category?.thumbnail,
     schemaJson: category ? {
       '@type': 'ImageGallery',

@@ -474,17 +474,45 @@ export default function Pricing() {
   usePageSeo({
     title: 'Transparent Packages & Pricing | The SR Pictures Bengaluru',
     description:
-      'Clear, transparent cinematography and photography pricing for Car Delivery shoots (from ₹8,000), Luxury Weddings, Resort Films, and 4K Drone coverage (₹8,000 · 3–4 Hours) in Bengaluru.',
+      'Clear, transparent cinematography and photography pricing for Car Delivery shoots (from ₹8,000 / ₹14,999), Luxury Weddings, Resort Films, and 4K Drone coverage (₹8,000 · 3–4 Hours) in Bengaluru.',
     keywords:
-      'car delivery shoot price Bangalore, wedding photography packages Bengaluru, resort video production pricing Karnataka, drone shoot price India',
+      'car delivery shoot price Bangalore, wedding photography packages Bengaluru, resort video production pricing Karnataka, drone shoot price India, automotive delivery reel price',
     canonicalPath: '/pricing',
+    image: '/assets/categories/car-delivery/cardelivery-01.webp',
     schemaJson: {
-      '@type': 'PriceSpecification',
-      name: 'The SR Pictures Service Packages',
-      description: 'Pricing collections for Car Delivery shoots, Weddings, Resort productions, and Drone upgrades in Bengaluru.',
-      priceCurrency: 'INR',
-      minPrice: 14999,
-      maxPrice: 299999,
+      '@type': 'OfferCatalog',
+      name: 'The SR Pictures Cinematography & Photography Pricing',
+      description: 'Official pricing and packages for Car Delivery shoots, Luxury Wedding cinema, Resort promotional films, and 4K Drone aerial coverage in Bengaluru, India.',
+      itemListElement: [
+        {
+          '@type': 'Offer',
+          name: 'Classic Car Delivery Shoot',
+          price: '14999',
+          priceCurrency: 'INR',
+          description: 'Showroom vehicle reveal coverage, key handover ceremony, 35+ edited stills, and 60-second 4K Instagram reel.',
+        },
+        {
+          '@type': 'Offer',
+          name: 'Signature Cine Car Delivery Shoot',
+          price: '24999',
+          priceCurrency: 'INR',
+          description: '2-person cinema crew, showroom reveal + rolling highway tracking, 60+ stills, 2x 4K cinematic reels.',
+        },
+        {
+          '@type': 'Offer',
+          name: '4K Aerial Drone Coverage Upgrade',
+          price: '8000',
+          priceCurrency: 'INR',
+          description: 'DGCA compliant 4K 60fps aerial drone session for 3 to 4 hours of cinematic overhead coverage.',
+        },
+        {
+          '@type': 'Offer',
+          name: 'Luxury Wedding Cinematography & Candid Photography',
+          price: '75000',
+          priceCurrency: 'INR',
+          description: 'Multi-camera 4K Sony FX cinema rigs, teaser reels, feature documentary film, and lay-flat photo albums.',
+        },
+      ],
     },
   });
 

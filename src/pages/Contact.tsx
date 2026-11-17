@@ -11,6 +11,7 @@ export default function Contact() {
     description: 'Contact The SR Pictures in Bengaluru. Book dates for Weddings, Car Delivery shoots, Resort films, and 4K Drone coverage across Karnataka and India. Phone/WhatsApp: +91 99861 55516.',
     keywords: 'book wedding photographer Bangalore, car delivery shoot inquiry, hire videographer Bengaluru, The SR Pictures contact number, shoot booking',
     canonicalPath: '/contact',
+    image: '/assets/hero-cinematic-poster-v3.jpg',
     schemaJson: {
       '@type': 'ContactPage',
       name: 'Contact The SR Pictures',
