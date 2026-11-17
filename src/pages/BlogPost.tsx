@@ -12,7 +12,7 @@ export function PostCard({ slug }: { slug: string }) {
   const p = blogPosts.find((x) => x.slug === slug);
   if (!p) return null;
   return (
-    <article className="blog-card group flex flex-col justify-between rounded-2xl sm:rounded-3xl border border-white/10 bg-[#0d0d10] hover:border-white/25 transition-all duration-300 overflow-hidden shadow-xl">
+    <article className="blog-card group flex flex-col justify-between rounded-2xl sm:rounded-3xl border border-white/10 bg-[#0d0d10] hover:border-amber-400/40 transition-all duration-300 overflow-hidden shadow-xl">
       <div>
         <Link
           to={`/blog-post/${p.slug}`}
@@ -34,7 +34,7 @@ export function PostCard({ slug }: { slug: string }) {
           <div className="flex items-center justify-between gap-2 text-xs font-mono text-neutral-400 mb-2">
             <span>{p.readTime}</span>
           </div>
-          <h3 className="text-base sm:text-xl font-bold text-white group-hover:text-amber-300 transition-colors duration-200 leading-snug tracking-tight m-0 mb-2">
+          <h3 className="blog-card-title text-base sm:text-xl font-bold text-white group-hover:text-amber-300 transition-colors duration-200 leading-snug tracking-tight m-0 mb-2">
             <Link to={`/blog-post/${p.slug}`} className="hover:underline">
               {p.title}
             </Link>
@@ -129,7 +129,7 @@ export default function BlogPost() {
               </div>
             </div>
             <div className="blog-post-body">
-              <div className="text-rich-text" dangerouslySetInnerHTML={{ __html: post.body }} />
+              <div className="text-rich-text blog-article-rich-text" dangerouslySetInnerHTML={{ __html: post.body }} />
             </div>
           </div>
           <div className="spacer-xlarge"></div>

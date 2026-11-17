@@ -57,11 +57,11 @@ export default function Blog() {
         <div className="padding-global">
           <div className="container-large">
             {/* Fully responsive layout: 1 column on mobile, 2 columns on tablet & desktop */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
               {blogPosts.map((post) => (
                 <article
                   key={post.slug}
-                  className="blog-card group flex flex-col justify-between rounded-2xl sm:rounded-3xl border border-white/10 bg-[#0d0d10] hover:border-white/25 transition-all duration-300 overflow-hidden shadow-xl"
+                  className="blog-card group flex flex-col justify-between rounded-2xl sm:rounded-3xl border border-white/10 bg-[#0d0d10] hover:border-amber-400/40 transition-all duration-300 overflow-hidden shadow-xl"
                 >
                   <div>
                     {/* Cover Image Container */}
@@ -96,13 +96,13 @@ export default function Blog() {
                         </span>
                       </div>
 
-                      <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-white group-hover:text-amber-300 transition-colors duration-200 leading-snug tracking-tight m-0 mb-3">
+                      <h2 className="blog-card-title text-lg sm:text-xl font-bold text-white group-hover:text-amber-300 transition-colors duration-200 leading-snug tracking-tight m-0 mb-3">
                         <Link to={`/blog-post/${post.slug}`} className="hover:underline">
                           {post.title}
                         </Link>
                       </h2>
 
-                      <p className="text-xs sm:text-sm text-neutral-300 leading-relaxed font-light m-0 line-clamp-2">
+                      <p className="blog-card-summary text-xs sm:text-sm text-neutral-300 leading-relaxed font-light m-0 line-clamp-2">
                         {post.summary}
                       </p>
                     </div>
