@@ -4,6 +4,13 @@ export interface ReelVideo {
 }
 
 export const REELS_DATA: ReelVideo[] = [
+  { id: 'reel-car-delivery-cinematic', videoSrc: '/assets/reels/car-delivery-cinematic.mp4' },
+  { id: 'reel-2-cinematic', videoSrc: '/assets/reels/reels-2-cinematic.mp4' },
+  { id: 'reel-3-cinematic', videoSrc: '/assets/reels/reels-3-cinematic.mp4' },
+  { id: 'reel-10-cinematic', videoSrc: '/assets/reels/reels-10-cinematic.mp4' },
+  { id: 'reel-highlight-01', videoSrc: '/assets/reels/reels-highlight-01.mp4' },
+  { id: 'reel-highlight-02', videoSrc: '/assets/reels/reels-highlight-02.mp4' },
+  { id: 'reel-highlight-03', videoSrc: '/assets/reels/reels-highlight-03.mp4' },
   { id: 'reel-metgala-look-2', videoSrc: '/assets/drive_videos/METGALA_LOOK_2.mp4' },
   { id: 'reel-metgala-look-1', videoSrc: '/assets/drive_videos/METGALA_LOOK_1.mp4' },
   { id: 'reel-maternity', videoSrc: '/assets/drive_videos/MATERNITY.mp4' },
