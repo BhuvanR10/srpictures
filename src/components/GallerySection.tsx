@@ -45,8 +45,7 @@ export default function GallerySection() {
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         className="gallery-bottom-cta mt-12 sm:mt-16 text-center"
       >
-        <div className="flex flex-wrap items-center justify-center gap-4">
-          <MainButton to="/reels">More Reels</MainButton>
+        <div className="flex items-center justify-center">
           <MainButton
             to="/categories"
             onClick={() => {
@@ -55,9 +54,8 @@ export default function GallerySection() {
               document.body.scrollTop = 0;
             }}
           >
-            View All Categories →
+            View All Gallery
           </MainButton>
-          <MainButton to="/contact">Book Your Date</MainButton>
         </div>
       </motion.div>
     </div>
