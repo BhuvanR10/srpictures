@@ -88,7 +88,16 @@ export default function VideoServicesSection() {
                 </div>
               </div>
               <div id="w-node-_41c40c61-fc21-de03-d653-91a5d71e76a4-805165a1" className="content-item">
-                <MainButton to="/reels">Watch All Reels</MainButton>
+                <MainButton
+                  to="/services"
+                  onClick={() => {
+                    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+                    document.documentElement.scrollTop = 0;
+                    document.body.scrollTop = 0;
+                  }}
+                >
+                  View All Services
+                </MainButton>
               </div>
             </div>
             <div className="spacer-medium"></div>
