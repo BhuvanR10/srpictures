@@ -13,17 +13,32 @@ import {
   Maximize2,
 } from 'lucide-react';
 
+interface PureReelCardProps {
+  video: ReelVideo;
+  isUnmuted: boolean;
+  onToggleMute: (videoId: string) => void;
+  onOpenModal: (v: ReelVideo) => void;
+}
+
 function PureReelCard({
   video,
+  isUnmuted,
+  onToggleMute,
   onOpenModal,
-}: {
-  video: ReelVideo;
-  onOpenModal: (v: ReelVideo) => void;
-}) {
+}: PureReelCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [isMuted, setIsMuted] = useState(true);
   const [inView, setInView] = useState(false);
+
+  // Directly synchronize DOM video.muted with isUnmuted prop so when another reel is unmuted, this reel mutes immediately
+  useEffect(() => {
+    const vid = videoRef.current;
+    if (!vid) return;
+    vid.muted = !isUnmuted;
+    if (isUnmuted && vid.paused) {
+      vid.play().catch(() => {});
+    }
+  }, [isUnmuted]);
 
   // High-performance Viewport Intersection Observer:
   // Plays only while visible in viewport, instantly pausing off-screen cards to conserve GPU & bandwidth
@@ -74,16 +89,18 @@ function PureReelCard({
 
   const toggleMute = (e: React.MouseEvent) => {
     e.stopPropagation();
-    const vid = videoRef.current;
-    if (!vid) return;
-    vid.muted = !vid.muted;
-    setIsMuted(vid.muted);
+    onToggleMute(video.id);
   };
 
   const handleMouseEnter = () => {
     const vid = videoRef.current;
-    if (vid && vid.paused) {
-      vid.play().catch(() => {});
+    if (vid) {
+      if (vid.preload !== 'auto') {
+        vid.preload = 'auto';
+      }
+      if (vid.paused) {
+        vid.play().catch(() => {});
+      }
     }
   };
 
@@ -99,7 +116,7 @@ function PureReelCard({
         ref={videoRef}
         src={video.videoSrc}
         loop
-        muted={isMuted}
+        muted={!isUnmuted}
         playsInline
         preload="none"
         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
@@ -113,13 +130,13 @@ function PureReelCard({
         <button
           type="button"
           onClick={toggleMute}
-          aria-label={isMuted ? 'Unmute video audio' : 'Mute video audio'}
+          aria-label={isUnmuted ? 'Mute video audio' : 'Unmute video audio'}
           className="p-2.5 rounded-full bg-black/70 hover:bg-black/95 text-white backdrop-blur-md border border-white/20 transition-all active:scale-95 cursor-pointer shadow-lg"
         >
-          {isMuted ? (
-            <VolumeX className="w-4 h-4 text-neutral-300" />
-          ) : (
+          {isUnmuted ? (
             <Volume2 className="w-4 h-4 text-amber-400" />
+          ) : (
+            <VolumeX className="w-4 h-4 text-neutral-300" />
           )}
         </button>
 
@@ -141,7 +158,19 @@ function PureReelCard({
 
 export default function Reels() {
   const [activeModalVideo, setActiveModalVideo] = useState<ReelVideo | null>(null);
+  // Exclusive audio control: only one reel can be unmuted at any given moment
+  const [unmutedVideoId, setUnmutedVideoId] = useState<string | null>(null);
   const modalVideoRef = useRef<HTMLVideoElement>(null);
+
+  const handleToggleMute = (videoId: string) => {
+    setUnmutedVideoId((prev) => (prev === videoId ? null : videoId));
+  };
+
+  const handleOpenModal = (v: ReelVideo) => {
+    // Silence background reels when opening fullscreen modal
+    setUnmutedVideoId(null);
+    setActiveModalVideo(v);
+  };
 
   usePageSeo({
     title: '4K Cinematic Reels & Films | The SR Pictures Bengaluru',
@@ -230,7 +259,9 @@ export default function Reels() {
                 <PureReelCard
                   key={video.id}
                   video={video}
-                  onOpenModal={(v) => setActiveModalVideo(v)}
+                  isUnmuted={unmutedVideoId === video.id}
+                  onToggleMute={handleToggleMute}
+                  onOpenModal={handleOpenModal}
                 />
               ))}
             </div>
