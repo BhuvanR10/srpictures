@@ -1421,15 +1421,28 @@ export const InvertedDome: React.FC<InvertedDomeProps> = ({
     validImages,
   ]);
 
-  // Close lightbox on Escape
+  // Keyboard navigation when image is selected: Left/Right arrow keys navigate, Escape closes
   useEffect(() => {
     if (activeImageIndex === null) return;
     const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setActiveImageIndex(null);
+      const target = e.target as HTMLElement;
+      if (target?.tagName === 'INPUT' || target?.tagName === 'TEXTAREA' || target?.isContentEditable) {
+        return;
+      }
+      if (e.key === "Escape") {
+        e.preventDefault();
+        setActiveImageIndex(null);
+      } else if (e.key === "ArrowRight" || e.key === "Right") {
+        e.preventDefault();
+        setActiveImageIndex((prev) => (prev !== null ? (prev + 1) % validImages.length : null));
+      } else if (e.key === "ArrowLeft" || e.key === "Left") {
+        e.preventDefault();
+        setActiveImageIndex((prev) => (prev !== null ? (prev - 1 + validImages.length) % validImages.length : null));
+      }
     };
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [activeImageIndex]);
+  }, [activeImageIndex, validImages.length]);
 
   const activeSrc =
     openOnClick && activeImageIndex !== null

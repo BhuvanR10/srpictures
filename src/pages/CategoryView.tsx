@@ -60,9 +60,9 @@ export default function CategoryView() {
   const [isMobileFullscreen, setIsMobileFullscreen] = useState(false);
   const isMobileScreen = typeof window !== 'undefined' && window.innerWidth < 768;
 
-  // Prevent background scrolling when mobile fullscreen dome is active
+  // Prevent background scrolling when mobile fullscreen dome or lightbox modal is active
   useEffect(() => {
-    if (isMobileFullscreen) {
+    if (isMobileFullscreen || lightboxIndex !== null) {
       const origOverflow = document.body.style.overflow;
       document.body.style.overflow = 'hidden';
       document.documentElement.style.overflow = 'hidden';
@@ -71,7 +71,7 @@ export default function CategoryView() {
         document.documentElement.style.overflow = '';
       };
     }
-  }, [isMobileFullscreen]);
+  }, [isMobileFullscreen, lightboxIndex]);
 
   const category = CATEGORIES_DATA.find((c) => c.slug === slug || c.id === slug);
 
@@ -171,6 +171,32 @@ export default function CategoryView() {
     if (lightboxIndex === null || jumbledImages.length === 0) return;
     setLightboxIndex((prev) => ((prev ?? 0) - 1 + jumbledImages.length) % jumbledImages.length);
   };
+
+  // Desktop keyboard navigation: right and left arrow keys to navigate images, Escape to close
+  useEffect(() => {
+    if (lightboxIndex === null || jumbledImages.length === 0) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement;
+      if (target?.tagName === 'INPUT' || target?.tagName === 'TEXTAREA' || target?.isContentEditable) {
+        return;
+      }
+
+      if (e.key === 'ArrowRight' || e.key === 'Right') {
+        e.preventDefault();
+        setLightboxIndex((prev) => ((prev ?? 0) + 1) % jumbledImages.length);
+      } else if (e.key === 'ArrowLeft' || e.key === 'Left') {
+        e.preventDefault();
+        setLightboxIndex((prev) => ((prev ?? 0) - 1 + jumbledImages.length) % jumbledImages.length);
+      } else if (e.key === 'Escape') {
+        e.preventDefault();
+        setLightboxIndex(null);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [lightboxIndex, jumbledImages.length]);
 
   return (
     <>
@@ -358,8 +384,13 @@ export default function CategoryView() {
               className="flex items-center justify-between z-10"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="text-white font-mono text-xs tracking-wider uppercase">
-                {category.name} <span className="text-neutral-500 mx-2">—</span> Frame {(lightboxIndex ?? 0) + 1} / {category.images.length}
+              <div className="text-white font-mono text-xs tracking-wider uppercase flex items-center gap-2">
+                <span>{category.name}</span>
+                <span className="text-neutral-500">—</span>
+                <span>Frame {(lightboxIndex ?? 0) + 1} / {category.images.length}</span>
+                <span className="hidden md:inline-flex items-center gap-1.5 text-[10px] text-neutral-400 bg-white/10 px-2.5 py-0.5 rounded-full ml-2 border border-white/10">
+                  <span className="text-amber-400">←</span> / <span className="text-amber-400">→</span> keys to navigate • ESC to exit
+                </span>
               </div>
               <button
                 type="button"
