@@ -11,7 +11,7 @@ export interface SeoProps {
   schemaJson?: Record<string, unknown> | Array<Record<string, unknown>>;
 }
 
-export const SITE_URL = 'https://photoportfolio-lake.vercel.app';
+export const SITE_URL = 'https://thesrpictures.in';
 export const DEFAULT_OG_IMAGE = `${SITE_URL}/assets/hero-cinematic-poster-v3.jpg`;
 
 const PATH_LABELS: Record<string, string> = {

@@ -30,4 +30,4 @@ User-agent: CCBot
 Allow: /
 
 # Sitemaps & LLM Context
-Sitemap: https://photoportfolio-lake.vercel.app/sitemap.xml
+Sitemap: https://thesrpictures.in/sitemap.xml

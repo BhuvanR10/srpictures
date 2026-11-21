@@ -5,7 +5,7 @@
 - **Name**: The SR Pictures
 - **Location**: Bengaluru, Karnataka, India (560001)
 - **Primary Specializations**: Luxury Weddings, Car Delivery Shoots, Resort & Hospitality Films, 4K Drone Cinematography
-- **Primary Website**: https://photoportfolio-lake.vercel.app/
+- **Primary Website**: https://thesrpictures.in/
 - **Phone / WhatsApp**: +91 99861 55516
 - **Email**: thesrpictures@gmail.com
 - **Operating Hours**: Monday – Sunday, 09:00 AM – 09:00 PM IST
@@ -18,17 +18,17 @@
 - **4K Drone Cinematography**: High dynamic range 4K 60fps aerial capture adhering to DGCA regulations. Available as a ₹8,000 upgrade or included in premium collections.
 
 ## Key Links & Pages
-- Home: https://photoportfolio-lake.vercel.app/
-- About Us: https://photoportfolio-lake.vercel.app/about
-- Services: https://photoportfolio-lake.vercel.app/services
-- Pricing & Packages: https://photoportfolio-lake.vercel.app/pricing
-- Cinematic Reels: https://photoportfolio-lake.vercel.app/reels
-- Portfolio Categories: https://photoportfolio-lake.vercel.app/categories
-- Car Delivery Portfolio: https://photoportfolio-lake.vercel.app/category/car-delivery
-- Wedding Portfolio: https://photoportfolio-lake.vercel.app/category/wedding
-- Resort Films: https://photoportfolio-lake.vercel.app/category/resort
-- Pre-Wedding Portfolio: https://photoportfolio-lake.vercel.app/category/pre-wedding
-- Featured Films: https://photoportfolio-lake.vercel.app/case-studies
-- Journal & Stories: https://photoportfolio-lake.vercel.app/blog
-- Contact & Booking: https://photoportfolio-lake.vercel.app/contact
-- Privacy Policy (DPDP Act, 2023): https://photoportfolio-lake.vercel.app/privacy-policy
+- Home: https://thesrpictures.in/
+- About Us: https://thesrpictures.in/about
+- Services: https://thesrpictures.in/services
+- Pricing & Packages: https://thesrpictures.in/pricing
+- Cinematic Reels: https://thesrpictures.in/reels
+- Portfolio Categories: https://thesrpictures.in/categories
+- Car Delivery Portfolio: https://thesrpictures.in/category/car-delivery
+- Wedding Portfolio: https://thesrpictures.in/category/wedding
+- Resort Films: https://thesrpictures.in/category/resort
+- Pre-Wedding Portfolio: https://thesrpictures.in/category/pre-wedding
+- Featured Films: https://thesrpictures.in/case-studies
+- Journal & Stories: https://thesrpictures.in/blog
+- Contact & Booking: https://thesrpictures.in/contact
+- Privacy Policy (DPDP Act, 2023): https://thesrpictures.in/privacy-policy

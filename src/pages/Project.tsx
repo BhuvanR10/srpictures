@@ -20,7 +20,7 @@ export default function Project() {
       '@type': 'VideoObject',
       name: `${p.name} - ${p.service}`,
       description: p.summary,
-      thumbnailUrl: p.poster.startsWith('http') ? p.poster : `https://photoportfolio-lake.vercel.app${p.poster}`,
+      thumbnailUrl: p.poster.startsWith('http') ? p.poster : `https://thesrpictures.in${p.poster}`,
       uploadDate: `${p.year}-01-01T08:00:00+05:30`,
       embedUrl: p.vimeo,
       publisher: {

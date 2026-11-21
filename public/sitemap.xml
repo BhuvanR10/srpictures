@@ -3,63 +3,63 @@
         xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
   <!-- Core Pages -->
   <url>
-    <loc>https://photoportfolio-lake.vercel.app/</loc>
+    <loc>https://thesrpictures.in/</loc>
     <lastmod>2026-11-21</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
     <video:video>
-      <video:thumbnail_loc>https://photoportfolio-lake.vercel.app/assets/hero-cinematic-poster-v3.jpg</video:thumbnail_loc>
+      <video:thumbnail_loc>https://thesrpictures.in/assets/hero-cinematic-poster-v3.jpg</video:thumbnail_loc>
       <video:title>The SR Pictures | Cinematic Showreel</video:title>
       <video:description>Luxury wedding cinema, car delivery shoots, resort promotional films, and 4K aerial drone cinematography in Bengaluru, India.</video:description>
-      <video:content_loc>https://photoportfolio-lake.vercel.app/assets/hero-bg-1080p-v3.mp4</video:content_loc>
-      <video:player_loc>https://photoportfolio-lake.vercel.app/</video:player_loc>
+      <video:content_loc>https://thesrpictures.in/assets/hero-bg-1080p-v3.mp4</video:content_loc>
+      <video:player_loc>https://thesrpictures.in/</video:player_loc>
       <video:family_friendly>yes</video:family_friendly>
     </video:video>
   </url>
   <url>
-    <loc>https://photoportfolio-lake.vercel.app/services</loc>
+    <loc>https://thesrpictures.in/services</loc>
     <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
   </url>
   <url>
-    <loc>https://photoportfolio-lake.vercel.app/pricing</loc>
+    <loc>https://thesrpictures.in/pricing</loc>
     <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
   </url>
   <url>
-    <loc>https://photoportfolio-lake.vercel.app/reels</loc>
+    <loc>https://thesrpictures.in/reels</loc>
     <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.90</priority>
   </url>
   <url>
-    <loc>https://photoportfolio-lake.vercel.app/categories</loc>
+    <loc>https://thesrpictures.in/categories</loc>
     <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.90</priority>
   </url>
   <url>
-    <loc>https://photoportfolio-lake.vercel.app/about</loc>
+    <loc>https://thesrpictures.in/about</loc>
     <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://photoportfolio-lake.vercel.app/contact</loc>
+    <loc>https://thesrpictures.in/contact</loc>
     <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.90</priority>
   </url>
   <url>
-    <loc>https://photoportfolio-lake.vercel.app/case-studies</loc>
+    <loc>https://thesrpictures.in/case-studies</loc>
     <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://photoportfolio-lake.vercel.app/blog</loc>
+    <loc>https://thesrpictures.in/blog</loc>
     <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
@@ -67,49 +67,49 @@
 
   <!-- Visual Category Galleries (Canonical /category/:slug) -->
   <url>
-    <loc>https://photoportfolio-lake.vercel.app/category/car-delivery</loc>
+    <loc>https://thesrpictures.in/category/car-delivery</loc>
     <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.90</priority>
   </url>
   <url>
-    <loc>https://photoportfolio-lake.vercel.app/category/wedding</loc>
+    <loc>https://thesrpictures.in/category/wedding</loc>
     <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.90</priority>
   </url>
   <url>
-    <loc>https://photoportfolio-lake.vercel.app/category/resort</loc>
+    <loc>https://thesrpictures.in/category/resort</loc>
     <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://photoportfolio-lake.vercel.app/category/pre-wedding</loc>
+    <loc>https://thesrpictures.in/category/pre-wedding</loc>
     <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://photoportfolio-lake.vercel.app/category/commercials</loc>
+    <loc>https://thesrpictures.in/category/commercials</loc>
     <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.80</priority>
   </url>
   <url>
-    <loc>https://photoportfolio-lake.vercel.app/category/portraits</loc>
+    <loc>https://thesrpictures.in/category/portraits</loc>
     <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.80</priority>
   </url>
   <url>
-    <loc>https://photoportfolio-lake.vercel.app/category/family</loc>
+    <loc>https://thesrpictures.in/category/family</loc>
     <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.80</priority>
   </url>
   <url>
-    <loc>https://photoportfolio-lake.vercel.app/category/maternity</loc>
+    <loc>https://thesrpictures.in/category/maternity</loc>
     <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.80</priority>
@@ -117,49 +117,49 @@
 
   <!-- Legacy / Alternate Category Routes (/categories/:slug) -->
   <url>
-    <loc>https://photoportfolio-lake.vercel.app/categories/car-delivery</loc>
+    <loc>https://thesrpictures.in/categories/car-delivery</loc>
     <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.80</priority>
   </url>
   <url>
-    <loc>https://photoportfolio-lake.vercel.app/categories/wedding</loc>
+    <loc>https://thesrpictures.in/categories/wedding</loc>
     <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.80</priority>
   </url>
   <url>
-    <loc>https://photoportfolio-lake.vercel.app/categories/resort</loc>
+    <loc>https://thesrpictures.in/categories/resort</loc>
     <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.80</priority>
   </url>
   <url>
-    <loc>https://photoportfolio-lake.vercel.app/categories/pre-wedding</loc>
+    <loc>https://thesrpictures.in/categories/pre-wedding</loc>
     <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.80</priority>
   </url>
   <url>
-    <loc>https://photoportfolio-lake.vercel.app/categories/commercials</loc>
+    <loc>https://thesrpictures.in/categories/commercials</loc>
     <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://photoportfolio-lake.vercel.app/categories/portraits</loc>
+    <loc>https://thesrpictures.in/categories/portraits</loc>
     <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://photoportfolio-lake.vercel.app/categories/family</loc>
+    <loc>https://thesrpictures.in/categories/family</loc>
     <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://photoportfolio-lake.vercel.app/categories/maternity</loc>
+    <loc>https://thesrpictures.in/categories/maternity</loc>
     <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.75</priority>
@@ -167,25 +167,25 @@
 
   <!-- Featured Project Stories -->
   <url>
-    <loc>https://photoportfolio-lake.vercel.app/project/visage</loc>
+    <loc>https://thesrpictures.in/project/visage</loc>
     <lastmod>2026-11-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
   </url>
   <url>
-    <loc>https://photoportfolio-lake.vercel.app/project/horizon</loc>
+    <loc>https://thesrpictures.in/project/horizon</loc>
     <lastmod>2026-11-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
   </url>
   <url>
-    <loc>https://photoportfolio-lake.vercel.app/project/beyond</loc>
+    <loc>https://thesrpictures.in/project/beyond</loc>
     <lastmod>2026-11-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
   </url>
   <url>
-    <loc>https://photoportfolio-lake.vercel.app/project/stride</loc>
+    <loc>https://thesrpictures.in/project/stride</loc>
     <lastmod>2026-11-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
@@ -193,37 +193,37 @@
 
   <!-- Cinematography Journal Articles -->
   <url>
-    <loc>https://photoportfolio-lake.vercel.app/blog/camera-movement-basics</loc>
+    <loc>https://thesrpictures.in/blog/camera-movement-basics</loc>
     <lastmod>2026-11-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
   </url>
   <url>
-    <loc>https://photoportfolio-lake.vercel.app/blog/building-brand-identity</loc>
+    <loc>https://thesrpictures.in/blog/building-brand-identity</loc>
     <lastmod>2026-11-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
   </url>
   <url>
-    <loc>https://photoportfolio-lake.vercel.app/blog/behind-the-scenes</loc>
+    <loc>https://thesrpictures.in/blog/behind-the-scenes</loc>
     <lastmod>2026-11-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
   </url>
   <url>
-    <loc>https://photoportfolio-lake.vercel.app/blog/visual-storytelling-principles</loc>
+    <loc>https://thesrpictures.in/blog/visual-storytelling-principles</loc>
     <lastmod>2026-11-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
   </url>
   <url>
-    <loc>https://photoportfolio-lake.vercel.app/blog/video-production-workflow</loc>
+    <loc>https://thesrpictures.in/blog/video-production-workflow</loc>
     <lastmod>2026-11-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
   </url>
   <url>
-    <loc>https://photoportfolio-lake.vercel.app/blog/cinematic-lighting-techniques</loc>
+    <loc>https://thesrpictures.in/blog/cinematic-lighting-techniques</loc>
     <lastmod>2026-11-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
@@ -231,25 +231,25 @@
 
   <!-- Legal & Regulatory Compliance (India DPDP Act 2023) -->
   <url>
-    <loc>https://photoportfolio-lake.vercel.app/privacy-policy</loc>
+    <loc>https://thesrpictures.in/privacy-policy</loc>
     <lastmod>2026-11-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.50</priority>
   </url>
   <url>
-    <loc>https://photoportfolio-lake.vercel.app/terms-of-service</loc>
+    <loc>https://thesrpictures.in/terms-of-service</loc>
     <lastmod>2026-11-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.50</priority>
   </url>
   <url>
-    <loc>https://photoportfolio-lake.vercel.app/cancellation-refund</loc>
+    <loc>https://thesrpictures.in/cancellation-refund</loc>
     <lastmod>2026-11-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.50</priority>
   </url>
   <url>
-    <loc>https://photoportfolio-lake.vercel.app/grievance-redressal</loc>
+    <loc>https://thesrpictures.in/grievance-redressal</loc>
     <lastmod>2026-11-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.50</priority>

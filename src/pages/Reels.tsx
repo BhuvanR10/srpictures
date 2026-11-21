@@ -189,10 +189,10 @@ export default function Reels() {
         position: idx + 1,
         name: `The SR Pictures Film Reel ${idx + 1}`,
         description: 'Cinematic 4K color-graded vertical visual production by The SR Pictures in Bengaluru, India.',
-        thumbnailUrl: 'https://photoportfolio-lake.vercel.app/assets/hero-cinematic-poster-v3.jpg',
+        thumbnailUrl: 'https://thesrpictures.in/assets/hero-cinematic-poster-v3.jpg',
         uploadDate: '2026-01-01T10:00:00+05:30',
-        contentUrl: `https://photoportfolio-lake.vercel.app${v.videoSrc}`,
-        embedUrl: 'https://photoportfolio-lake.vercel.app/reels',
+        contentUrl: `https://thesrpictures.in${v.videoSrc}`,
+        embedUrl: 'https://thesrpictures.in/reels',
       })),
     },
   });

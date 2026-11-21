@@ -80,7 +80,7 @@ export default function BlogPost() {
       '@type': 'BlogPosting',
       headline: post.title,
       description: post.summary,
-      image: post.image.startsWith('http') ? post.image : `https://photoportfolio-lake.vercel.app${post.image}`,
+      image: post.image.startsWith('http') ? post.image : `https://thesrpictures.in${post.image}`,
       author: {
         '@type': 'Person',
         name: post.author.name,
