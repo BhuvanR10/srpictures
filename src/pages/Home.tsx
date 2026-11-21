@@ -16,9 +16,9 @@ import { usePageSeo } from '../lib/usePageSeo';
 
 export default function Home() {
   usePageSeo({
-    title: 'The SR Pictures | Weddings, Car delivery shoot & Resort Films',
-    description: 'The SR Pictures is Bengaluru premier cinematography and photography studio, specializing in luxury Indian weddings, showroom car delivery shoots, resort promotional films, and 4K aerial drone coverage.',
-    keywords: 'The SR Pictures, wedding cinematography Bengaluru, car delivery shoot Bangalore, resort films Karnataka, drone cinematography Bengaluru, pre-wedding shoot Bangalore, luxury wedding photographer, automotive delivery video, Indian wedding cinema',
+    title: 'The SR Pictures | Best Wedding Photography, Car Delivery Shoot & Resort Films Bangalore',
+    description: 'The SR Pictures is Bengaluru premier cinematography and photography studio, specializing in luxury Indian wedding photography, showroom car delivery shoots, resort promotional films, and 4K aerial drone coverage.',
+    keywords: 'The SR Pictures, SR Pictures, SR Pictures Bangalore, The SR Pictures Bengaluru, car delivery shoot bangalore, car delivery photoshoot bangalore, car delivery photography bangalore, best wedding photographer in bangalore, luxury wedding cinematography bengaluru, candid wedding photographer bangalore, wedding videography bangalore, resort promotional video shoot karnataka, drone videography bangalore, pre wedding photoshoot bangalore, wedding photography packages bangalore cost, automotive photographer bangalore',
     canonicalPath: '/',
     image: '/assets/hero-cinematic-poster-v3.jpg',
     exactTitle: true,

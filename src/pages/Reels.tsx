@@ -173,11 +173,11 @@ export default function Reels() {
   };
 
   usePageSeo({
-    title: '4K Cinematic Reels & Films | The SR Pictures Bengaluru',
+    title: '4K Cinematic Reels & Videos Bangalore | Instagram Wedding & Car Delivery | The SR Pictures',
     description:
       'Watch exclusive 4K vertical cinematic reels by The SR Pictures Bengaluru. Luxury wedding cinema, showroom car delivery films, high fashion, resort walkthroughs, and celebration teasers.',
     keywords:
-      'The SR Pictures reels, wedding reels Bangalore, car delivery reels Bangalore, cinematic vertical reels, automotive cinematography Instagram reels, wedding highlights 4K',
+      'The SR Pictures reels, wedding reels Bangalore, car delivery reels Bangalore, automotive cinematography Instagram reels, cinematic vertical reels, wedding highlights 4K, video production reels Bangalore',
     canonicalPath: '/reels',
     image: '/assets/hero-cinematic-poster-v3.jpg',
     schemaJson: {

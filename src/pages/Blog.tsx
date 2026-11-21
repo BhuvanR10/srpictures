@@ -6,9 +6,9 @@ import { usePageSeo } from '../lib/usePageSeo';
 
 export default function Blog() {
   usePageSeo({
-    title: 'Creative Insights & Cinematography Journal | The SR Pictures Bengaluru',
+    title: 'Photography & Cinematography Guides Bangalore | The SR Pictures Blog',
     description: 'Expert cinematography insights, wedding filming guides, pre-wedding location ideas in Bengaluru, drone techniques, and visual craft essays.',
-    keywords: 'wedding videography blog Bengaluru, drone aerial tips, pre-wedding shoot locations Bangalore, cinematography insights',
+    keywords: 'wedding videography blog Bengaluru, drone aerial tips, pre-wedding shoot locations Bangalore, car delivery shoot tips, cinematography insights, best photoshoot spots bangalore',
     canonicalPath: '/blog',
     schemaJson: {
       '@type': 'Blog',

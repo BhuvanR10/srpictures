@@ -180,8 +180,9 @@ export function usePageSeo({
       document.head.appendChild(pageSchemaScript);
     }
 
+    const schemaStr = schemaJson ? JSON.stringify(schemaJson) : '';
+
     return () => {
-      document.title = prevTitle;
       if (descMeta?.el && descMeta.prevVal !== null) descMeta.el.setAttribute('content', descMeta.prevVal);
       if (keywordsMeta?.el && keywordsMeta.prevVal !== null) keywordsMeta.el.setAttribute('content', keywordsMeta.prevVal);
       if (ogTitleMeta?.el && ogTitleMeta.prevVal !== null) ogTitleMeta.el.setAttribute('content', ogTitleMeta.prevVal);
@@ -196,5 +197,5 @@ export function usePageSeo({
         pageSchemaScript.parentNode.removeChild(pageSchemaScript);
       }
     };
-  }, [title, description, keywords, canonicalPath, image, exactTitle, type, schemaJson]);
+  }, [title, description, keywords, canonicalPath, image, exactTitle, type, schemaJson ? JSON.stringify(schemaJson) : '']);
 }

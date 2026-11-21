@@ -148,11 +148,11 @@ const SERVICES_LIST: ServiceCard[] = [
 
 export default function Services() {
   usePageSeo({
-    title: 'Photography & Cinematography Services | The SR Pictures Bengaluru',
+    title: 'Photography & Cinematography Services Bangalore | Wedding, Car Delivery, Drone | The SR Pictures',
     description:
       'Explore core services by The SR Pictures: Wedding Cinema & Candid Photography, Car Delivery Shoots, Resort Promotional Films, Pre-Wedding Shoots, and 4K Aerial Drone Coverage across Bengaluru & South India.',
     keywords:
-      'The SR Pictures services, wedding cinematography Bengaluru, car delivery shoot Bangalore, resort films Karnataka, pre-wedding shoot Bangalore, drone photography Bangalore, commercial videography',
+      'The SR Pictures services, wedding cinematography Bengaluru, car delivery shoot Bangalore, resort films Karnataka, pre-wedding shoot Bangalore, drone photography Bangalore, commercial videography Bangalore, professional video production Bangalore',
     canonicalPath: '/services',
     schemaJson: {
       '@type': 'ItemList',

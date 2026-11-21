@@ -31,9 +31,9 @@ const cardVariants: Variants = {
 
 export default function Categories() {
   usePageSeo({
-    title: 'Visual Portfolio Categories | The SR Pictures Bengaluru',
+    title: 'Visual Portfolio | Car Delivery, Weddings & Resort Photography Bengaluru | The SR Pictures',
     description: 'Explore our specialized portfolio: Car Delivery moments, Luxury Weddings, Resort & Villa films, Pre-Wedding stories, Commercials, and Portraits in Bengaluru.',
-    keywords: 'car delivery photos Bangalore, wedding cinematography gallery Bengaluru, resort films showcase Karnataka, commercial photography portfolio, Bengaluru visual studio',
+    keywords: 'The SR Pictures portfolio, car delivery photos Bangalore, wedding cinematography gallery Bengaluru, resort films showcase Karnataka, pre wedding photoshoot gallery, commercial photography portfolio, Bangalore photography studio',
     canonicalPath: '/categories',
     image: '/assets/categories/wedding/wedding-01.webp',
     schemaJson: {

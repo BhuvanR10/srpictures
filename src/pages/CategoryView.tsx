@@ -112,32 +112,81 @@ export default function CategoryView() {
   }, [lightboxIndex, jumbledImages]);
 
   const categoryTitle = useMemo(() => {
-    if (!category) return 'Visual Gallery | The SR Pictures';
-    if (category.slug === 'car-delivery') return 'Car Delivery Shoots & Automotive Visuals | The SR Pictures Bengaluru';
-    if (category.slug === 'wedding') return 'Luxury Wedding Cinematography & Photography | The SR Pictures Bengaluru';
-    if (category.slug === 'resort') return 'Resort & Luxury Hospitality Films | The SR Pictures Karnataka';
-    if (category.slug === 'pre-wedding') return 'Pre-Wedding & Couple Story Shoots | The SR Pictures Bengaluru';
-    return `${category.name} Photography & Cinematography | The SR Pictures Bengaluru`;
+    if (!category) return 'Visual Gallery | The SR Pictures Bengaluru';
+    switch (category.slug) {
+      case 'car-delivery':
+        return 'Car Delivery Shoot Bangalore | Showroom Delivery Photography & 4K Reels | The SR Pictures';
+      case 'wedding':
+        return 'Best Wedding Photography Bangalore | Luxury Wedding Cinematography | The SR Pictures';
+      case 'resort':
+        return 'Resort Promotional Video Shoot Karnataka | Luxury Villa Cinematography | The SR Pictures';
+      case 'pre-wedding':
+        return 'Pre Wedding Photoshoot Bangalore | Romantic Couple Cinema & 4K Reels | The SR Pictures';
+      case 'commercials':
+        return 'Commercial Video Production Bangalore | Brand Films & Ad Shoots | The SR Pictures';
+      case 'portraits':
+        return 'Portrait Photography Bangalore | Fashion & Editorial Shoots | The SR Pictures';
+      case 'family':
+        return 'Family Photoshoot Bangalore | Milestone Celebrations & Portraits | The SR Pictures';
+      case 'maternity':
+        return 'Maternity Photoshoot Bangalore | Pregnancy & Motherhood Photography | The SR Pictures';
+      default:
+        return `${category.name} Photography & Cinematography | The SR Pictures Bengaluru`;
+    }
   }, [category]);
 
   const categoryDesc = useMemo(() => {
     if (!category) return 'Visual gallery by The SR Pictures.';
-    if (category.slug === 'car-delivery') {
-      return 'Cinematic showroom car delivery moments in Bengaluru. Unveiling celebrations, key handover ceremonies, family portraits, and 4K reels.';
+    switch (category.slug) {
+      case 'car-delivery':
+        return "Bengaluru's #1 Car Delivery photoshoot & cinematic reels studio. Showroom car unveiling, key handover ceremonies, rolling 4K tracking, and viral Instagram reels. Book today!";
+      case 'wedding':
+        return 'Top-rated luxury wedding cinematography & candid photography in Bangalore by The SR Pictures. 4K Sony FX cinema cameras, emotional muhurtham highlights, candid moments & luxury albums.';
+      case 'resort':
+        return 'Premier resort & boutique hotel promotional filmmaking in Karnataka, Coorg, Chikmagalur, Kabini, Ooty & Goa. Architectural walkthroughs, guest experience storytelling & 4K drone cinematography.';
+      case 'pre-wedding':
+        return 'Cinematic pre-wedding photoshoots & romantic story films in Bangalore & exotic Karnataka locations by The SR Pictures. Concept storytelling, 4K aerial drone, and timeless aesthetics.';
+      case 'commercials':
+        return 'High-impact commercial video production, brand stories, and product cinematography in Bangalore by The SR Pictures. Cinematic lighting and creative storytelling.';
+      case 'portraits':
+        return 'Studio and outdoor portrait photography in Bangalore by The SR Pictures. Fashion editorials, model portfolios, corporate headshots, and creative conceptual portraits.';
+      case 'family':
+        return 'Heartwarming family portrait sessions, anniversary celebrations, and milestone memories captured candidly by The SR Pictures in Bangalore.';
+      case 'maternity':
+        return 'Graceful, artistic maternity photoshoots in Bangalore by The SR Pictures. Studio & outdoor sunset sessions celebrating new beginnings with timeless aesthetics.';
+      default:
+        return `Discover authentic ${category.name} visual moments captured with natural aesthetics and high-end cinema lenses by The SR Pictures studio.`;
     }
-    if (category.slug === 'wedding') {
-      return 'Grand Indian wedding films and candid photography by The SR Pictures. Preserving sacred muhurtham rituals, sangeet energy, and intimate vows.';
+  }, [category]);
+
+  const categoryKeywords = useMemo(() => {
+    if (!category) return 'The SR Pictures, Bangalore photography';
+    switch (category.slug) {
+      case 'car-delivery':
+        return 'car delivery shoot bangalore, car delivery photoshoot bangalore, car delivery photography bangalore, showroom car delivery photoshoot, new car delivery shoot bangalore, car delivery video bangalore, car delivery reels instagram bangalore, automotive photographer bangalore, car delivery shoot price, luxury car delivery shoot, The SR Pictures car delivery';
+      case 'wedding':
+        return 'best wedding photographer in bangalore, luxury wedding cinematography bengaluru, candid wedding photographer bangalore, wedding videography bangalore, destination wedding photographer karnataka, south indian wedding photography bangalore, brahmin wedding photography bangalore, wedding photography packages bangalore, The SR Pictures wedding';
+      case 'resort':
+        return 'resort promotional video shoot karnataka, resort photography bangalore, luxury villa videography coorg chikmagalur kabini ooty, hospitality video production south india, resort drone videography, hotel promotional video shoot, The SR Pictures resort';
+      case 'pre-wedding':
+        return 'pre wedding photoshoot bangalore, pre wedding shoot locations bangalore, romantic couple shoot bangalore, pre wedding video shoot bangalore, pre wedding photoshoot cost bangalore, The SR Pictures pre wedding';
+      case 'commercials':
+        return 'commercial video production bangalore, brand films bangalore, ad photoshoot bangalore, corporate videographer bangalore, product shoot bangalore, The SR Pictures commercials';
+      case 'portraits':
+        return 'portrait photography bangalore, fashion photoshoot bangalore, model portfolio shoot bangalore, editorial photographer bangalore, headshots bangalore, The SR Pictures portraits';
+      case 'family':
+        return 'family photoshoot bangalore, family portrait photography bangalore, celebration photography bangalore, candid family photographer, The SR Pictures family';
+      case 'maternity':
+        return 'maternity photoshoot bangalore, pregnancy photoshoot bangalore, outdoor maternity photoshoot bangalore, motherhood photography bangalore, The SR Pictures maternity';
+      default:
+        return `${category.name} photography, ${category.name} cinematography Bengaluru, The SR Pictures ${category.slug}, Bangalore photoshoot`;
     }
-    if (category.slug === 'resort') {
-      return 'Luxury resort, boutique hotel, and private villa promotional films in Coorg, Chikmagalur, Kabini, Ooty, and Goa by The SR Pictures.';
-    }
-    return `Discover authentic ${category.name} visual moments captured with natural aesthetics and high-end cinema lenses by The SR Pictures studio.`;
   }, [category]);
 
   usePageSeo({
     title: categoryTitle,
     description: categoryDesc,
-    keywords: category ? `${category.name} photography, ${category.name} cinematography Bengaluru, The SR Pictures ${category.slug}, Bangalore photoshoot` : 'The SR Pictures',
+    keywords: categoryKeywords,
     canonicalPath: category ? `/category/${category.slug}` : '/categories',
     image: category?.thumbnail,
     schemaJson: category ? {

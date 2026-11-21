@@ -4,7 +4,7 @@
   <!-- Core Pages -->
   <url>
     <loc>https://photoportfolio-lake.vercel.app/</loc>
-    <lastmod>2026-11-18</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
     <video:video>
@@ -18,49 +18,49 @@
   </url>
   <url>
     <loc>https://photoportfolio-lake.vercel.app/services</loc>
-    <lastmod>2026-11-18</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
   </url>
   <url>
     <loc>https://photoportfolio-lake.vercel.app/pricing</loc>
-    <lastmod>2026-11-18</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
   </url>
   <url>
     <loc>https://photoportfolio-lake.vercel.app/reels</loc>
-    <lastmod>2026-11-18</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.90</priority>
   </url>
   <url>
     <loc>https://photoportfolio-lake.vercel.app/categories</loc>
-    <lastmod>2026-11-18</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.90</priority>
   </url>
   <url>
     <loc>https://photoportfolio-lake.vercel.app/about</loc>
-    <lastmod>2026-11-18</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://photoportfolio-lake.vercel.app/contact</loc>
-    <lastmod>2026-11-18</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.90</priority>
   </url>
   <url>
     <loc>https://photoportfolio-lake.vercel.app/case-studies</loc>
-    <lastmod>2026-11-18</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://photoportfolio-lake.vercel.app/blog</loc>
-    <lastmod>2026-11-18</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
@@ -68,49 +68,49 @@
   <!-- Visual Category Galleries (Canonical /category/:slug) -->
   <url>
     <loc>https://photoportfolio-lake.vercel.app/category/car-delivery</loc>
-    <lastmod>2026-11-18</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.90</priority>
   </url>
   <url>
     <loc>https://photoportfolio-lake.vercel.app/category/wedding</loc>
-    <lastmod>2026-11-18</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.90</priority>
   </url>
   <url>
     <loc>https://photoportfolio-lake.vercel.app/category/resort</loc>
-    <lastmod>2026-11-18</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://photoportfolio-lake.vercel.app/category/pre-wedding</loc>
-    <lastmod>2026-11-18</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://photoportfolio-lake.vercel.app/category/commercials</loc>
-    <lastmod>2026-11-18</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.80</priority>
   </url>
   <url>
     <loc>https://photoportfolio-lake.vercel.app/category/portraits</loc>
-    <lastmod>2026-11-18</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.80</priority>
   </url>
   <url>
     <loc>https://photoportfolio-lake.vercel.app/category/family</loc>
-    <lastmod>2026-11-18</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.80</priority>
   </url>
   <url>
     <loc>https://photoportfolio-lake.vercel.app/category/maternity</loc>
-    <lastmod>2026-11-18</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.80</priority>
   </url>
@@ -118,49 +118,49 @@
   <!-- Legacy / Alternate Category Routes (/categories/:slug) -->
   <url>
     <loc>https://photoportfolio-lake.vercel.app/categories/car-delivery</loc>
-    <lastmod>2026-11-18</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.80</priority>
   </url>
   <url>
     <loc>https://photoportfolio-lake.vercel.app/categories/wedding</loc>
-    <lastmod>2026-11-18</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.80</priority>
   </url>
   <url>
     <loc>https://photoportfolio-lake.vercel.app/categories/resort</loc>
-    <lastmod>2026-11-18</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.80</priority>
   </url>
   <url>
     <loc>https://photoportfolio-lake.vercel.app/categories/pre-wedding</loc>
-    <lastmod>2026-11-18</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.80</priority>
   </url>
   <url>
     <loc>https://photoportfolio-lake.vercel.app/categories/commercials</loc>
-    <lastmod>2026-11-18</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
     <loc>https://photoportfolio-lake.vercel.app/categories/portraits</loc>
-    <lastmod>2026-11-18</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
     <loc>https://photoportfolio-lake.vercel.app/categories/family</loc>
-    <lastmod>2026-11-18</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
     <loc>https://photoportfolio-lake.vercel.app/categories/maternity</loc>
-    <lastmod>2026-11-18</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.75</priority>
   </url>
@@ -168,25 +168,25 @@
   <!-- Featured Project Stories -->
   <url>
     <loc>https://photoportfolio-lake.vercel.app/project/visage</loc>
-    <lastmod>2026-11-18</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
   </url>
   <url>
     <loc>https://photoportfolio-lake.vercel.app/project/horizon</loc>
-    <lastmod>2026-11-18</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
   </url>
   <url>
     <loc>https://photoportfolio-lake.vercel.app/project/beyond</loc>
-    <lastmod>2026-11-18</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
   </url>
   <url>
     <loc>https://photoportfolio-lake.vercel.app/project/stride</loc>
-    <lastmod>2026-11-18</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
   </url>
@@ -194,37 +194,37 @@
   <!-- Cinematography Journal Articles -->
   <url>
     <loc>https://photoportfolio-lake.vercel.app/blog/camera-movement-basics</loc>
-    <lastmod>2026-11-18</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
   </url>
   <url>
     <loc>https://photoportfolio-lake.vercel.app/blog/building-brand-identity</loc>
-    <lastmod>2026-11-18</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
   </url>
   <url>
     <loc>https://photoportfolio-lake.vercel.app/blog/behind-the-scenes</loc>
-    <lastmod>2026-11-18</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
   </url>
   <url>
     <loc>https://photoportfolio-lake.vercel.app/blog/visual-storytelling-principles</loc>
-    <lastmod>2026-11-18</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
   </url>
   <url>
     <loc>https://photoportfolio-lake.vercel.app/blog/video-production-workflow</loc>
-    <lastmod>2026-11-18</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
   </url>
   <url>
     <loc>https://photoportfolio-lake.vercel.app/blog/cinematic-lighting-techniques</loc>
-    <lastmod>2026-11-18</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
   </url>
@@ -232,25 +232,25 @@
   <!-- Legal & Regulatory Compliance (India DPDP Act 2023) -->
   <url>
     <loc>https://photoportfolio-lake.vercel.app/privacy-policy</loc>
-    <lastmod>2026-11-18</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.50</priority>
   </url>
   <url>
     <loc>https://photoportfolio-lake.vercel.app/terms-of-service</loc>
-    <lastmod>2026-11-18</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.50</priority>
   </url>
   <url>
     <loc>https://photoportfolio-lake.vercel.app/cancellation-refund</loc>
-    <lastmod>2026-11-18</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.50</priority>
   </url>
   <url>
     <loc>https://photoportfolio-lake.vercel.app/grievance-redressal</loc>
-    <lastmod>2026-11-18</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.50</priority>
   </url>

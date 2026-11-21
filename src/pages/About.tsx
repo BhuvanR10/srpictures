@@ -11,9 +11,9 @@ import { usePageSeo } from '../lib/usePageSeo';
 
 export default function About() {
   usePageSeo({
-    title: 'About The Studio & Cinema Craft | The SR Pictures Bengaluru',
+    title: 'About The Studio & Team | Top Cinematographers Bengaluru | The SR Pictures',
     description: 'Meet The SR Pictures team in Bengaluru. Discover our philosophy in cinematic wedding films, car delivery shoots, resort production, and DGCA drone operations across Karnataka and South India.',
-    keywords: 'About The SR Pictures, Bengaluru wedding photographers, automotive cinematography Bangalore, resort filmmakers Karnataka, professional drone pilot Bengaluru',
+    keywords: 'About The SR Pictures, Bengaluru wedding photographers, automotive cinematography Bangalore, resort filmmakers Karnataka, professional drone pilot Bengaluru, SR Pictures team, top photographers in bangalore',
     canonicalPath: '/about',
     image: '/assets/hero-cinematic-poster-v3.jpg',
     schemaJson: {

@@ -472,11 +472,11 @@ const HIDE_PRICE_CATEGORIES = ['car-delivery', 'wedding', 'couple', 'resort'];
 
 export default function Pricing() {
   usePageSeo({
-    title: 'Transparent Packages & Pricing | The SR Pictures Bengaluru',
+    title: 'Pricing & Packages | Car Delivery Shoot & Wedding Photography Cost Bangalore | The SR Pictures',
     description:
       'Clear, transparent cinematography and photography pricing for Car Delivery shoots (from ₹8,000 / ₹14,999), Luxury Weddings, Resort Films, and 4K Drone coverage (₹8,000 · 3–4 Hours) in Bengaluru.',
     keywords:
-      'car delivery shoot price Bangalore, wedding photography packages Bengaluru, resort video production pricing Karnataka, drone shoot price India, automotive delivery reel price',
+      'car delivery shoot price Bangalore, wedding photography packages Bengaluru, car delivery photoshoot cost, wedding videography charges bangalore, resort video production pricing Karnataka, drone shoot price India, automotive delivery reel price, The SR Pictures pricing, photography cost in bangalore',
     canonicalPath: '/pricing',
     image: '/assets/categories/car-delivery/cardelivery-01.webp',
     schemaJson: {
